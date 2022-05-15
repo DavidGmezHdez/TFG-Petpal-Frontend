@@ -6,10 +6,6 @@ import {NavigationContainer} from '@react-navigation/native';
 const Stack = createStackNavigator();
 
 export const Navigation = () => {
-  const headerLeftComponentMenu = () => {
-    return <></>;
-  };
-
   return (
     <NavigationContainer>
       <Stack.Navigator>

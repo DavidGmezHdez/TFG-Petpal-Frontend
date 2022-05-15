@@ -18,9 +18,7 @@ export const Navigation = () => {
             key={`stack_item-${idx + 1}`}
             name={item.name}
             component={item.component}
-            options={{
-              headerLeft: item.headerLeft || headerLeftComponentMenu,
-            }}
+            options={{headerShown: false}}
           />
         ))}
       </Stack.Navigator>

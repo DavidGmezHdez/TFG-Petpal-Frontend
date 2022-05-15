@@ -3,21 +3,21 @@ import {Button, StyleSheet, View} from 'react-native';
 import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
-type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'register'>;
 
-type WelcomeScreenProps = {
+type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'login'>;
+
+type Props = {
   navigation: NavigationStackProp['navigation'];
 };
 
-export const WelcomeScreen = ({navigation}: WelcomeScreenProps) => {
+export const Login = ({navigation}: Props) => {
   return (
     <View style={styles.container}>
-      <Text>Welcome Screen</Text>
+      <Text>Login</Text>
       <Button
-        title="Register"
-        onPress={() => navigation.navigate('register')}
+        title="Tabs"
+        onPress={() => navigation.navigate('tabs_navigator')}
       />
-      <Button title="Login" onPress={() => navigation.navigate('login')} />
     </View>
   );
 };

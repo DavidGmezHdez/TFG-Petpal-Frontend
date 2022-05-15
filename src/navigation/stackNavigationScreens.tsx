@@ -1,11 +1,23 @@
-import React from 'react';
-import {Button} from 'react-native';
+import {Login} from 'screens/Login';
+import {Register} from 'screens/Register';
 import {WelcomeScreen} from 'screens/WelcomeScreen';
+import {TabsNavigator} from './tabs-navigator';
 
 export const StackNavigationScreens = [
   {
-    name: 'WelcomeScreen',
+    name: 'welcome',
     component: WelcomeScreen,
-    headerLeft: () => <Button title="Back" color={'#4r43'} />,
+  },
+  {
+    name: 'register',
+    component: Register,
+  },
+  {
+    name: 'login',
+    component: Login,
+  },
+  {
+    name: 'tabs_navigator',
+    component: TabsNavigator,
   },
 ];

@@ -16,7 +16,7 @@ type Props = {
   children: any;
 };
 
-function applyGeneralStyles({
+const customizeStyles = ({
   style,
   bold,
   light,
@@ -26,7 +26,7 @@ function applyGeneralStyles({
   lineThrough,
   color,
   size,
-}: Props) {
+}: Props) => {
   return [
     style && style,
     bold && styles.bold,
@@ -38,10 +38,10 @@ function applyGeneralStyles({
     color && {color},
     size && {fontSize: size},
   ];
-}
+};
 
 export const Text = (props: Props) => {
-  const finalStyle = [styles.default, ...applyGeneralStyles(props)];
+  const finalStyle = [styles.default, ...customizeStyles(props)];
 
   return (
     <SText {...props} style={finalStyle}>
@@ -51,11 +51,7 @@ export const Text = (props: Props) => {
 };
 
 export const Title = (props: Props) => {
-  const finalStyle = [
-    styles.default,
-    styles.title,
-    ...applyGeneralStyles(props),
-  ];
+  const finalStyle = [styles.default, styles.title, ...customizeStyles(props)];
 
   return <SText {...props} style={finalStyle} />;
 };

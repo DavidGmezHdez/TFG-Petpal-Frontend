@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import StackNavigationScreens from './StackNavigationScreens';
+import {StackNavigationScreens} from './stackNavigationScreens';
 import {NavigationContainer} from '@react-navigation/native';
 
 const Stack = createStackNavigator();

@@ -765,6 +765,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@egjs/hammerjs@^2.0.17":
+  version "2.0.17"
+  resolved "https://registry.yarnpkg.com/@egjs/hammerjs/-/hammerjs-2.0.17.tgz#5dc02af75a6a06e4c2db0202cae38c9263895124"
+  integrity sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==
+  dependencies:
+    "@types/hammerjs" "^2.0.36"
+
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.4.3.tgz#9e42981ef035beb3dd49add17acb96e8ff6f394c"
@@ -1404,6 +1411,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/hammerjs@^2.0.36":
+  version "2.0.41"
+  resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.41.tgz#f6ecf57d1b12d2befcce00e928a6a097c22980aa"
+  integrity sha512-ewXv/ceBaJprikMcxCmWU1FKyMAQ2X7a9Gtmzw8fcg2kIePI1crERDM818W+XYrxqdBBOdlf2rm137bU+BltCA==
+
 "@types/hoist-non-react-statics@^3.3.1":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
@@ -1463,6 +1475,13 @@
   version "15.7.5"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
+
+"@types/react-native@>=0.62.0":
+  version "0.67.7"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.67.7.tgz#903b7d56fb6a95ca0de897f2925c04ee0d4adee3"
+  integrity sha512-G7vi9vE226diNNXVNbIa8HH/wPxMWHTHkn9iQtQSezaWzO5WNsKZZW2/TOzCehtBDVx4MZieTs6GsdtpBBttMA==
+  dependencies:
+    "@types/react" "*"
 
 "@types/react-native@^0.67.3":
   version "0.67.6"
@@ -4797,7 +4816,7 @@ lodash.truncate@^4.4.2:
   resolved "https://registry.yarnpkg.com/lodash.truncate/-/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
   integrity sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM=
 
-lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.7.0:
+lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.21, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -5783,7 +5802,7 @@ prompts@^2.0.1, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@*, prop-types@^15.8.1:
+prop-types@*, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -5863,10 +5882,35 @@ react-native-codegen@^0.0.17:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-dynamic@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-dynamic/-/react-native-dynamic-1.0.0.tgz#d971618fd278cf66acb0add46536aa7a68fd8d4f"
+  integrity sha512-CMP97GREQ74tpwhKFdUiMpvybzO+dp13Y70rCyu6qzTouOde9vlpDHlxa++o0EA6kXucEW28x3GN0rvZ/1bjrA==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" ">=0.62.0"
+    toolkit.ts "^0.0.2"
+
+react-native-gesture-handler@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.4.2.tgz#de93760b0bc251d94e8ae692f9850ec3ed2e4f27"
+  integrity sha512-K3oMiQV7NOVB5RvNlxkyJxU1Gn6m1cYu53MoFA542FVDSTR491d1eQkWDdqy4lW52rfF7IK7eE1LCi+kTJx7jw==
+  dependencies:
+    "@egjs/hammerjs" "^2.0.17"
+    hoist-non-react-statics "^3.3.0"
+    invariant "^2.2.4"
+    lodash "^4.17.21"
+    prop-types "^15.7.2"
+
 react-native-gradle-plugin@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.6.tgz#b61a9234ad2f61430937911003cddd7e15c72b45"
   integrity sha512-eIlgtsmDp1jLC24dRn43hB3kEcZVqx6DUQbR0N1ABXGnMEafm9I3V3dUUeD1vh+Dy5WqijSoEwLNUPLgu5zDMg==
+
+react-native-safe-area-context@^4.2.5:
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.2.5.tgz#23006dc1a398bb825d7d795c27f1c46119efe8a5"
+  integrity sha512-nUil2de1gk/8ZB9IzIxFyGCiKeAYcHzJb/Tks2NzSkev1qH4MNR05DWYDSmW6vLT+y4mospLVyG/H5dyUd+KQQ==
 
 react-native@0.68.2:
   version "0.68.2"
@@ -6892,6 +6936,11 @@ toidentifier@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.1.tgz#3be34321a88a820ed1bd80dfaa33e479fbb8dd35"
   integrity sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==
+
+toolkit.ts@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/toolkit.ts/-/toolkit.ts-0.0.2.tgz#91bde730e5e6ad1a22146cdaf83f4a52721cf3b2"
+  integrity sha512-yJJTVbCwiD6AfFgReewJCGJuODmyZUeL1sDjnxp33t0UBxnezgQrLbz/F9++RC28CTlk5u5pVji4TbeondYEkw==
 
 tough-cookie@^4.0.0:
   version "4.0.0"

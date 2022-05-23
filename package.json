@@ -16,6 +16,7 @@
     "@react-navigation/native-stack": "^6.6.2",
     "@react-navigation/stack": "^6.2.1",
     "@reduxjs/toolkit": "^1.8.1",
+    "formik": "^2.2.9",
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-dynamic": "^1.0.0",
@@ -27,7 +28,8 @@
     "react-redux": "^8.0.1",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

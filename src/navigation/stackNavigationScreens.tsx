@@ -1,5 +1,5 @@
 import {Login} from 'screens/Login';
-import {Register} from 'screens/Register';
+import {RegisterUser} from 'screens/RegisterUser';
 import {WelcomeScreen} from 'screens/WelcomeScreen';
 import {TabsNavigator} from './tabs-navigator';
 
@@ -9,8 +9,8 @@ export const StackNavigationScreens = [
     component: WelcomeScreen,
   },
   {
-    name: 'register',
-    component: Register,
+    name: 'registerUser',
+    component: RegisterUser,
   },
   {
     name: 'login',

@@ -1,6 +1,6 @@
 export type RootStackParam = {
   welcome: undefined;
-  register: undefined;
+  registerUser: undefined;
   login: undefined;
   tabs_navigator: undefined;
   feed: undefined;

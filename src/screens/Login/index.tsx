@@ -18,6 +18,10 @@ export const Login = ({navigation}: Props) => {
         title="Tabs"
         onPress={() => navigation.navigate('tabs_navigator')}
       />
+      <Button
+        title="Register User"
+        onPress={() => navigation.navigate('registerUser')}
+      />
     </View>
   );
 };

@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {BackHandler} from 'react-native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import {Feed} from 'screens/Feed';
-import {Search} from 'screens/Search';
-import {Profile} from 'screens/Profile';
+import {Feed} from '@screens/Feed';
+import {Search} from '@screens/Search';
+import {Profile} from '@screens/Profile';
 
 export const TabsNavigator = () => {
   const Tab = createMaterialBottomTabNavigator();

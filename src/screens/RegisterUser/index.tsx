@@ -2,10 +2,13 @@ import React from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
 import {Formik} from 'formik';
 import {UserSchema, UserTypes} from './lib';
-import {Text} from 'components/Text';
+import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useDispatch} from 'react-redux';
+import {register} from '@redux/user/user_actions';
+import config from '@config';
+import Config from 'react-native-config';
 
 type NavigationStackProp = NativeStackScreenProps<
   RootStackParam,
@@ -16,9 +19,22 @@ type RegisterUserProps = {
   navigation: NavigationStackProp['navigation'];
 };
 
+const REGISTER_PROTECTOR = '¿Quieres registrarte como protectora?';
+
 export const RegisterUser = ({navigation}: RegisterUserProps) => {
-  const _handleSubmit = (values: UserTypes) => {
+  const dispatch = useDispatch();
+  const _handleSubmit = async (values: UserTypes) => {
     console.log(values);
+    console.log(config.apiUrl);
+    console.log('config global', Config.API_URL_LOCAL);
+    try {
+      const {name, email, password} = values;
+      const res = await register(name, email, password);
+      console.log(res);
+      //navigation.navigate('login');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -56,15 +72,23 @@ export const RegisterUser = ({navigation}: RegisterUserProps) => {
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
+              secureTextEntry
               placeholder={'Contraseña'}
             />
             {errors.password && touched.password ? (
               <Text>{errors.password}</Text>
             ) : null}
-            <TouchableOpacity onPress={handleSubmit} title="Registrarme" />
+            <Button onPress={() => handleSubmit()} title="Registrarme" />
           </View>
         )}
       </Formik>
+      <Text>{REGISTER_PROTECTOR}</Text>
+      <Button
+        onPress={() => {
+          navigation.navigate('registerProtector');
+        }}
+        title="Registrarme como protectora"
+      />
     </View>
   );
 };

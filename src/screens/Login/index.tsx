@@ -5,6 +5,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
 import {Formik} from 'formik';
 import {LoginSchema} from './lib';
+import {useDispatch} from 'react-redux';
+import {login} from '@redux/user/user_actions';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'login'>;
 
@@ -12,11 +14,19 @@ type Props = {
   navigation: NavigationStackProp['navigation'];
 };
 
-const _handleSubmit = (values: any) => {
-  console.log(values);
-};
-
 export const Login = ({navigation}: Props) => {
+  const dispatch = useDispatch<any>();
+
+  const _handleSubmit = async (values: any) => {
+    console.log(values);
+    const {email, password} = values;
+    const res = await dispatch(login(email, password));
+    console.log(res);
+    if (res) {
+      navigation.navigate('tabs_navigator');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Formik
@@ -43,6 +53,7 @@ export const Login = ({navigation}: Props) => {
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
+              secureTextEntry
               placeholder={'Contraseña'}
             />
             {errors.password && touched.password ? (
@@ -52,10 +63,6 @@ export const Login = ({navigation}: Props) => {
           </View>
         )}
       </Formik>
-      <Button
-        title="Tabs"
-        onPress={() => navigation.navigate('tabs_navigator')}
-      />
       <Button
         title="Registrarse"
         onPress={() => navigation.navigate('registerUser')}

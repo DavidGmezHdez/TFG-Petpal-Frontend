@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
@@ -15,13 +15,12 @@ export const WelcomeScreen = ({navigation}: WelcomeScreenProps) => {
   return (
     <View style={styles.container}>
       <Text>Welcome Screen</Text>
-
+      <Text>{Config.API_URL_LOCAL}</Text>
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('login');
         }}>
-        <Text>Hola</Text>
-        <Text>{Config.API_URL_LOCAL}</Text>
+        <Text>Bienvenido</Text>
       </TouchableOpacity>
     </View>
   );

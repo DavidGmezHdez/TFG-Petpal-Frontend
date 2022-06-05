@@ -7,6 +7,10 @@ const initialState = {
   token: '',
   loading: false,
   isAuthenticated: false,
+  rol: '',
+  pets: {},
+  posts: {},
+  events: {},
 };
 
 const reducer = (action: any = {}, state = initialState) => {
@@ -39,6 +43,7 @@ const reducer = (action: any = {}, state = initialState) => {
       return {
         ...state,
         loading: false,
+        success: true,
       };
     case UserActions.REGISTER_ERROR:
       return {
@@ -46,6 +51,7 @@ const reducer = (action: any = {}, state = initialState) => {
         loading: false,
         error: true,
         msg: action.payload.msg,
+        success: false,
       };
     case UserActions.LOGOUT:
       setAuthorizationToken('');

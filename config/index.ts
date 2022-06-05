@@ -1,5 +1,5 @@
 import Config from 'react-native-config';
-const env: string = process.env['ENV'] || 'local';
+const env = Config.ENV || 'local';
 
 const dev = {
   apiUrl: Config.API_URL_STG,
@@ -13,4 +13,4 @@ const config = {
   local,
 };
 
-export default local;
+export default config[env as keyof typeof config];

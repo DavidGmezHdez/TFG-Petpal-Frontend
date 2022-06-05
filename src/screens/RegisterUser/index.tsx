@@ -7,8 +7,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
 import {useDispatch} from 'react-redux';
 import {register} from '@redux/user/user_actions';
-import config from '@config';
-import Config from 'react-native-config';
 
 type NavigationStackProp = NativeStackScreenProps<
   RootStackParam,
@@ -22,18 +20,12 @@ type RegisterUserProps = {
 const REGISTER_PROTECTOR = '¿Quieres registrarte como protectora?';
 
 export const RegisterUser = ({navigation}: RegisterUserProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const _handleSubmit = async (values: UserTypes) => {
-    console.log(values);
-    console.log(config.apiUrl);
-    console.log('config global', Config.API_URL_LOCAL);
-    try {
-      const {name, email, password} = values;
-      const res = await register(name, email, password);
-      console.log(res);
-      //navigation.navigate('login');
-    } catch (error) {
-      console.log(error);
+    const {name, email, password} = values;
+    const res = await dispatch(register(name, email, password, 'Usuario'));
+    if (res) {
+      navigation.navigate('login');
     }
   };
 

@@ -2,18 +2,13 @@ import {setAuthorizationToken} from '../../utils/api/axios';
 import {UserActions} from './user_types';
 
 const initialState = {
-  name: '',
-  email: '',
-  token: '',
+  token: null,
   loading: false,
-  isAuthenticated: false,
-  rol: '',
-  pets: {},
-  posts: {},
-  events: {},
+  error: null,
 };
 
 const reducer = (action: any = {}, state = initialState) => {
+  console.log({action, state});
   switch (action.type) {
     case UserActions.LOADING:
       return {
@@ -23,12 +18,13 @@ const reducer = (action: any = {}, state = initialState) => {
 
     case UserActions.LOGIN_SUCCESS:
       setAuthorizationToken(action.payload.token);
+      console.log('AAaaaas');
+      console.log(action.payload);
       return {
         ...state,
         loading: false,
-        name: action.payload.username,
-        token: action.payload.token,
         isAuthenticated: true,
+        token: action.payload.token,
       };
 
     case UserActions.LOGIN_ERROR:
@@ -40,6 +36,7 @@ const reducer = (action: any = {}, state = initialState) => {
         isAuthenticated: false,
       };
     case UserActions.REGISTER_SUCCESS:
+      console.log('REGISTER');
       return {
         ...state,
         loading: false,

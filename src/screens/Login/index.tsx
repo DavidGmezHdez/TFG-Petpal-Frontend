@@ -5,8 +5,9 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
 import {Formik} from 'formik';
 import {LoginSchema} from './lib';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {login} from '@redux/user/user_actions';
+import {RootState} from '@redux/store';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'login'>;
 
@@ -16,21 +17,23 @@ type Props = {
 
 export const Login = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
+  const user = useSelector((state: RootState) => state.user);
 
   const _handleSubmit = async (values: any) => {
-    console.log(values);
     const {email, password} = values;
     const res = await dispatch(login(email, password));
-    console.log(res);
-    if (res) {
+    console.log({res});
+
+    if (user.token) {
       navigation.navigate('tabs_navigator');
     }
   };
 
+  console.log({user});
   return (
     <View style={styles.container}>
       <Formik
-        initialValues={{email: '', password: ''}}
+        initialValues={{email: 'test@test.co', password: 'testtest1234'}}
         validationSchema={LoginSchema}
         onSubmit={_handleSubmit}>
         {({
@@ -67,6 +70,11 @@ export const Login = ({navigation}: Props) => {
         title="Registrarse"
         onPress={() => navigation.navigate('registerUser')}
       />
+      <Button
+        title="Registrarse como protectora"
+        onPress={() => navigation.navigate('registerProtector')}
+      />
+      {user.name}
     </View>
   );
 };

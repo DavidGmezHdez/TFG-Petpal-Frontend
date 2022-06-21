@@ -1,6 +1,7 @@
-import {Login} from 'screens/Login';
-import {RegisterUser} from 'screens/RegisterUser';
-import {WelcomeScreen} from 'screens/WelcomeScreen';
+import {Login} from '@screens/Login';
+import {RegisterUser} from '@screens/RegisterUser';
+import {WelcomeScreen} from '@screens/WelcomeScreen';
+import {RegisterProtector} from '@screens/RegisterProtector';
 import {TabsNavigator} from './tabs-navigator';
 
 export const StackNavigationScreens = [
@@ -11,6 +12,10 @@ export const StackNavigationScreens = [
   {
     name: 'registerUser',
     component: RegisterUser,
+  },
+  {
+    name: 'registerProtector',
+    component: RegisterProtector,
   },
   {
     name: 'login',

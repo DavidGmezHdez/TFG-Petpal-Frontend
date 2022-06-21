@@ -1,8 +1,11 @@
 import React from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Config from 'react-native-config';
+import {persistor} from '@redux/store';
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'welcome'>;
 
 type WelcomeScreenProps = {
@@ -13,7 +16,20 @@ export const WelcomeScreen = ({navigation}: WelcomeScreenProps) => {
   return (
     <View style={styles.container}>
       <Text>Welcome Screen</Text>
-      <Button title="Login" onPress={() => navigation.navigate('login')} />
+      <Text>{Config.API_URL_LOCAL}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          persistor.purge();
+        }}>
+        <Text>Purge</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('login');
+        }}>
+        <Text>Bienvenido</Text>
+      </TouchableOpacity>
     </View>
   );
 };

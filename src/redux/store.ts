@@ -1,12 +1,13 @@
-import storage from 'redux-persist/lib/storage';
 import {persistStore, persistReducer} from 'redux-persist';
 import reducer from './reducer';
 import {configureStore} from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: AsyncStorage,
+  blacklist: [],
 };
 const persistedReducer = persistReducer(persistConfig, reducer);
 export const store = configureStore({
@@ -16,3 +17,5 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+export type RootState = ReturnType<typeof reducer>;

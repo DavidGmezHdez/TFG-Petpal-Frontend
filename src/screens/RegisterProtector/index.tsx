@@ -1,41 +1,32 @@
 import React from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
+import {Formik} from 'formik';
+import {ProtectorSchema, ProtectorTypes} from './lib';
 import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
-import {Formik} from 'formik';
-import {LoginSchema} from './lib';
-import {useDispatch, useSelector} from 'react-redux';
-import {login} from '@redux/user/user_actions';
-import {RootState} from '@redux/store';
 
-type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'login'>;
+type NavigationStackProp = NativeStackScreenProps<
+  RootStackParam,
+  'registerProtector'
+>;
 
-type Props = {
+type RegisterProtectorProps = {
   navigation: NavigationStackProp['navigation'];
 };
 
-export const Login = ({navigation}: Props) => {
-  const dispatch = useDispatch<any>();
-  const user = useSelector((state: RootState) => state.user);
+const REGISTER_USER = '¿Quieres registrarte como usuario?';
 
-  console.log(user);
-
-  const _handleSubmit = async (values: any) => {
-    const {email, password} = values;
-    await dispatch(login(email, password));
-
-    if (user.token) {
-      navigation.navigate('tabs_navigator');
-    }
+export const RegisterProtector = ({navigation}: RegisterProtectorProps) => {
+  const _handleSubmit = (values: ProtectorTypes) => {
+    console.log(values);
   };
 
-  console.log({user});
   return (
     <View style={styles.container}>
       <Formik
-        initialValues={{email: 'test@test.co', password: 'testtest1234'}}
-        validationSchema={LoginSchema}
+        initialValues={{email: '', password: '', name: ''}}
+        validationSchema={ProtectorSchema}
         onSubmit={_handleSubmit}>
         {({
           handleChange,
@@ -53,27 +44,34 @@ export const Login = ({navigation}: Props) => {
               placeholder={'Email'}
             />
             {errors.email && touched.email ? <Text>{errors.email}</Text> : null}
+
+            <TextInput
+              onChangeText={handleChange('name')}
+              onBlur={handleBlur('name')}
+              value={values.name}
+              placeholder={'Nombre'}
+            />
+            {errors.name && touched.name ? <Text>{errors.name}</Text> : null}
+
             <TextInput
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
-              secureTextEntry
               placeholder={'Contraseña'}
             />
             {errors.password && touched.password ? (
               <Text>{errors.password}</Text>
             ) : null}
-            <Button onPress={() => handleSubmit()} title="Iniciar Sesión" />
+            <Button onPress={() => handleSubmit()} title="Registrarme" />
           </View>
         )}
       </Formik>
+      <Text>{REGISTER_USER}</Text>
       <Button
-        title="Registrarse"
-        onPress={() => navigation.navigate('registerUser')}
-      />
-      <Button
-        title="Registrarse como protectora"
-        onPress={() => navigation.navigate('registerProtector')}
+        onPress={() => {
+          navigation.navigate('registerUser');
+        }}
+        title="Registrarme como usuario"
       />
     </View>
   );

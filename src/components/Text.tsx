@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text as SText, StyleSheet} from 'react-native';
-import {colors} from 'utils/Colors';
-import {fonts} from 'utils/Fonts';
+import {colors} from '../utils/Colors';
+import {fonts} from '../utils/Fonts';
 
 type Props = {
   style?: any;

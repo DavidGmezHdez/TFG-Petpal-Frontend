@@ -2,10 +2,11 @@ import React from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
 import {Formik} from 'formik';
 import {UserSchema, UserTypes} from './lib';
-import {Text} from 'components/Text';
+import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useDispatch} from 'react-redux';
+import {register} from '@redux/user/user_actions';
 
 type NavigationStackProp = NativeStackScreenProps<
   RootStackParam,
@@ -16,9 +17,16 @@ type RegisterUserProps = {
   navigation: NavigationStackProp['navigation'];
 };
 
+const REGISTER_PROTECTOR = '¿Quieres registrarte como protectora?';
+
 export const RegisterUser = ({navigation}: RegisterUserProps) => {
-  const _handleSubmit = (values: UserTypes) => {
-    console.log(values);
+  const dispatch = useDispatch<any>();
+  const _handleSubmit = async (values: UserTypes) => {
+    const {name, email, password} = values;
+    const res = await dispatch(register(name, email, password, 'Usuario'));
+    if (res) {
+      navigation.navigate('login');
+    }
   };
 
   return (
@@ -56,15 +64,23 @@ export const RegisterUser = ({navigation}: RegisterUserProps) => {
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
+              secureTextEntry
               placeholder={'Contraseña'}
             />
             {errors.password && touched.password ? (
               <Text>{errors.password}</Text>
             ) : null}
-            <TouchableOpacity onPress={handleSubmit} title="Registrarme" />
+            <Button onPress={() => handleSubmit()} title="Registrarme" />
           </View>
         )}
       </Formik>
+      <Text>{REGISTER_PROTECTOR}</Text>
+      <Button
+        onPress={() => {
+          navigation.navigate('registerProtector');
+        }}
+        title="Registrarme como protectora"
+      />
     </View>
   );
 };

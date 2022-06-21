@@ -14,11 +14,19 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "useUnknownInCatchVariables": false,
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"],
       "tests": ["tests/*"],
-      "@components/*": ["src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@screens/*": ["./src/screens/*"],
+      "@services/*": ["./src/services/*"],
+      "@config": ["./config/index"],
+      "@api/*": ["./src/utils/api/*"],
+      "@redux/*": ["./src/redux/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@navigation/*": ["./src/navigation"]
     }
   },
   "exclude": [

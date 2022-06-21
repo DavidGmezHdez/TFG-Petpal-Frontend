@@ -19,10 +19,11 @@ export const Login = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector((state: RootState) => state.user);
 
+  console.log(user);
+
   const _handleSubmit = async (values: any) => {
     const {email, password} = values;
-    const res = await dispatch(login(email, password));
-    console.log({res});
+    await dispatch(login(email, password));
 
     if (user.token) {
       navigation.navigate('tabs_navigator');
@@ -74,7 +75,6 @@ export const Login = ({navigation}: Props) => {
         title="Registrarse como protectora"
         onPress={() => navigation.navigate('registerProtector')}
       />
-      {user.name}
     </View>
   );
 };

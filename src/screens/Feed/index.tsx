@@ -3,9 +3,9 @@ import {Button, StyleSheet, View} from 'react-native';
 import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
-import {RootState} from '@redux/store';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '@redux/user/user_actions';
+import {getUser} from '@redux/user/user_reducer';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'feed'>;
 
@@ -15,18 +15,18 @@ type Props = {
 
 export const Feed = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector(getUser);
   console.log(user);
 
   const _handleLogout = () => {
-    dispatch(logout);
+    dispatch(logout());
     navigation.navigate('login');
   };
 
   return (
     <View style={styles.container}>
       <Text>Feed</Text>
-      <Button title="Login" onPress={_handleLogout} />
+      <Button title="Logout" onPress={_handleLogout} />
     </View>
   );
 };

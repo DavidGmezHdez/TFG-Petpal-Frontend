@@ -1,62 +1,65 @@
+import {RootState} from '@redux/store';
+import {AuthState} from '@redux/types';
 import {setAuthorizationToken} from '../../utils/api/axios';
-import {UserActions} from './user_types';
+import {AuthAction, AuthActionTypes} from './user_actions';
 
-const initialState = {
-  token: null,
-  loading: false,
-  error: null,
+const initialState: AuthState = {
+  token: '',
+  user: {},
+  isAuthenticated: false,
+  isLoading: false,
+  error: false,
+  msg: '',
 };
 
-const reducer = (action: any = {}, state = initialState) => {
-  console.log({action, state});
+const reducer = (state: AuthState = initialState, action: AuthAction) => {
+  console.log({action});
   switch (action.type) {
-    case UserActions.LOADING:
+    case AuthActionTypes.AUTH_LOADING:
       return {
         ...state,
-        loading: true,
+        isLoading: true,
       };
 
-    case UserActions.LOGIN_SUCCESS:
-      setAuthorizationToken(action.payload.token);
-      console.log('AAaaaas');
-      console.log(action.payload);
+    case AuthActionTypes.AUTH_ERROR:
       return {
         ...state,
-        loading: false,
-        isAuthenticated: true,
-        token: action.payload.token,
-      };
-
-    case UserActions.LOGIN_ERROR:
-      return {
-        ...state,
-        loading: false,
+        isLoading: false,
         error: true,
-        msg: action.payload.msg,
+        msg: action.payload,
+      };
+
+    case AuthActionTypes.LOGOUT_SUCCESS:
+      return {
+        ...state,
+        user: {},
         isAuthenticated: false,
+        isLoading: false,
+        error: false,
+        msg: '',
       };
-    case UserActions.REGISTER_SUCCESS:
-      console.log('REGISTER');
+
+    case AuthActionTypes.CLEAR_ERROR:
       return {
         ...state,
-        loading: false,
-        success: true,
+        error: false,
+        msg: '',
       };
-    case UserActions.REGISTER_ERROR:
+
+    case AuthActionTypes.LOGIN_SUCCESS:
+      setAuthorizationToken(action.payload.token);
       return {
         ...state,
-        loading: false,
-        error: true,
-        msg: action.payload.msg,
-        success: false,
+        isLoading: false,
+        token: action.payload.token,
+        user: action.payload.user,
+        isAuthenticated: true,
       };
-    case UserActions.LOGOUT:
-      setAuthorizationToken('');
-      return initialState;
 
     default:
       return state;
   }
 };
 
+export const getUser = (state: RootState) => state.user.user;
 export default reducer;

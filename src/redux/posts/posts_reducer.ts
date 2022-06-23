@@ -46,4 +46,5 @@ const reducer = (state: PostsState = initialState, action: PostsAction) => {
 };
 
 export const getPosts = (state: RootState) => state.posts.posts;
+export const getLoadingPosts = (state: RootState) => state.posts.isLoading;
 export default reducer;

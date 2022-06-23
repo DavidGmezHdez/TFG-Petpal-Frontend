@@ -5,11 +5,12 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '@redux/user/user_actions';
-import {getPosts} from '@redux/posts/posts_reducer';
+import {getLoadingPosts, getPosts} from '@redux/posts/posts_reducer';
 import {Post} from './components/Post';
 import {fetchPosts} from '@redux/posts/posts_actions';
 import {store} from '@redux/store';
 import {IPost} from 'utils/Types';
+import {ActivityIndicator} from 'react-native-paper';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'feed'>;
 
@@ -20,9 +21,10 @@ type Props = {
 export const Feed = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
   const posts = useSelector(getPosts);
+  const isLoading = useSelector(getLoadingPosts);
   const state = store.getState();
 
-  console.log({posts, state});
+  console.log({posts, state, isLoading});
 
   const _handleLogout = () => {
     dispatch(logout());
@@ -33,9 +35,18 @@ export const Feed = ({navigation}: Props) => {
     dispatch(fetchPosts());
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Text>Feed</Text>
+      <Text>{isLoading}</Text>
       {posts && posts.length
         ? posts.map((post: IPost) => <Post key={post._id} post={post} />)
         : null}

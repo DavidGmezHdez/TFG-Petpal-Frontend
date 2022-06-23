@@ -33,6 +33,9 @@ export type PostsAction =
 
 export const fetchPosts = () => async (dispatch: Dispatch<PostsAction>) => {
   try {
+    dispatch({
+      type: PostsActionTypes.POSTS_LOADING,
+    });
     const res = await PostsService.fetchPosts();
     const posts = res.data;
     console.log(res.data);

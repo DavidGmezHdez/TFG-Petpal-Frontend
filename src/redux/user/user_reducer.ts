@@ -13,7 +13,6 @@ const initialState: AuthState = {
 };
 
 const reducer = (state: AuthState = initialState, action: AuthAction) => {
-  console.log({action});
   switch (action.type) {
     case AuthActionTypes.AUTH_LOADING:
       return {

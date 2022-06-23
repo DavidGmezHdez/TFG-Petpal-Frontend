@@ -5,7 +5,18 @@ import {AuthAction, AuthActionTypes} from './user_actions';
 
 const initialState: AuthState = {
   token: '',
-  user: {},
+  user: {
+    _id: '',
+    token: '',
+    name: '',
+    password: '',
+    attendingEvents: [],
+    posts: [],
+    pets: [],
+    email: '',
+    rol: '',
+    hostEvents: [],
+  },
   isAuthenticated: false,
   isLoading: false,
   error: false,

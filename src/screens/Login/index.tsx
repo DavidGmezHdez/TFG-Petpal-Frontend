@@ -7,7 +7,7 @@ import {Formik} from 'formik';
 import {LoginSchema} from './lib';
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '@redux/user/user_actions';
-import {RootState} from '@redux/store';
+import {getUser} from '@redux/user/user_reducer';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'login'>;
 
@@ -17,7 +17,7 @@ type Props = {
 
 export const Login = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector(getUser);
 
   console.log(user);
 

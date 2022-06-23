@@ -1,3 +1,4 @@
+import {IUser} from '@utils/Types';
 import {Dispatch} from 'redux';
 import AuthService from '@services/AuthService';
 export enum AuthActionTypes {
@@ -21,7 +22,7 @@ interface AuthErrorAction {
 
 interface LoginSuccessAction {
   type: AuthActionTypes.LOGIN_SUCCESS;
-  payload: {user: any; token: string};
+  payload: {user: IUser; token: string};
 }
 
 interface LogoutSuccessAction {
@@ -73,10 +74,12 @@ export const register =
   (name: string, email: string, password: string, rol: string) =>
   async (dispatch: Dispatch<AuthAction>) => {
     try {
+      console.log('aaa');
       const res = await AuthService.register(name, email, password, rol);
       dispatch({type: AuthActionTypes.REGISTER_SUCCESS, payload: res.data});
       return res.data;
     } catch (e) {
+      console.log(e);
       dispatch({
         type: AuthActionTypes.AUTH_ERROR,
         payload: e.response.data.msg,
@@ -85,6 +88,5 @@ export const register =
   };
 
 export const logout = () => (dispatch: Dispatch<AuthAction>) => {
-  console.log('eee');
   dispatch({type: AuthActionTypes.LOGOUT_SUCCESS});
 };

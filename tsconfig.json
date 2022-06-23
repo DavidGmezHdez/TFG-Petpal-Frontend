@@ -25,6 +25,7 @@
       "@services/*": ["./src/services/*"],
       "@config": ["./config/index"],
       "@api/*": ["./src/utils/api/*"],
+      "@modals/*": ["./src/modals/*"],
       "@redux/*": ["./src/redux/*"],
       "@utils/*": ["./src/utils/*"],
       "@navigation/*": ["./src/navigation"]

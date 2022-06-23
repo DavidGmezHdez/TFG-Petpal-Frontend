@@ -7,3 +7,16 @@ export type IPost = {
   image: string;
   createdAt: Date;
 };
+
+export type IUser = {
+  _id: string;
+  attendingEvents: Array<any>;
+  email: string;
+  hostEvents: Array<any>;
+  name: string;
+  password: string;
+  pets: Array<any>;
+  posts: Array<any>;
+  rol: string;
+  token: string;
+};

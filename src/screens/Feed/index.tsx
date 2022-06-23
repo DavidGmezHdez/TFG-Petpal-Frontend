@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -11,6 +11,7 @@ import {fetchPosts} from '@redux/posts/posts_actions';
 import {store} from '@redux/store';
 import {IPost} from 'utils/Types';
 import {ActivityIndicator} from 'react-native-paper';
+import {CreatePostModal} from '../../modals/CreatePostModal';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'feed'>;
 
@@ -23,6 +24,7 @@ export const Feed = ({navigation}: Props) => {
   const posts = useSelector(getPosts);
   const isLoading = useSelector(getLoadingPosts);
   const state = store.getState();
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   console.log({posts, state, isLoading});
 
@@ -45,12 +47,15 @@ export const Feed = ({navigation}: Props) => {
 
   return (
     <View style={styles.container}>
+      <CreatePostModal showModal={showModal} setShowModal={setShowModal} />
+
       <Text>Feed</Text>
       <Text>{isLoading}</Text>
       {posts && posts.length
         ? posts.map((post: IPost) => <Post key={post._id} post={post} />)
         : null}
       <Button title="Actualizar" onPress={_handleUpdate} />
+      <Button title="Crear post" onPress={() => setShowModal(true)} />
       <Button title="Logout" onPress={_handleLogout} />
     </View>
   );

@@ -39,6 +39,13 @@ const reducer = (state: PostsState = initialState, action: PostsAction) => {
         isLoading: false,
         posts: action.payload.posts,
       };
+    case PostsActionTypes.SEND_POSTS_SUCCESS:
+      const post = action.payload.post;
+      return {
+        ...state,
+        isLoading: false,
+        // posts: {...state.posts, post},
+      };
 
     default:
       return state;
@@ -47,4 +54,6 @@ const reducer = (state: PostsState = initialState, action: PostsAction) => {
 
 export const getPosts = (state: RootState) => state.posts.posts;
 export const getLoadingPosts = (state: RootState) => state.posts.isLoading;
+export const getErrorPosts = (state: RootState) => state.posts.error;
+export const getMessagePosts = (state: RootState) => state.posts.msg;
 export default reducer;

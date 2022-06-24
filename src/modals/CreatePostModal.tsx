@@ -23,9 +23,7 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
   const user = useSelector(getUser);
   const errorPosts = useSelector(getErrorPosts);
   const errorMsg = useSelector(getMessagePosts);
-  console.log(user);
   const _handleSubmit = async (values: any) => {
-    console.log(values);
     const post = {
       text: values.text,
       author: user._id,
@@ -33,7 +31,6 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
       likes: 0,
       image: '',
     };
-    console.log(post);
     await dispatch(sendPost(post));
     if (!errorPosts) setShowModal(false);
   };

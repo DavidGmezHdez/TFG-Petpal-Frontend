@@ -18,12 +18,13 @@ const reducer = (state: PostsState = initialState, action: PostsAction) => {
         isLoading: true,
       };
 
-    case PostsActionTypes.POST_ERROR:
+    case PostsActionTypes.POST_ERROR_FETCH:
       return {
         ...state,
         isLoading: false,
         error: true,
-        msg: action.payload,
+        posts: [],
+        msg: action.payload.msg,
       };
 
     case PostsActionTypes.CLEAR_ERROR:
@@ -44,7 +45,14 @@ const reducer = (state: PostsState = initialState, action: PostsAction) => {
       return {
         ...state,
         isLoading: false,
-        // posts: {...state.posts, post},
+        posts: [post, ...state.posts],
+      };
+    case PostsActionTypes.SEND_POSTS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        msg: action.payload.msg,
       };
 
     default:

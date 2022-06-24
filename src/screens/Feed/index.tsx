@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {Button, StyleSheet, View, ScrollView} from 'react-native';
 import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
@@ -45,15 +45,19 @@ export const Feed = ({navigation}: Props) => {
     );
   }
 
+  // TODO: Make this infinite scroller
   return (
     <View style={styles.container}>
       <CreatePostModal showModal={showModal} setShowModal={setShowModal} />
-
       <Text>Feed</Text>
       <Text>{isLoading}</Text>
-      {posts && posts.length
-        ? posts.map((post: IPost) => <Post key={post._id} post={post} />)
-        : null}
+      <ScrollView>
+        {posts && posts.length ? (
+          posts.map((post: IPost) => <Post key={post._id} post={post} />)
+        ) : (
+          <Text>No hay ningún post. Actualiza</Text>
+        )}
+      </ScrollView>
       <Button title="Actualizar" onPress={_handleUpdate} />
       <Button title="Crear post" onPress={() => setShowModal(true)} />
       <Button title="Logout" onPress={_handleLogout} />
@@ -64,7 +68,10 @@ export const Feed = ({navigation}: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignContent: 'center',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
   },
 });

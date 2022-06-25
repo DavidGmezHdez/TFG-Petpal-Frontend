@@ -76,6 +76,24 @@ const reducer = (state: PostsState = initialState, action: PostsAction) => {
         msg: action.payload.msg,
       };
 
+    case PostsActionTypes.DELETE_POSTS_SUCCESS:
+      const deletedPost = action.payload.post;
+      return {
+        ...state,
+        isLoading: false,
+        posts: [
+          ...state.posts.filter((pst: IPost) => pst._id === deletedPost._id),
+        ],
+      };
+
+    case PostsActionTypes.DELETE_POSTS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        msg: action.payload.msg,
+      };
+
     default:
       return state;
   }

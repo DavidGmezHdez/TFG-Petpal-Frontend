@@ -12,8 +12,13 @@ const updatePost = async (postId: string, post: any) => {
   return await axios.patch(`/posts/${postId}`, {post: post});
 };
 
+const deletePost = async (postId: string) => {
+  return await axios.delete(`/posts/${postId}`);
+};
+
 export default {
   fetchPosts,
   sendPost,
   updatePost,
+  deletePost,
 };

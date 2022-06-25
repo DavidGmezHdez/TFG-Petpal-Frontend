@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
 import {sendPost} from '@redux/posts/posts_actions';
 import {getErrorPosts, getMessagePosts} from '@redux/posts/posts_reducer';
+import {updateUser} from '@redux/user/user_actions';
 
 type Props = {
   showModal: boolean;
@@ -31,7 +32,10 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
       likes: 0,
       image: '',
     };
-    await dispatch(sendPost(post));
+
+    const createdPost = await dispatch(sendPost(post));
+    const posts = [...(user.posts ?? []), createdPost._id];
+    await dispatch(updateUser(user._id, {posts}));
     if (!errorPosts) setShowModal(false);
   };
   return (

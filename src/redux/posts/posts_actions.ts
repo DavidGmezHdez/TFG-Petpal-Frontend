@@ -6,9 +6,11 @@ export enum PostsActionTypes {
   POST_ERROR_FETCH = 'postsErrorFetch',
   POSTS_SUCCESS = 'postsSuccess',
   SEND_POSTS_SUCCESS = 'sendPostsSuccess',
-  SEND_POSTS_ERROR = 'sendPostsSuccess',
+  SEND_POSTS_ERROR = 'sendPostsError',
   UPDATE_POST_SUCCESS = 'updatePostsSuccess',
-  UPDATE_POSTS_ERROR = 'updatePostsSuccess',
+  UPDATE_POSTS_ERROR = 'updatePostsError',
+  DELETE_POSTS_SUCCESS = 'deletePostsSuccess',
+  DELETE_POSTS_ERROR = 'deletePostsError',
   CLEAR_ERROR = 'clearError',
 }
 
@@ -37,11 +39,20 @@ interface SendPostError {
 }
 
 interface UpdatePostsSuccessAction {
-  type: PostsActionTypes.SEND_POSTS_SUCCESS;
+  type: PostsActionTypes.UPDATE_POST_SUCCESS;
   payload: {post: IPost};
 }
 interface UpdatePostError {
   type: PostsActionTypes.UPDATE_POSTS_ERROR;
+  payload: any;
+}
+
+interface DeletePostsSuccessAction {
+  type: PostsActionTypes.DELETE_POSTS_SUCCESS;
+  payload: {post: IPost};
+}
+interface DeletePostError {
+  type: PostsActionTypes.DELETE_POSTS_ERROR;
   payload: any;
 }
 
@@ -57,7 +68,9 @@ export type PostsAction =
   | SendPostsSuccessAction
   | SendPostError
   | UpdatePostsSuccessAction
-  | UpdatePostError;
+  | UpdatePostError
+  | DeletePostsSuccessAction
+  | DeletePostError;
 
 export const fetchPosts = () => async (dispatch: Dispatch<PostsAction>) => {
   try {
@@ -95,7 +108,7 @@ export const sendPost =
         type: PostsActionTypes.SEND_POSTS_SUCCESS,
         payload: {post: createdPost},
       });
-      return post;
+      return createdPost;
     } catch (e) {
       console.log(e);
       dispatch({
@@ -122,6 +135,29 @@ export const updatePost =
       console.log(e);
       dispatch({
         type: PostsActionTypes.UPDATE_POSTS_ERROR,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };
+
+export const deletePost =
+  (postId: string) => async (dispatch: Dispatch<PostsAction>) => {
+    try {
+      dispatch({
+        type: PostsActionTypes.POSTS_LOADING,
+      });
+      const res = await PostsService.deletePost(postId);
+      const deletedPost = res.data;
+      console.log({deletedPost});
+      dispatch({
+        type: PostsActionTypes.DELETE_POSTS_SUCCESS,
+        payload: {post: deletedPost},
+      });
+      return deletedPost;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: PostsActionTypes.DELETE_POSTS_ERROR,
         payload: {msg: e.response.data.message},
       });
     }

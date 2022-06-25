@@ -7,6 +7,8 @@ export enum PostsActionTypes {
   POSTS_SUCCESS = 'postsSuccess',
   SEND_POSTS_SUCCESS = 'sendPostsSuccess',
   SEND_POSTS_ERROR = 'sendPostsSuccess',
+  UPDATE_POST_SUCCESS = 'updatePostsSuccess',
+  UPDATE_POSTS_ERROR = 'updatePostsSuccess',
   CLEAR_ERROR = 'clearError',
 }
 
@@ -33,6 +35,16 @@ interface SendPostError {
   type: PostsActionTypes.SEND_POSTS_ERROR;
   payload: any;
 }
+
+interface UpdatePostsSuccessAction {
+  type: PostsActionTypes.SEND_POSTS_SUCCESS;
+  payload: {post: IPost};
+}
+interface UpdatePostError {
+  type: PostsActionTypes.UPDATE_POSTS_ERROR;
+  payload: any;
+}
+
 interface ClearErrorAction {
   type: PostsActionTypes.CLEAR_ERROR;
 }
@@ -43,7 +55,9 @@ export type PostsAction =
   | PostsSuccessAction
   | ClearErrorAction
   | SendPostsSuccessAction
-  | SendPostError;
+  | SendPostError
+  | UpdatePostsSuccessAction
+  | UpdatePostError;
 
 export const fetchPosts = () => async (dispatch: Dispatch<PostsAction>) => {
   try {
@@ -86,6 +100,28 @@ export const sendPost =
       console.log(e);
       dispatch({
         type: PostsActionTypes.SEND_POSTS_ERROR,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };
+
+export const updatePost =
+  (postId: string, post: any) => async (dispatch: Dispatch<PostsAction>) => {
+    try {
+      dispatch({
+        type: PostsActionTypes.POSTS_LOADING,
+      });
+      const res = await PostsService.updatePost(postId, post);
+      const updatedPost = res.data;
+      dispatch({
+        type: PostsActionTypes.UPDATE_POST_SUCCESS,
+        payload: {post: updatedPost},
+      });
+      return post;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: PostsActionTypes.UPDATE_POSTS_ERROR,
         payload: {msg: e.response.data.message},
       });
     }

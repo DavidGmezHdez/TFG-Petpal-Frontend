@@ -5,9 +5,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
 import {Formik} from 'formik';
 import {LoginSchema} from './lib';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {login} from '@redux/user/user_actions';
-import {getUser} from '@redux/user/user_reducer';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'login'>;
 
@@ -17,20 +16,14 @@ type Props = {
 
 export const Login = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
-  const user = useSelector(getUser);
-
-  console.log(user);
 
   const _handleSubmit = async (values: any) => {
     const {email, password} = values;
-    await dispatch(login(email, password));
-
-    if (user.token) {
+    const userLogged = await dispatch(login(email, password));
+    if (userLogged.token) {
       navigation.navigate('tabs_navigator');
     }
   };
-
-  console.log({user});
   return (
     <View style={styles.container}>
       <Formik

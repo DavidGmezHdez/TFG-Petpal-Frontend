@@ -17,6 +17,7 @@ export type IUser = {
   password: string;
   pets: Array<any>;
   posts: Array<any>;
+  likedPosts: Array<any>;
   rol: string;
   token: string;
 };

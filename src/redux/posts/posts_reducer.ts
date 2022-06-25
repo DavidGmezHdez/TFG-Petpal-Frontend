@@ -1,3 +1,4 @@
+import {IPost} from '@utils/Types';
 import {RootState} from '@redux/store';
 import {PostsState} from '@redux/types';
 import {PostsAction, PostsActionTypes} from './posts_actions';
@@ -41,13 +42,33 @@ const reducer = (state: PostsState = initialState, action: PostsAction) => {
         posts: action.payload.posts,
       };
     case PostsActionTypes.SEND_POSTS_SUCCESS:
-      const post = action.payload.post;
+      const createdPost = action.payload.post;
       return {
         ...state,
         isLoading: false,
-        posts: [post, ...state.posts],
+        posts: [createdPost, ...state.posts],
       };
     case PostsActionTypes.SEND_POSTS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        msg: action.payload.msg,
+      };
+
+    case PostsActionTypes.UPDATE_POST_SUCCESS:
+      const updatedPost = action.payload.post;
+      return {
+        ...state,
+        isLoading: false,
+        posts: [
+          ...state.posts.map((pst: IPost) =>
+            pst._id === updatedPost._id ? updatedPost : pst,
+          ),
+        ],
+      };
+
+    case PostsActionTypes.UPDATE_POSTS_ERROR:
       return {
         ...state,
         isLoading: false,

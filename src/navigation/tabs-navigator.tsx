@@ -9,7 +9,7 @@ import {RootState} from '@redux/store';
 
 export const TabsNavigator = () => {
   const Tab = createMaterialBottomTabNavigator();
-  const rol = useSelector((state: RootState) => state.user.rol);
+  const rol = useSelector((state: RootState) => state.user.user.rol);
 
   //Disables hardware back button android
   useEffect(() => {

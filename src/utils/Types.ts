@@ -21,3 +21,16 @@ export type IUser = {
   rol: string;
   token: string;
 };
+
+export type IEvent = {
+  _id: string;
+  host: IUser;
+  attendants: IUser[];
+  price: number;
+  date: Date;
+  place: string;
+  title: string;
+  description: string;
+  image: string;
+  createdAt: string;
+};

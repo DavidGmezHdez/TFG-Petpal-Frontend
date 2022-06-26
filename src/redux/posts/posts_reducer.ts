@@ -80,9 +80,7 @@ const reducer = (state: PostsState = initialState, action: PostsAction) => {
       return {
         ...state,
         isLoading: false,
-        posts: [
-          ...state.posts.filter((pst: IPost) => pst._id === deletedPost._id),
-        ],
+        posts: state.posts.filter((pst: IPost) => pst._id !== deletedPost._id),
       };
 
     case PostsActionTypes.DELETE_POSTS_ERROR:

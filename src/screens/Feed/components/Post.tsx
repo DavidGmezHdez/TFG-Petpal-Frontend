@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {Text} from '@components/Text';
 import {IPost} from 'utils/Types';
@@ -15,8 +15,8 @@ type Props = {
 export const Post = ({post}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
-  const likedByUser = user.likedPosts?.find(pst => pst === post._id);
-  const ownedByUser = user.posts?.find(pst => pst === post._id);
+  const likedByUser = user.likedPosts?.some(pst => pst === post._id);
+  const ownedByUser = user.posts?.some(pst => pst === post._id);
 
   const _likePost = async (liked: boolean) => {
     const likedPosts = liked
@@ -39,9 +39,14 @@ export const Post = ({post}: Props) => {
     <View style={styles.container}>
       <Text>Post: {post.text}</Text>
       <Text>Creador: {post.name}</Text>
-      <Text>Fecha: {format(new Date(post.createdAt), 'hh:mm dd-MM-yy')} </Text>
+      <Text>
+        Fecha:
+        {post.createdAt
+          ? format(new Date(post.createdAt), 'hh:mm dd-MM-yy')
+          : null}{' '}
+      </Text>
       <Text>Likes: {post.likes}</Text>
-      {!ownedByUser ? (
+      {ownedByUser ? (
         <Pressable
           style={[styles.button, styles.buttonOpen]}
           onPress={() => (likedByUser ? _likePost(true) : _likePost(false))}>

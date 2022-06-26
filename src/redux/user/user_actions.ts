@@ -1,5 +1,7 @@
+import {IUser} from '@utils/Types';
 import {Dispatch} from 'redux';
 import AuthService from '@services/AuthService';
+import UserService from '@services/UserService';
 export enum AuthActionTypes {
   AUTH_LOADING = 'authLoading',
   AUTH_ERROR = 'authError',
@@ -7,6 +9,8 @@ export enum AuthActionTypes {
   REGISTER_SUCCESS = 'registerSuccess',
   LOGOUT_SUCCESS = 'logoutSuccess',
   CLEAR_ERROR = 'clearError',
+  UPDATE_USER_SUCCESS = 'updateSuccess',
+  UPDATE_USER_ERROR = 'updateError',
   VALID_PERSISTED_TOKEN = 'checkPersistedToken',
 }
 
@@ -21,7 +25,7 @@ interface AuthErrorAction {
 
 interface LoginSuccessAction {
   type: AuthActionTypes.LOGIN_SUCCESS;
-  payload: {user: any; token: string};
+  payload: {user: IUser; token: string};
 }
 
 interface LogoutSuccessAction {
@@ -29,6 +33,16 @@ interface LogoutSuccessAction {
 }
 interface RegisterSuccessAction {
   type: AuthActionTypes.REGISTER_SUCCESS;
+  payload: any;
+}
+
+interface UpdateSuccessAction {
+  type: AuthActionTypes.UPDATE_USER_SUCCESS;
+  payload: {user: IUser};
+}
+
+interface UpdateErrorAction {
+  type: AuthActionTypes.UPDATE_USER_ERROR;
   payload: any;
 }
 
@@ -47,7 +61,9 @@ export type AuthAction =
   | ClearErrorAction
   | ValidPersistedToken
   | LogoutSuccessAction
-  | RegisterSuccessAction;
+  | RegisterSuccessAction
+  | UpdateSuccessAction
+  | UpdateErrorAction;
 
 export const login =
   (email: string, password: string) =>
@@ -77,6 +93,7 @@ export const register =
       dispatch({type: AuthActionTypes.REGISTER_SUCCESS, payload: res.data});
       return res.data;
     } catch (e) {
+      console.log(e);
       dispatch({
         type: AuthActionTypes.AUTH_ERROR,
         payload: e.response.data.msg,
@@ -85,6 +102,27 @@ export const register =
   };
 
 export const logout = () => (dispatch: Dispatch<AuthAction>) => {
-  console.log('eee');
   dispatch({type: AuthActionTypes.LOGOUT_SUCCESS});
 };
+
+export const updateUser =
+  (userId: string, user: any) => async (dispatch: Dispatch<AuthAction>) => {
+    try {
+      dispatch({
+        type: AuthActionTypes.AUTH_LOADING,
+      });
+      const res = await UserService.updateUser(userId, user);
+      const updatedUser = res.data;
+      dispatch({
+        type: AuthActionTypes.UPDATE_USER_SUCCESS,
+        payload: {user: updatedUser},
+      });
+      return updatedUser;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: AuthActionTypes.UPDATE_USER_ERROR,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };

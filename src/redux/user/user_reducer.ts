@@ -5,7 +5,19 @@ import {AuthAction, AuthActionTypes} from './user_actions';
 
 const initialState: AuthState = {
   token: '',
-  user: {},
+  user: {
+    _id: '',
+    token: '',
+    name: '',
+    password: '',
+    attendingEvents: [],
+    posts: [],
+    likedPosts: [],
+    pets: [],
+    email: '',
+    rol: '',
+    hostEvents: [],
+  },
   isAuthenticated: false,
   isLoading: false,
   error: false,
@@ -13,7 +25,6 @@ const initialState: AuthState = {
 };
 
 const reducer = (state: AuthState = initialState, action: AuthAction) => {
-  console.log({action});
   switch (action.type) {
     case AuthActionTypes.AUTH_LOADING:
       return {
@@ -30,20 +41,14 @@ const reducer = (state: AuthState = initialState, action: AuthAction) => {
       };
 
     case AuthActionTypes.LOGOUT_SUCCESS:
-      return {
-        ...state,
-        user: {},
-        isAuthenticated: false,
-        isLoading: false,
-        error: false,
-        msg: '',
-      };
+      return initialState;
 
     case AuthActionTypes.CLEAR_ERROR:
       return {
         ...state,
         error: false,
         msg: '',
+        isLoading: false,
       };
 
     case AuthActionTypes.LOGIN_SUCCESS:
@@ -56,10 +61,26 @@ const reducer = (state: AuthState = initialState, action: AuthAction) => {
         isAuthenticated: true,
       };
 
+    case AuthActionTypes.UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        user: action.payload.user,
+      };
+    case AuthActionTypes.UPDATE_USER_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        msg: action.payload,
+      };
+
     default:
       return state;
   }
 };
 
 export const getUser = (state: RootState) => state.user.user;
+export const getToken = (state: RootState) => state.user.token;
+export const getUserError = (state: RootState) => state.user.error;
 export default reducer;

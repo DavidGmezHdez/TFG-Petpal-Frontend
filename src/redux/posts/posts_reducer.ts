@@ -11,7 +11,6 @@ const initialState: PostsState = {
 };
 
 const reducer = (state: PostsState = initialState, action: PostsAction) => {
-  console.log({action});
   switch (action.type) {
     case PostsActionTypes.POSTS_LOADING:
       return {

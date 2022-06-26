@@ -101,9 +101,7 @@ export const sendPost =
         type: PostsActionTypes.POSTS_LOADING,
       });
       const res = await PostsService.sendPost(post);
-      console.log({res});
       const createdPost = res.data;
-      console.log({res});
       dispatch({
         type: PostsActionTypes.SEND_POSTS_SUCCESS,
         payload: {post: createdPost},
@@ -148,7 +146,6 @@ export const deletePost =
       });
       const res = await PostsService.deletePost(postId);
       const deletedPost = res.data;
-      console.log({deletedPost});
       dispatch({
         type: PostsActionTypes.DELETE_POSTS_SUCCESS,
         payload: {post: deletedPost},

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ActivityIndicator,
   Button,
@@ -14,6 +14,7 @@ import {getEvents, getLoadingEvents} from '@redux/events/events_reducer';
 import {Event} from './components/Event';
 import {IEvent} from '@utils/Types';
 import {fetchEvents} from '@redux/events/events_actions';
+import {CreateEventModal} from '@modals/CreateEvent';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'search'>;
 
@@ -25,6 +26,7 @@ export const Events = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
   const events = useSelector(getEvents);
   const isLoading = useSelector(getLoadingEvents);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const _handleUpdate = () => {
     dispatch(fetchEvents());
@@ -41,6 +43,7 @@ export const Events = ({navigation}: Props) => {
   // TODO: Make this infinite scroller
   return (
     <View style={styles.container}>
+      <CreateEventModal showModal={showModal} setShowModal={setShowModal} />
       <Text>Quedadas</Text>
       <ScrollView>
         {events && events.length ? (
@@ -50,6 +53,7 @@ export const Events = ({navigation}: Props) => {
         )}
       </ScrollView>
       <Button title="Actualizar" onPress={_handleUpdate} />
+      <Button title="Crear evento" onPress={() => setShowModal(true)} />
       {/* <Button title="Crear post" onPress={() => setShowModal(true)} /> */}
     </View>
   );

@@ -10,7 +10,7 @@ import {Post} from './components/Post';
 import {fetchPosts} from '@redux/posts/posts_actions';
 import {IPost} from 'utils/Types';
 import {ActivityIndicator} from 'react-native-paper';
-import {CreatePostModal} from '../../modals/CreatePostModal';
+import {CreatePostModal} from '../../modals/CreatePost';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'feed'>;
 

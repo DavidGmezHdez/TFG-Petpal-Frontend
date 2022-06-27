@@ -6091,6 +6091,11 @@ react-native-config@^1.4.5:
   resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.4.5.tgz#6fe5895410b75e44fe4f4bf00caaf894a0981f3a"
   integrity sha512-5oiAsoW88SOYDg/0cleJ2vJDqv98FJUbFQYEnH4sdMtEn3AAT3lb7BkTGW8HO/t3Vk9VOruwxUUnO4tzuxzCsw==
 
+react-native-date-picker@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-4.2.2.tgz#07fb8a9021fb48ef9a20b043d33c14e858220883"
+  integrity sha512-x0jxWbJXKDXivRDwsUx58tKOxe719XoVqqq6UzMSYSsTiPL2i13r7PyDxop3f3et/62qbcMgeswl+/CLdX6+Eg==
+
 react-native-debugger@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-debugger/-/react-native-debugger-1.1.0.tgz#88ae36c229a7da6c8e97e0e98e366eca55d4736a"
@@ -6203,6 +6208,13 @@ react-native@0.68.2:
     use-subscription ">=1.0.0 <1.6.0"
     whatwg-fetch "^3.0.0"
     ws "^6.1.4"
+
+react-number-format@^4.9.3:
+  version "4.9.3"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.9.3.tgz#338500fe9c61b1ac73c8d6dff4ec97dd13fd2b50"
+  integrity sha512-am1A1xYAbENuKJ+zpM7V+B1oRTSeOHYltqVKExznIVFweBzhLmOBmyb1DfIKjHo90E0bo1p3nzVJ2NgS5xh+sQ==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-redux@^8.0.1:
   version "8.0.1"

@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Modal, StyleSheet, View, TextInput, Alert} from 'react-native';
+import {Modal, StyleSheet, View, TextInput} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';

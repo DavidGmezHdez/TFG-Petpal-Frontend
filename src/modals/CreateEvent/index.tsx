@@ -1,12 +1,5 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import {
-  Modal,
-  StyleSheet,
-  View,
-  TextInput,
-  Alert,
-  ScrollView,
-} from 'react-native';
+import {Modal, StyleSheet, View, TextInput, ScrollView} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';

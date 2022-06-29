@@ -1,18 +1,13 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {
-  Modal,
-  StyleSheet,
-  Text,
-  Pressable,
-  View,
-  TextInput,
-} from 'react-native';
+import {Modal, StyleSheet, View, TextInput} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {sendPost} from '@redux/posts/posts_actions';
-import {getErrorPosts, getMessagePosts} from '@redux/posts/posts_reducer';
+import {clearErrorPost, sendPost} from '@redux/posts/posts_actions';
 import {updateUser} from '@redux/user/user_actions';
+import {PostSchema} from './lib';
+import {Text} from '@components/TextWrapper';
+import {Pressable} from '@components/Pressable';
 
 type Props = {
   showModal: boolean;
@@ -22,27 +17,40 @@ type Props = {
 export const CreatePostModal = ({showModal, setShowModal}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
-  const errorPosts = useSelector(getErrorPosts);
-  const errorMsg = useSelector(getMessagePosts);
   const _handleSubmit = async (values: any) => {
-    const post = {
-      text: values.text,
-      author: user._id,
-      name: user.name,
-      likes: 0,
-      image: '',
-    };
+    try {
+      const post = {
+        text: values.text,
+        author: user._id,
+        name: user.name,
+        likes: 0,
+        image: '',
+      };
 
-    const createdPost = await dispatch(sendPost(post));
-    const posts = [...(user.posts ?? []), createdPost._id];
-    await dispatch(updateUser(user._id, {posts}));
-    if (!errorPosts) setShowModal(false);
+      const createdPost = await dispatch(sendPost(post));
+      if (createdPost) {
+        const posts = [...(user.posts ?? []), createdPost._id];
+        await dispatch(updateUser(user._id, {posts}));
+        setShowModal(false);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  const cancel = () => {
+    dispatch(clearErrorPost());
+    setShowModal(false);
+  };
+
   return (
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Formik initialValues={{text: ''}} onSubmit={_handleSubmit}>
+          <Formik
+            initialValues={{text: ''}}
+            onSubmit={_handleSubmit}
+            validationSchema={PostSchema}>
             {({
               handleChange,
               handleBlur,
@@ -59,24 +67,28 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
                   placeholder={'Post....'}
                   multiline={true}
                   numberOfLines={4}
+                  maxLength={300}
                   style={styles.textInput}
                 />
                 {errors.text && touched.text ? (
-                  <Text>{errors.text}</Text>
+                  <Text large color={'red'}>
+                    {errors.text}
+                  </Text>
                 ) : null}
                 <Pressable
                   style={[styles.button, styles.buttonOpen]}
                   onPress={() => handleSubmit()}>
-                  <Text style={styles.textStyle}>Enviar Tweet</Text>
+                  <Text large style={styles.textStyle}>
+                    Enviar Tweet
+                  </Text>
                 </Pressable>
                 <Pressable
                   style={[styles.button, styles.buttonOpen]}
-                  onPress={() => setShowModal(false)}>
-                  <Text style={styles.textStyle}>Cancelar</Text>
+                  onPress={cancel}>
+                  <Text large style={styles.textStyle}>
+                    Cancelar
+                  </Text>
                 </Pressable>
-                {errorPosts && errorMsg ? (
-                  <Text style={styles.textStyle}>{errorMsg}</Text>
-                ) : null}
               </View>
             )}
           </Formik>

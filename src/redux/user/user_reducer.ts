@@ -62,10 +62,11 @@ const reducer = (state: AuthState = initialState, action: AuthAction) => {
       };
 
     case AuthActionTypes.UPDATE_USER_SUCCESS:
+      const updatedUser = action.payload.user;
       return {
         ...state,
         isLoading: false,
-        user: action.payload.user,
+        user: {...state.user, ...updatedUser},
       };
     case AuthActionTypes.UPDATE_USER_ERROR:
       return {

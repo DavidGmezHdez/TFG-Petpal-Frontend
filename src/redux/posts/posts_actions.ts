@@ -79,10 +79,12 @@ export const fetchPosts = () => async (dispatch: Dispatch<PostsAction>) => {
     });
     const res = await PostsService.fetchPosts();
     const posts = res.data;
-    console.log(res.data);
     dispatch({
       type: PostsActionTypes.POSTS_SUCCESS,
       payload: {posts},
+    });
+    dispatch({
+      type: PostsActionTypes.CLEAR_ERROR,
     });
     return posts;
   } catch (e) {
@@ -106,6 +108,9 @@ export const sendPost =
         type: PostsActionTypes.SEND_POSTS_SUCCESS,
         payload: {post: createdPost},
       });
+      dispatch({
+        type: PostsActionTypes.CLEAR_ERROR,
+      });
       return createdPost;
     } catch (e) {
       console.log(e);
@@ -128,7 +133,10 @@ export const updatePost =
         type: PostsActionTypes.UPDATE_POST_SUCCESS,
         payload: {post: updatedPost},
       });
-      return post;
+      dispatch({
+        type: PostsActionTypes.CLEAR_ERROR,
+      });
+      return updatedPost;
     } catch (e) {
       console.log(e);
       dispatch({
@@ -146,9 +154,13 @@ export const deletePost =
       });
       const res = await PostsService.deletePost(postId);
       const deletedPost = res.data;
+      console.log(res);
       dispatch({
         type: PostsActionTypes.DELETE_POSTS_SUCCESS,
         payload: {post: deletedPost},
+      });
+      dispatch({
+        type: PostsActionTypes.CLEAR_ERROR,
       });
       return deletedPost;
     } catch (e) {
@@ -159,3 +171,9 @@ export const deletePost =
       });
     }
   };
+
+export const clearErrorPost = () => (dispatch: Dispatch<PostsAction>) => {
+  dispatch({
+    type: PostsActionTypes.CLEAR_ERROR,
+  });
+};

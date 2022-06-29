@@ -55,7 +55,6 @@ export const Events = ({navigation}: Props) => {
       </ScrollView>
       <Button title="Actualizar" onPress={_handleUpdate} />
       <Button title="Crear evento" onPress={() => setShowModal(true)} />
-      {/* <Button title="Crear post" onPress={() => setShowModal(true)} /> */}
     </View>
   );
 };

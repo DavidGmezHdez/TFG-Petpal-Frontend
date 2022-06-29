@@ -87,7 +87,7 @@ const reducer = (state: EventsState = initialState, action: EventsActions) => {
         ...state,
         isLoading: false,
         events: [
-          ...state.events.filter((evt: IEvent) => evt._id === deletedEvent._id),
+          ...state.events.filter((evt: IEvent) => evt._id !== deletedEvent._id),
         ],
         error: false,
         msg: '',

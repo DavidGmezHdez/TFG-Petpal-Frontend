@@ -16,6 +16,7 @@ export const Event = ({event}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
   const joinedByUser = event.attendants?.some(usr => usr._id === user._id);
+  const ownedByUser = user.hostEvents.some(evt => evt === event._id);
 
   const _joinEvent = async (joined: boolean) => {
     const attendingEvents = joinedByUser
@@ -31,9 +32,9 @@ export const Event = ({event}: Props) => {
   };
 
   const _deleteEvent = async () => {
-    const events = user.hostEvents?.filter(evt => evt !== event._id);
+    const hostEvents = user.hostEvents?.filter(evt => evt !== event._id);
     await dispatch(deleteEvent(event._id));
-    await dispatch(updateUser(user._id, {events}));
+    await dispatch(updateUser(user._id, {hostEvents}));
   };
 
   return (
@@ -44,7 +45,7 @@ export const Event = ({event}: Props) => {
       <Text large>
         Precio: {event.price || event.price > 0 ? event.price : 'Gratis'}
       </Text>
-      <Text large>{format(new Date(event.date), 'dd-MM-yy hh:mm')}</Text>
+      <Text large>Fecha: {format(new Date(event.date), 'dd-MM-yy hh:mm')}</Text>
       <Text large>Descripcion: {event.description}</Text>
       <Text large>Apuntados: </Text>
       {event.attendants && event.attendants.length ? (
@@ -59,19 +60,31 @@ export const Event = ({event}: Props) => {
         <Text large>No hay nadie apuntado</Text>
       )}
 
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => (joinedByUser ? _joinEvent(true) : _joinEvent(false))}>
-        {joinedByUser ? (
+      {!ownedByUser ? (
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => (joinedByUser ? _joinEvent(true) : _joinEvent(false))}>
+          {joinedByUser ? (
+            <Text large style={styles.textStyle}>
+              Desapuntarse
+            </Text>
+          ) : (
+            <Text large style={styles.textStyle}>
+              Apuntarse
+            </Text>
+          )}
+        </Pressable>
+      ) : null}
+
+      {ownedByUser ? (
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={_deleteEvent}>
           <Text large style={styles.textStyle}>
-            Desapuntarse
+            Borrar quedada
           </Text>
-        ) : (
-          <Text large style={styles.textStyle}>
-            Apuntarse
-          </Text>
-        )}
-      </Pressable>
+        </Pressable>
+      ) : null}
     </View>
   );
 };

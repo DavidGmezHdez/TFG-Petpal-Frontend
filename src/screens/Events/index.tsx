@@ -22,7 +22,7 @@ type Props = {
   navigation: NavigationStackProp['navigation'];
 };
 
-export const Events = ({navigation}: Props) => {
+export const Events = ({}: Props) => {
   const dispatch = useDispatch<any>();
   const events = useSelector(getEvents);
   const isLoading = useSelector(getLoadingEvents);

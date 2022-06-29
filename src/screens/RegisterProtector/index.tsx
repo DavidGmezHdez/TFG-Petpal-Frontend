@@ -18,7 +18,9 @@ type RegisterProtectorProps = {
 const REGISTER_USER = '¿Quieres registrarte como usuario?';
 
 export const RegisterProtector = ({navigation}: RegisterProtectorProps) => {
-  const _handleSubmit = (values: ProtectorTypes) => {};
+  const _handleSubmit = (values: ProtectorTypes) => {
+    console.log(values);
+  };
 
   return (
     <View style={styles.container}>

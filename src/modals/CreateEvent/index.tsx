@@ -10,15 +10,15 @@ import {
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {sendPost} from '@redux/posts/posts_actions';
+import {getMessageEvents} from '@redux/events/events_reducer';
+import {clearErrorEvent, sendEvent} from '@redux/events/events_actions';
 import {updateUser} from '@redux/user/user_actions';
-import {PostSchema} from './lib';
+import {EventSchema} from './lib';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
 import {px} from '@utils/Constants';
 import DatePicker from 'react-native-date-picker';
 import {format} from 'date-fns';
-import NumberFormat from 'react-number-format';
 
 type Props = {
   showModal: boolean;
@@ -39,6 +39,7 @@ export const CreateEventModal = ({showModal, setShowModal}: Props) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const user = useSelector(getUser);
+  const eventsMessage = useSelector(getMessageEvents);
 
   const initialValues: eventValuesTypes = {
     title: '',
@@ -49,13 +50,6 @@ export const CreateEventModal = ({showModal, setShowModal}: Props) => {
     image: '',
   };
 
-  //   date: Joi.date().required(),
-  // host: Joi.string().required(),
-  // price: Joi.number(),
-  // place: Joi.string().required(),
-  // title: Joi.string().required(),
-  // description: Joi.string().required(),
-  // image: Joi.string()
   const _handleSubmit = async (values: eventValuesTypes) => {
     try {
       const event = {
@@ -68,17 +62,22 @@ export const CreateEventModal = ({showModal, setShowModal}: Props) => {
         image: values.image,
       };
 
-      console.log(event);
-
-      // const createdPost = await dispatch(sendPost(event));
-      // const posts = [...(user.posts ?? []), createdPost._id];
-      // await dispatch(updateUser(user._id, {posts}));
-      setShowModal(false);
+      const createdEvent = await dispatch(sendEvent(event));
+      if (createdEvent) {
+        const events = [...(user.hostEvents ?? []), createdEvent._id];
+        await dispatch(updateUser(user._id, {events}));
+        setShowModal(false);
+      }
     } catch (e) {
       console.log(e);
-      Alert.alert(e);
     }
   };
+
+  const cancel = () => {
+    setShowModal(false);
+    dispatch(clearErrorEvent());
+  };
+
   return (
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
       <View style={styles.centeredView}>
@@ -87,7 +86,7 @@ export const CreateEventModal = ({showModal, setShowModal}: Props) => {
             <Formik
               initialValues={initialValues}
               onSubmit={_handleSubmit}
-              validationSchema={PostSchema}>
+              validationSchema={EventSchema}>
               {({
                 handleChange,
                 handleBlur,
@@ -128,20 +127,13 @@ export const CreateEventModal = ({showModal, setShowModal}: Props) => {
                     </Text>
                   ) : null}
 
-                  <NumberFormat
-                    type={'text'}
+                  <TextInput
+                    onChangeText={handleChange('price')}
                     value={values.price}
-                    suffix={'€'}
-                    allowNegative={false}
-                    // eslint-disable-next-line @typescript-eslint/no-shadow
-                    renderText={formatedValue => (
-                      <TextInput
-                        onChangeText={handleChange('price')}
-                        value={formatedValue}
-                        keyboardType="numeric"
-                        placeholder={'Test'}
-                      />
-                    )}
+                    keyboardType="numeric"
+                    placeholder={'Precio'}
+                    style={styles.textInput}
+                    maxLength={3}
                   />
                   {errors.price && touched.price ? (
                     <Text large color={'red'}>
@@ -165,6 +157,11 @@ export const CreateEventModal = ({showModal, setShowModal}: Props) => {
 
                   {values.date ? (
                     <Text large>{format(values.date, 'dd-MM-yy hh:mm')}</Text>
+                  ) : null}
+                  {errors.date && touched.date ? (
+                    <Text large color={'red'}>
+                      {errors.date}
+                    </Text>
                   ) : null}
                   <Pressable
                     style={[styles.button, styles.buttonOpen]}
@@ -198,11 +195,17 @@ export const CreateEventModal = ({showModal, setShowModal}: Props) => {
                   </Pressable>
                   <Pressable
                     style={[styles.button, styles.buttonOpen]}
-                    onPress={() => setShowModal(false)}>
+                    onPress={cancel}>
                     <Text large style={styles.textStyle}>
                       Cancelar
                     </Text>
                   </Pressable>
+
+                  {eventsMessage ? (
+                    <Text large color={'red'}>
+                      {eventsMessage}
+                    </Text>
+                  ) : null}
                 </View>
               )}
             </Formik>

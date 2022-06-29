@@ -3,7 +3,7 @@ import {Modal, StyleSheet, View, TextInput, Alert} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {sendPost} from '@redux/posts/posts_actions';
+import {clearErrorPost, sendPost} from '@redux/posts/posts_actions';
 import {updateUser} from '@redux/user/user_actions';
 import {PostSchema} from './lib';
 import {Text} from '@components/TextWrapper';
@@ -28,14 +28,21 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
       };
 
       const createdPost = await dispatch(sendPost(post));
-      const posts = [...(user.posts ?? []), createdPost._id];
-      await dispatch(updateUser(user._id, {posts}));
-      setShowModal(false);
+      if (createdPost) {
+        const posts = [...(user.posts ?? []), createdPost._id];
+        await dispatch(updateUser(user._id, {posts}));
+        setShowModal(false);
+      }
     } catch (e) {
       console.log(e);
-      Alert.alert(e);
     }
   };
+
+  const cancel = () => {
+    dispatch(clearErrorPost());
+    setShowModal(false);
+  };
+
   return (
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
       <View style={styles.centeredView}>
@@ -77,7 +84,7 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
                 </Pressable>
                 <Pressable
                   style={[styles.button, styles.buttonOpen]}
-                  onPress={() => setShowModal(false)}>
+                  onPress={cancel}>
                   <Text large style={styles.textStyle}>
                     Cancelar
                   </Text>

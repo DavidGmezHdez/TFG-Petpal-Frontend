@@ -100,14 +100,17 @@ export const sendEvent =
         type: EventsActionTypes.EVENTS_LOADING,
       });
       const res = await EventsService.sendEvent(event);
-      const createdEvent = res.data;
-      dispatch({
-        type: EventsActionTypes.SEND_EVENTS_SUCCESS,
-        payload: {event: createdEvent},
-      });
-      return createdEvent;
+      if (res.data) {
+        const createdEvent = res.data;
+        dispatch({
+          type: EventsActionTypes.SEND_EVENTS_SUCCESS,
+          payload: {event: createdEvent},
+        });
+        return createdEvent;
+      }
     } catch (e) {
       console.log(e);
+      console.log('AAAAAAAAAA');
       dispatch({
         type: EventsActionTypes.SEND_EVENTS_ERROR,
         payload: {msg: e.response.data.message},
@@ -159,3 +162,9 @@ export const deleteEvent =
       });
     }
   };
+
+export const clearErrorEvent = () => (dispatch: Dispatch<EventsActions>) => {
+  dispatch({
+    type: EventsActionTypes.CLEAR_ERROR,
+  });
+};

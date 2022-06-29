@@ -39,6 +39,8 @@ const reducer = (state: EventsState = initialState, action: EventsActions) => {
         ...state,
         isLoading: false,
         events: action.payload.events,
+        error: false,
+        msg: '',
       };
     case EventsActionTypes.SEND_EVENTS_SUCCESS:
       const createdEvent = action.payload.event;
@@ -46,6 +48,8 @@ const reducer = (state: EventsState = initialState, action: EventsActions) => {
         ...state,
         isLoading: false,
         events: [createdEvent, ...state.events],
+        error: false,
+        msg: '',
       };
     case EventsActionTypes.SEND_EVENTS_ERROR:
       return {
@@ -65,6 +69,8 @@ const reducer = (state: EventsState = initialState, action: EventsActions) => {
             evt._id === updatedEvent._id ? updatedEvent : evt,
           ),
         ],
+        error: false,
+        msg: '',
       };
 
     case EventsActionTypes.UPDATE_EVENT_ERROR:
@@ -83,6 +89,8 @@ const reducer = (state: EventsState = initialState, action: EventsActions) => {
         events: [
           ...state.events.filter((evt: IEvent) => evt._id === deletedEvent._id),
         ],
+        error: false,
+        msg: '',
       };
 
     case EventsActionTypes.DELETE_EVENT_ERROR:

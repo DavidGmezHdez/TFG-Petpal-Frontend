@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
-import {Text} from '@components/Text';
+import {Text} from '@components/TextWrapper';
 import {IEvent, IUser} from 'utils/Types';
 import {format} from 'date-fns';
 import {useDispatch, useSelector} from 'react-redux';
@@ -38,29 +38,38 @@ export const Event = ({event}: Props) => {
 
   return (
     <View style={styles.container}>
-      <Text>Event: {event.title}</Text>
-      <Text>Creador: {event.host.name}</Text>
-      <Text>Lugar: {event.place}</Text>
-      <Text>
+      <Text large>Event: {event.title}</Text>
+      <Text large>Creador: {event.host.name}</Text>
+      <Text large>Lugar: {event.place}</Text>
+      <Text large>
         Precio: {event.price || event.price > 0 ? event.price : 'Gratis'}
       </Text>
-      <Text>Descripcion: {event.description}</Text>
-      <Text>Apuntados: </Text>
+      <Text large>{format(new Date(event.date), 'dd-MM-yy hh:mm')}</Text>
+      <Text large>Descripcion: {event.description}</Text>
+      <Text large>Apuntados: </Text>
       {event.attendants && event.attendants.length ? (
         event.attendants?.map((att: IUser) => {
-          return <Text key={att._id}>Usuario: {att.name}</Text>;
+          return (
+            <Text large key={att._id}>
+              Usuario: {att.name}
+            </Text>
+          );
         })
       ) : (
-        <Text>No hay nadie apuntado</Text>
+        <Text large>No hay nadie apuntado</Text>
       )}
 
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => (joinedByUser ? _joinEvent(true) : _joinEvent(false))}>
         {joinedByUser ? (
-          <Text style={styles.textStyle}>Desapuntarse</Text>
+          <Text large style={styles.textStyle}>
+            Desapuntarse
+          </Text>
         ) : (
-          <Text style={styles.textStyle}>Apuntarse</Text>
+          <Text large style={styles.textStyle}>
+            Apuntarse
+          </Text>
         )}
       </Pressable>
     </View>

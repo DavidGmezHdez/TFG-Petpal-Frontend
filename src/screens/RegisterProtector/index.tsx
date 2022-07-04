@@ -36,7 +36,6 @@ export const RegisterProtector = ({navigation}: RegisterProtectorProps) => {
       console.log(error);
     }
   };
-  console.log({authErrors, authErrorsMsg});
 
   return (
     <View style={styles.container}>

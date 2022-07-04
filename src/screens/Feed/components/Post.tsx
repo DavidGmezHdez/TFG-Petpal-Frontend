@@ -18,8 +18,6 @@ export const Post = ({post}: Props) => {
   const user = useSelector(getUser);
   const likedByUser = user.likedPosts?.some(pst => pst === post._id);
   const ownedByUser = user.posts?.some(pst => pst === post._id);
-  console.log(ownedByUser);
-  console.log({user});
 
   const _likePost = async (liked: boolean) => {
     try {

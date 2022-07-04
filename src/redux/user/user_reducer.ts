@@ -33,6 +33,7 @@ const reducer = (state: AuthState = initialState, action: AuthAction) => {
       };
 
     case AuthActionTypes.AUTH_ERROR:
+      console.log(action.payload);
       return {
         ...state,
         isLoading: false,
@@ -84,4 +85,5 @@ const reducer = (state: AuthState = initialState, action: AuthAction) => {
 export const getUser = (state: RootState) => state.user.user;
 export const getToken = (state: RootState) => state.user.token;
 export const getUserError = (state: RootState) => state.user.error;
+export const getUserErrorMsg = (state: RootState) => state.user.msg;
 export default reducer;

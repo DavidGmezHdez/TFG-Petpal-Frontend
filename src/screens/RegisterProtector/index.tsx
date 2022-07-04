@@ -5,6 +5,9 @@ import {ProtectorSchema, ProtectorTypes} from './lib';
 import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
+import {register} from '@redux/user/user_actions';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUserError, getUserErrorMsg} from '@redux/user/user_reducer';
 
 type NavigationStackProp = NativeStackScreenProps<
   RootStackParam,
@@ -18,14 +21,34 @@ type RegisterProtectorProps = {
 const REGISTER_USER = '¿Quieres registrarte como usuario?';
 
 export const RegisterProtector = ({navigation}: RegisterProtectorProps) => {
-  const _handleSubmit = (values: ProtectorTypes) => {
-    console.log(values);
+  const dispatch = useDispatch<any>();
+  const authErrors = useSelector(getUserError);
+  const authErrorsMsg = useSelector(getUserErrorMsg);
+
+  const _handleSubmit = async (values: ProtectorTypes) => {
+    try {
+      const {name, email, password} = values;
+      const res = await dispatch(register(name, email, password, 'Protectora'));
+      if (res) {
+        navigation.navigate('login');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+  console.log({authErrors, authErrorsMsg});
 
   return (
     <View style={styles.container}>
       <Formik
-        initialValues={{email: '', password: '', name: ''}}
+        initialValues={{
+          email: '',
+          password: '',
+          name: '',
+          region: '',
+          contactPhone: '',
+          direction: '',
+        }}
         validationSchema={ProtectorSchema}
         onSubmit={_handleSubmit}>
         {({
@@ -57,6 +80,7 @@ export const RegisterProtector = ({navigation}: RegisterProtectorProps) => {
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
+              secureTextEntry
               placeholder={'Contraseña'}
             />
             {errors.password && touched.password ? (
@@ -66,6 +90,7 @@ export const RegisterProtector = ({navigation}: RegisterProtectorProps) => {
           </View>
         )}
       </Formik>
+      {authErrors ? <Text>{authErrorsMsg}</Text> : null}
       <Text>{REGISTER_USER}</Text>
       <Button
         onPress={() => {

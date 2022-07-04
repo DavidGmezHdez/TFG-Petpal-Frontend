@@ -18,6 +18,8 @@ export const Post = ({post}: Props) => {
   const user = useSelector(getUser);
   const likedByUser = user.likedPosts?.some(pst => pst === post._id);
   const ownedByUser = user.posts?.some(pst => pst === post._id);
+  console.log(ownedByUser);
+  console.log({user});
 
   const _likePost = async (liked: boolean) => {
     try {
@@ -57,7 +59,7 @@ export const Post = ({post}: Props) => {
           : null}{' '}
       </Text>
       <Text large>Likes: {post.likes}</Text>
-      {ownedByUser ? (
+      {!ownedByUser ? (
         <Pressable
           style={[styles.button, styles.buttonOpen]}
           onPress={() => (likedByUser ? _likePost(true) : _likePost(false))}>

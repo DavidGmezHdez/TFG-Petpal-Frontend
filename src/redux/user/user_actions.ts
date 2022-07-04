@@ -75,12 +75,15 @@ export const login =
         type: AuthActionTypes.LOGIN_SUCCESS,
         payload: {user, token: user.token},
       });
+      dispatch({
+        type: AuthActionTypes.CLEAR_ERROR,
+      });
       return user;
     } catch (e) {
       console.log(e);
       dispatch({
         type: AuthActionTypes.AUTH_ERROR,
-        payload: e.response.data.msg,
+        payload: e.response.data.message,
       });
     }
   };
@@ -90,13 +93,17 @@ export const register =
   async (dispatch: Dispatch<AuthAction>) => {
     try {
       const res = await AuthService.register(name, email, password, rol);
+      console.log({res});
       dispatch({type: AuthActionTypes.REGISTER_SUCCESS, payload: res.data});
+      dispatch({
+        type: AuthActionTypes.CLEAR_ERROR,
+      });
       return res.data;
     } catch (e) {
       console.log(e);
       dispatch({
         type: AuthActionTypes.AUTH_ERROR,
-        payload: e.response.data.msg,
+        payload: e.response.data.message,
       });
     }
   };
@@ -116,6 +123,9 @@ export const updateUser =
       dispatch({
         type: AuthActionTypes.UPDATE_USER_SUCCESS,
         payload: {user: updatedUser},
+      });
+      dispatch({
+        type: AuthActionTypes.CLEAR_ERROR,
       });
       return updatedUser;
     } catch (e) {

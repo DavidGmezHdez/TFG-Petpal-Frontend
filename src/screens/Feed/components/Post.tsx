@@ -57,7 +57,7 @@ export const Post = ({post}: Props) => {
           : null}{' '}
       </Text>
       <Text large>Likes: {post.likes}</Text>
-      {ownedByUser ? (
+      {!ownedByUser ? (
         <Pressable
           style={[styles.button, styles.buttonOpen]}
           onPress={() => (likedByUser ? _likePost(true) : _likePost(false))}>

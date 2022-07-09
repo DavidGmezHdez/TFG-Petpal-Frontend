@@ -16,9 +16,21 @@ const deletePost = async (postId: string) => {
   return await axios.delete(`/posts/${postId}`);
 };
 
+const sendComment = async (postId: string, post: any) => {
+  return await axios.patch(`/posts/comment/${postId}`, {comment: post});
+};
+
+const deleteComment = async (postId: string, commentId: string) => {
+  return await axios.delete(`/posts/comment/${postId}`, {
+    data: {commentId: commentId},
+  });
+};
+
 export default {
   fetchPosts,
   sendPost,
   updatePost,
   deletePost,
+  sendComment,
+  deleteComment,
 };

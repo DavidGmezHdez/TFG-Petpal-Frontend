@@ -6,6 +6,7 @@ export type IPost = {
   likes: number;
   image: string;
   createdAt: Date;
+  comments: IComment[];
 };
 
 export type IUser = {
@@ -32,5 +33,13 @@ export type IEvent = {
   title: string;
   description: string;
   image: string;
+  createdAt: string;
+};
+
+export type IComment = {
+  _id: string;
+  author: string;
+  authorName: string;
+  comment: string;
   createdAt: string;
 };

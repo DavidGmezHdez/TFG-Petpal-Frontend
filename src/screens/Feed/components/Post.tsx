@@ -1,23 +1,33 @@
-import React from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPost} from 'utils/Types';
 import {format} from 'date-fns';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {deletePost, updatePost} from '@redux/posts/posts_actions';
+import {
+  deleteComment,
+  deletePost,
+  updatePost,
+} from '@redux/posts/posts_actions';
 import {updateUser} from '@redux/user/user_actions';
 import {Pressable} from '@components/Pressable';
 
 type Props = {
   post: IPost;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+  setPostId: Dispatch<SetStateAction<string>>;
 };
 
-export const Post = ({post}: Props) => {
+export const Post = ({post, setShowModal, setPostId}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
   const likedByUser = user.likedPosts?.some(pst => pst === post._id);
   const ownedByUser = user.posts?.some(pst => pst === post._id);
+
+  const [expanded, setExpanded] = useState<boolean>(false);
+
+  const dataForDisplay = expanded ? post.comments : post.comments.slice(0, 2);
 
   const _likePost = async (liked: boolean) => {
     try {
@@ -46,6 +56,15 @@ export const Post = ({post}: Props) => {
     }
   };
 
+  const _deleteComment = async (commentId: string) => {
+    try {
+      await dispatch(deleteComment(post._id, commentId));
+    } catch (e) {
+      console.log(e);
+      Alert.alert(e);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text large>Post: {post.text}</Text>
@@ -54,7 +73,7 @@ export const Post = ({post}: Props) => {
         Fecha:
         {post.createdAt
           ? format(new Date(post.createdAt), 'hh:mm dd-MM-yy')
-          : null}{' '}
+          : null}
       </Text>
       <Text large>Likes: {post.likes}</Text>
       {!ownedByUser ? (
@@ -82,6 +101,57 @@ export const Post = ({post}: Props) => {
           </Text>
         </Pressable>
       ) : null}
+
+      <Text large>Comentarios:</Text>
+      <View>
+        {dataForDisplay && dataForDisplay.length > 0 ? (
+          <>
+            {dataForDisplay.map((comment, index) => {
+              const commentOwnedByUser = comment.author === user._id;
+              return (
+                <View key={index}>
+                  <Text large>
+                    {comment.authorName} dice {comment.comment}
+                  </Text>
+                  {commentOwnedByUser ? (
+                    <Pressable
+                      style={[styles.button, styles.buttonOpen]}
+                      onPress={() => _deleteComment(comment._id)}>
+                      <Text large style={styles.textStyle}>
+                        Borrar Comentario
+                      </Text>
+                    </Pressable>
+                  ) : null}
+                </View>
+              );
+            })}
+
+            {post.comments.length > 2 ? (
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() => {
+                  setExpanded(!expanded);
+                }}>
+                <Text large style={styles.textStyle}>
+                  {expanded ? 'Mostrar menos ' : 'Mostrar mas'}
+                </Text>
+              </Pressable>
+            ) : null}
+          </>
+        ) : (
+          <Text large>Este post no tiene comentarios</Text>
+        )}
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => {
+            setShowModal(true);
+            setPostId(post._id);
+          }}>
+          <Text large style={styles.textStyle}>
+            Comentar
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 };

@@ -93,7 +93,6 @@ export const register =
   async (dispatch: Dispatch<AuthAction>) => {
     try {
       const res = await AuthService.register(name, email, password, rol);
-      console.log({res});
       dispatch({type: AuthActionTypes.REGISTER_SUCCESS, payload: res.data});
       dispatch({
         type: AuthActionTypes.CLEAR_ERROR,

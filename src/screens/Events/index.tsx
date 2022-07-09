@@ -27,7 +27,6 @@ export const Events = ({}: Props) => {
   const events = useSelector(getEvents);
   const isLoading = useSelector(getLoadingEvents);
   const [showModal, setShowModal] = useState<boolean>(false);
-  console.log(events);
 
   const _handleUpdate = () => {
     dispatch(fetchEvents());

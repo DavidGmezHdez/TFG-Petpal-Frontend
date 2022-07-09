@@ -10,7 +10,8 @@ import {Post} from './components/Post';
 import {fetchPosts} from '@redux/posts/posts_actions';
 import {IPost} from 'utils/Types';
 import {ActivityIndicator} from 'react-native-paper';
-import {CreatePostModal} from '../../modals/CreatePost';
+import {CreatePostModal} from '@modals/CreatePost';
+import {SendCommentModal} from '@modals/SendComment';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'feed'>;
 
@@ -23,6 +24,8 @@ export const Feed = ({navigation}: Props) => {
   const posts = useSelector(getPosts);
   const isLoading = useSelector(getLoadingPosts);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModalComment, setShowModalComment] = useState<boolean>(false);
+  const [postId, setPostId] = useState<string>('');
 
   const _handleLogout = () => {
     dispatch(logout());
@@ -45,11 +48,23 @@ export const Feed = ({navigation}: Props) => {
   return (
     <View style={styles.container}>
       <CreatePostModal showModal={showModal} setShowModal={setShowModal} />
+      <SendCommentModal
+        showModal={showModalComment}
+        setShowModal={setShowModalComment}
+        postId={postId}
+      />
       <Text>Feed</Text>
       <Text>{isLoading}</Text>
       <ScrollView>
         {posts.length > 0 ? (
-          posts.map((post: IPost) => <Post key={post._id} post={post} />)
+          posts.map((post: IPost) => (
+            <Post
+              key={post._id}
+              post={post}
+              setShowModal={setShowModalComment}
+              setPostId={setPostId}
+            />
+          ))
         ) : (
           <Text>No hay ningún post. Actualiza</Text>
         )}

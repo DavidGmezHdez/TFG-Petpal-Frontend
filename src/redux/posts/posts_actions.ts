@@ -177,3 +177,54 @@ export const clearErrorPost = () => (dispatch: Dispatch<PostsAction>) => {
     type: PostsActionTypes.CLEAR_ERROR,
   });
 };
+
+export const sendComment =
+  (postId: string, comment: any) => async (dispatch: Dispatch<PostsAction>) => {
+    try {
+      dispatch({
+        type: PostsActionTypes.POSTS_LOADING,
+      });
+      const res = await PostsService.sendComment(postId, comment);
+      const updatedPost = res.data;
+      dispatch({
+        type: PostsActionTypes.UPDATE_POST_SUCCESS,
+        payload: {post: updatedPost},
+      });
+      dispatch({
+        type: PostsActionTypes.CLEAR_ERROR,
+      });
+      return updatedPost;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: PostsActionTypes.UPDATE_POSTS_ERROR,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };
+
+export const deleteComment =
+  (postId: string, commentId: string) =>
+  async (dispatch: Dispatch<PostsAction>) => {
+    try {
+      dispatch({
+        type: PostsActionTypes.POSTS_LOADING,
+      });
+      const res = await PostsService.deleteComment(postId, commentId);
+      const updatedPost = res.data;
+      dispatch({
+        type: PostsActionTypes.UPDATE_POST_SUCCESS,
+        payload: {post: updatedPost},
+      });
+      dispatch({
+        type: PostsActionTypes.CLEAR_ERROR,
+      });
+      return updatedPost;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: PostsActionTypes.UPDATE_POSTS_ERROR,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };

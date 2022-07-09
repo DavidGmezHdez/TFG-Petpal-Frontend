@@ -110,7 +110,6 @@ export const sendEvent =
       }
     } catch (e) {
       console.log(e);
-      console.log('AAAAAAAAAA');
       dispatch({
         type: EventsActionTypes.SEND_EVENTS_ERROR,
         payload: {msg: e.response.data.message},

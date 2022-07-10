@@ -58,7 +58,7 @@ export const CreateEventModal = ({showModal, setShowModal}: Props) => {
       const createdEvent = await dispatch(sendEvent(event));
       if (createdEvent) {
         const hostEvents = [...(user.hostEvents ?? []), createdEvent._id];
-        await dispatch(updateUser(user._id, {hostEvents}));
+        await dispatch(updateUser(user._id, {hostEvents}, user.rol));
         setShowModal(false);
       }
     } catch (e) {

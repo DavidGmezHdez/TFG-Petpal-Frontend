@@ -5,32 +5,17 @@ import {IEvent, IUser} from 'utils/Types';
 import {format} from 'date-fns';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {deleteEvent, updateEvent} from '@redux/events/events_actions';
+import {deleteEvent} from '@redux/events/events_actions';
 import {updateUser} from '@redux/user/user_actions';
 
 type Props = {
   event: IEvent;
 };
 
-export const Event = ({event}: Props) => {
+export const ProfileEvent = ({event}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
-  const joinedByUser = event.attendants?.some(usr => usr._id === user._id);
   const ownedByUser = event.host._id === user._id;
-  console.log(event, user);
-
-  const _joinEvent = async (joined: boolean) => {
-    const attendingEvents = joinedByUser
-      ? user.attendingEvents?.filter(evt => evt !== event._id)
-      : [...(user.attendingEvents ?? []), event._id];
-
-    const attendants = joined
-      ? event.attendants?.filter(us => us._id !== user._id)
-      : [...(event.attendants ?? []), user._id];
-
-    await dispatch(updateEvent(event._id, {attendants}));
-    await dispatch(updateUser(user._id, {attendingEvents}, user.rol));
-  };
 
   const _deleteEvent = async () => {
     const hostEvents = user.hostEvents?.filter(evt => evt._id !== event._id);
@@ -60,23 +45,6 @@ export const Event = ({event}: Props) => {
       ) : (
         <Text large>No hay nadie apuntado</Text>
       )}
-
-      {ownedByUser ? (
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => (joinedByUser ? _joinEvent(true) : _joinEvent(false))}>
-          {joinedByUser ? (
-            <Text large style={styles.textStyle}>
-              Desapuntarse
-            </Text>
-          ) : (
-            <Text large style={styles.textStyle}>
-              Apuntarse
-            </Text>
-          )}
-        </Pressable>
-      ) : null}
-
       {ownedByUser ? (
         <Pressable
           style={[styles.button, styles.buttonOpen]}

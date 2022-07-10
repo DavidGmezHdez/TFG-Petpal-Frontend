@@ -2,11 +2,8 @@ import React, {Dispatch, SetStateAction} from 'react';
 import {Modal, StyleSheet, View, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {getEvents} from '@redux/events/events_reducer';
 import {clearErrorUser} from '@redux/user/user_actions';
 import {Text} from '@components/TextWrapper';
-import {IEvent} from '@utils/Types';
-import {ProfileEvent} from './components/ProfileEvent';
 import {Pressable} from '@components/Pressable';
 
 type Props = {
@@ -14,12 +11,9 @@ type Props = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
-export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
+export const PetsProfileModal = ({showModal, setShowModal}: Props) => {
   const dispatch = useDispatch<any>();
-  const user = useSelector(getUser);
-  const events = useSelector(getEvents).filter(
-    evt => evt.host._id === user._id,
-  );
+  const pets = useSelector(getUser).pets;
 
   const cancel = () => {
     dispatch(clearErrorUser());
@@ -30,14 +24,12 @@ export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text large>Mis Quedadas</Text>
+          <Text large>Mis mascotas</Text>
           <ScrollView>
-            {events.length > 0 ? (
-              events.map((event: IEvent) => (
-                <ProfileEvent key={event._id} event={event} />
-              ))
+            {pets.length > 0 ? (
+              pets.map(() => <Text large>Pet</Text>)
             ) : (
-              <Text large>No creado ninguna quedada</Text>
+              <Text large>No has adoptado ninguna mascota</Text>
             )}
           </ScrollView>
           <Pressable

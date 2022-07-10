@@ -6,7 +6,7 @@ import {getEvents} from '@redux/events/events_reducer';
 import {clearErrorUser} from '@redux/user/user_actions';
 import {Text} from '@components/TextWrapper';
 import {IEvent} from '@utils/Types';
-import {ProfileEvent} from './components/ProfileEvent';
+import {ProfileJoinedEvent} from './components/ProfileJoinedEvent';
 import {Pressable} from '@components/Pressable';
 
 type Props = {
@@ -14,11 +14,11 @@ type Props = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
-export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
+export const JoinedEventsProfileModal = ({showModal, setShowModal}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
-  const events = useSelector(getEvents).filter(
-    evt => evt.host._id === user._id,
+  const events = useSelector(getEvents).filter(evt =>
+    evt.attendants.some(att => att._id === user._id),
   );
 
   const cancel = () => {
@@ -30,14 +30,14 @@ export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text large>Mis Quedadas</Text>
+          <Text large>Quedadas unidas</Text>
           <ScrollView>
             {events.length > 0 ? (
               events.map((event: IEvent) => (
-                <ProfileEvent key={event._id} event={event} />
+                <ProfileJoinedEvent key={event._id} event={event} />
               ))
             ) : (
-              <Text large>No creado ninguna quedada</Text>
+              <Text large>No te has unido a ninguna quedada</Text>
             )}
           </ScrollView>
           <Pressable

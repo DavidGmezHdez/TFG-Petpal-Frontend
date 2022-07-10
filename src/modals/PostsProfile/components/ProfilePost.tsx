@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPost} from 'utils/Types';
@@ -11,10 +11,9 @@ import {Pressable} from '@components/Pressable';
 
 type Props = {
   post: IPost;
-  setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
-export const ProfilePost = ({post, setShowModal}: Props) => {
+export const ProfilePost = ({post}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
   const ownedByUser = user.posts?.some(pst => pst._id === post._id);

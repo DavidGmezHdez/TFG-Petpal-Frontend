@@ -30,11 +30,7 @@ export const PostsProfileModal = ({showModal, setShowModal}: Props) => {
           <ScrollView>
             {posts.length > 0 ? (
               posts.map((post: IPost) => (
-                <ProfilePost
-                  key={post._id}
-                  post={post}
-                  setShowModal={setShowModal}
-                />
+                <ProfilePost key={post._id} post={post} />
               ))
             ) : (
               <Text large>No has enviado ningún post</Text>

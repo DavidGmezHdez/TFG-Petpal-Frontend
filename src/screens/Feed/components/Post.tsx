@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useCallback, useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPost} from 'utils/Types';
@@ -29,23 +29,26 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
 
   const dataForDisplay = expanded ? post.comments : post.comments.slice(0, 2);
 
-  const _likePost = async (liked: boolean) => {
-    try {
-      const likedPosts = liked
-        ? user.likedPosts?.filter(pst => pst !== post._id)
-        : [...(user.likedPosts ?? []), post._id];
+  const likePost = useCallback(
+    async (liked: boolean) => {
+      try {
+        const likedPosts = liked
+          ? user.likedPosts?.filter(pst => pst !== post._id)
+          : [...(user.likedPosts ?? []), post._id];
 
-      const likes = liked ? post.likes - 1 : post.likes + 1;
+        const likes = liked ? post.likes - 1 : post.likes + 1;
 
-      await dispatch(updatePost(post._id, {likes}));
-      await dispatch(updateUser(user._id, {likedPosts}, user.rol));
-    } catch (e) {
-      console.log(e);
-      Alert.alert(e);
-    }
-  };
+        await dispatch(updatePost(post._id, {likes}));
+        await dispatch(updateUser(user._id, {likedPosts}, user.rol));
+      } catch (e) {
+        console.log(e);
+        Alert.alert(e);
+      }
+    },
+    [dispatch, post, user],
+  );
 
-  const _deletePost = async () => {
+  const _deletePost = useCallback(async () => {
     try {
       const posts = user.posts?.filter(pst => pst !== post._id);
       await dispatch(deletePost(post._id));
@@ -54,16 +57,19 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
       console.log(e);
       Alert.alert(e);
     }
-  };
+  }, [dispatch, post, user]);
 
-  const _deleteComment = async (commentId: string) => {
-    try {
-      await dispatch(deleteComment(post._id, commentId));
-    } catch (e) {
-      console.log(e);
-      Alert.alert(e);
-    }
-  };
+  const _deleteComment = useCallback(
+    async (commentId: string) => {
+      try {
+        await dispatch(deleteComment(post._id, commentId));
+      } catch (e) {
+        console.log(e);
+        Alert.alert(e);
+      }
+    },
+    [dispatch, post._id],
+  );
 
   return (
     <View style={styles.container}>
@@ -79,7 +85,7 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
       {!ownedByUser ? (
         <Pressable
           style={[styles.button, styles.buttonOpen]}
-          onPress={() => (likedByUser ? _likePost(true) : _likePost(false))}>
+          onPress={() => (likedByUser ? likePost(true) : likePost(false))}>
           {likedByUser ? (
             <Text large style={styles.textStyle}>
               Quitar Like

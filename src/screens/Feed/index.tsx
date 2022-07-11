@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Button, StyleSheet, View, ScrollView} from 'react-native';
 import {Text} from '@components/Text';
 import {useDispatch, useSelector} from 'react-redux';
@@ -18,9 +18,9 @@ export const Feed = () => {
   const [showModalComment, setShowModalComment] = useState<boolean>(false);
   const [postId, setPostId] = useState<string>('');
 
-  const _handleUpdate = () => {
+  const _handleUpdate = useCallback(() => {
     dispatch(fetchPosts());
-  };
+  }, [dispatch]);
 
   if (isLoading) {
     return (

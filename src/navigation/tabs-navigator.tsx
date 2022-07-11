@@ -3,7 +3,7 @@ import {BackHandler} from 'react-native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {useSelector} from 'react-redux';
 import {RootState} from '@redux/store';
-import {Feed, Events, Search, Profile} from '..';
+import {Feed, Events, Pets, Profile} from '..';
 
 export const TabsNavigator = () => {
   const Tab = createMaterialBottomTabNavigator();
@@ -22,7 +22,7 @@ export const TabsNavigator = () => {
         <>
           <Tab.Screen name="Tablón" component={Feed} options={{}} />
           <Tab.Screen name="Eventos" component={Events} options={{}} />
-          <Tab.Screen name="Mascotas" component={Search} options={{}} />
+          <Tab.Screen name="Mascotas" component={Pets} options={{}} />
           <Tab.Screen name="Perfil" component={Profile} options={{}} />
         </>
       ) : (

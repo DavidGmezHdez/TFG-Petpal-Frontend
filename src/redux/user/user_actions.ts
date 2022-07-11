@@ -112,13 +112,15 @@ export const logout = () => (dispatch: Dispatch<AuthAction>) => {
 };
 
 export const updateUser =
-  (userId: string, user: any) => async (dispatch: Dispatch<AuthAction>) => {
+  (userId: string, user: any, rol: string) =>
+  async (dispatch: Dispatch<AuthAction>) => {
     try {
       dispatch({
         type: AuthActionTypes.AUTH_LOADING,
       });
-      const res = await UserService.updateUser(userId, user);
+      const res = await UserService.updateUser(userId, user, rol);
       const updatedUser = res.data;
+      console.log(updatedUser);
       dispatch({
         type: AuthActionTypes.UPDATE_USER_SUCCESS,
         payload: {user: updatedUser},
@@ -135,3 +137,9 @@ export const updateUser =
       });
     }
   };
+
+export const clearErrorUser = () => (dispatch: Dispatch<AuthAction>) => {
+  dispatch({
+    type: AuthActionTypes.CLEAR_ERROR,
+  });
+};

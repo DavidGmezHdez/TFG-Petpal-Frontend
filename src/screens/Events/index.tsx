@@ -15,6 +15,7 @@ import {Event} from './components/Event';
 import {IEvent} from '@utils/Types';
 import {fetchEvents} from '@redux/events/events_actions';
 import {CreateEventModal} from '@modals/CreateEvent';
+import {clearErrorUser} from '@redux/user/user_actions';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'search'>;
 
@@ -53,7 +54,13 @@ export const Events = ({}: Props) => {
         )}
       </ScrollView>
       <Button title="Actualizar" onPress={_handleUpdate} />
-      <Button title="Crear evento" onPress={() => setShowModal(true)} />
+      <Button
+        title="Crear evento"
+        onPress={() => {
+          dispatch(clearErrorUser());
+          setShowModal(true);
+        }}
+      />
     </View>
   );
 };

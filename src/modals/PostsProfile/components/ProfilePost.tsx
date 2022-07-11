@@ -1,64 +1,32 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPost} from 'utils/Types';
 import {format} from 'date-fns';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {
-  deleteComment,
-  deletePost,
-  updatePost,
-} from '@redux/posts/posts_actions';
+import {deletePost} from '@redux/posts/posts_actions';
 import {updateUser} from '@redux/user/user_actions';
 import {Pressable} from '@components/Pressable';
 
 type Props = {
   post: IPost;
-  setShowModal: Dispatch<SetStateAction<boolean>>;
-  setPostId: Dispatch<SetStateAction<string>>;
 };
 
-export const Post = ({post, setShowModal, setPostId}: Props) => {
+export const ProfilePost = ({post}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
-  const likedByUser = user.likedPosts?.some(pst => pst === post._id);
-  const ownedByUser = post.author === user._id;
+  const ownedByUser = user.posts?.some(pst => pst._id === post._id);
 
   const [expanded, setExpanded] = useState<boolean>(false);
 
   const dataForDisplay = expanded ? post.comments : post.comments.slice(0, 2);
-
-  const _likePost = async (liked: boolean) => {
-    try {
-      const likedPosts = liked
-        ? user.likedPosts?.filter(pst => pst !== post._id)
-        : [...(user.likedPosts ?? []), post._id];
-
-      const likes = liked ? post.likes - 1 : post.likes + 1;
-
-      await dispatch(updatePost(post._id, {likes}));
-      await dispatch(updateUser(user._id, {likedPosts}, user.rol));
-    } catch (e) {
-      console.log(e);
-      Alert.alert(e);
-    }
-  };
 
   const _deletePost = async () => {
     try {
       const posts = user.posts?.filter(pst => pst !== post._id);
       await dispatch(deletePost(post._id));
       await dispatch(updateUser(user._id, {posts}, user.rol));
-    } catch (e) {
-      console.log(e);
-      Alert.alert(e);
-    }
-  };
-
-  const _deleteComment = async (commentId: string) => {
-    try {
-      await dispatch(deleteComment(post._id, commentId));
     } catch (e) {
       console.log(e);
       Alert.alert(e);
@@ -76,22 +44,6 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
           : null}
       </Text>
       <Text large>Likes: {post.likes}</Text>
-      {!ownedByUser ? (
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => (likedByUser ? _likePost(true) : _likePost(false))}>
-          {likedByUser ? (
-            <Text large style={styles.textStyle}>
-              Quitar Like
-            </Text>
-          ) : (
-            <Text large style={styles.textStyle}>
-              Dar like
-            </Text>
-          )}
-        </Pressable>
-      ) : null}
-
       {ownedByUser ? (
         <Pressable
           style={[styles.button, styles.buttonOpen]}
@@ -107,21 +59,11 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
         {dataForDisplay && dataForDisplay.length > 0 ? (
           <>
             {dataForDisplay.map((comment, index) => {
-              const commentOwnedByUser = comment.author === user._id;
               return (
                 <View key={index}>
                   <Text large>
                     {comment.authorName} dice {comment.comment}
                   </Text>
-                  {commentOwnedByUser ? (
-                    <Pressable
-                      style={[styles.button, styles.buttonOpen]}
-                      onPress={() => _deleteComment(comment._id)}>
-                      <Text large style={styles.textStyle}>
-                        Borrar Comentario
-                      </Text>
-                    </Pressable>
-                  ) : null}
                 </View>
               );
             })}
@@ -141,16 +83,6 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
         ) : (
           <Text large>Este post no tiene comentarios</Text>
         )}
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => {
-            setShowModal(true);
-            setPostId(post._id);
-          }}>
-          <Text large style={styles.textStyle}>
-            Comentar
-          </Text>
-        </Pressable>
       </View>
     </View>
   );

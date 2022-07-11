@@ -2,43 +2,43 @@ import React, {Dispatch, SetStateAction} from 'react';
 import {Modal, StyleSheet, View, TextInput} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUser} from '@redux/user/user_reducer';
-import {clearErrorPost, sendPost} from '@redux/posts/posts_actions';
-import {updateUser} from '@redux/user/user_actions';
-import {PostSchema} from './lib';
+import {getUser, getUserError, getUserErrorMsg} from '@redux/user/user_reducer';
+import {clearErrorUser, updateUser} from '@redux/user/user_actions';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
+import {UserTypes} from '@screens/RegisterUser/lib';
+import {UserSchemaEdit} from './lib';
 
 type Props = {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
-export const CreatePostModal = ({showModal, setShowModal}: Props) => {
+export const EditProfileModal = ({showModal, setShowModal}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
-  const _handleSubmit = async (values: any) => {
+  const userError = useSelector(getUserError);
+  const userErrorMsg = useSelector(getUserErrorMsg);
+
+  console.log(user);
+  const _handleSubmit = async (values: UserTypes) => {
+    const sendUser = {
+      ...user,
+      email: values.email,
+      name: values.name,
+      password: values.password,
+    };
+
+    const finalUser = await dispatch(updateUser(user._id, sendUser, user.rol));
+    if (finalUser) setShowModal(false);
     try {
-      const post = {
-        text: values.text,
-        author: user._id,
-        name: user.name,
-        likes: 0,
-        image: '',
-      };
-      const createdPost = await dispatch(sendPost(post));
-      if (createdPost) {
-        const posts = [...(user.posts ?? []), createdPost._id];
-        await dispatch(updateUser(user._id, {posts}, user.rol));
-        setShowModal(false);
-      }
     } catch (e) {
       console.log(e);
     }
   };
 
   const cancel = () => {
-    dispatch(clearErrorPost());
+    dispatch(clearErrorUser());
     setShowModal(false);
   };
 
@@ -47,9 +47,13 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Formik
-            initialValues={{text: ''}}
+            initialValues={{
+              name: user.name,
+              email: user.email,
+              password: '',
+            }}
             onSubmit={_handleSubmit}
-            validationSchema={PostSchema}>
+            validationSchema={UserSchemaEdit}>
             {({
               handleChange,
               handleBlur,
@@ -60,25 +64,44 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
             }) => (
               <View style={styles.centeredViewForm}>
                 <TextInput
-                  onChangeText={handleChange('text')}
-                  onBlur={handleBlur('text')}
-                  value={values.text}
-                  placeholder={'Post....'}
-                  multiline={true}
-                  numberOfLines={4}
-                  maxLength={300}
-                  style={styles.textInput}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                  placeholder={'Email'}
                 />
-                {errors.text && touched.text ? (
-                  <Text large color={'red'}>
-                    {errors.text}
-                  </Text>
+                {errors.email && touched.email ? (
+                  <Text large>{errors.email}</Text>
+                ) : null}
+
+                <TextInput
+                  onChangeText={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                  value={values.name}
+                  placeholder={'Nombre'}
+                />
+                {errors.name && touched.name ? (
+                  <Text large>{errors.name}</Text>
+                ) : null}
+
+                <TextInput
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                  secureTextEntry
+                  placeholder={'Contraseña'}
+                />
+                {errors.password && touched.password ? (
+                  <Text large>{errors.password}</Text>
+                ) : null}
+
+                {userError && userErrorMsg ? (
+                  <Text large>{userErrorMsg}</Text>
                 ) : null}
                 <Pressable
                   style={[styles.button, styles.buttonOpen]}
-                  onPress={() => handleSubmit()}>
+                  onPress={handleSubmit}>
                   <Text large style={styles.textStyle}>
-                    Enviar Post
+                    Actualizar perfil
                   </Text>
                 </Pressable>
                 <Pressable
@@ -122,7 +145,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     width: '90%',
-    height: 300,
+    height: '90%',
   },
   button: {
     borderRadius: 20,

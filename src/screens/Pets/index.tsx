@@ -7,14 +7,21 @@ import {Text} from '@components/TextWrapper';
 import {IPet} from '@utils/Types';
 import {getLoadingPets, getPets} from '@redux/pets/posts_reducer';
 import {Pet} from './components/Pet';
+import RNPickerSelect from 'react-native-picker-select';
+import {provinces, types, ages} from '@utils/Constants';
 
 export const Pets = () => {
   const dispatch = useDispatch<any>();
   const pets = useSelector(getPets);
   const isLoading = useSelector(getLoadingPets);
+  const [region, setRegion] = useState<string | null>(null);
+  const [type, setType] = useState<string | null>(null);
+  const [age, setAge] = useState<number>(-1);
 
+  console.log(age);
   const handleSearch = () => {
-    dispatch(fetchPets());
+    const params = {...(type ? {type} : {})};
+    dispatch(fetchPets({type, region, age}));
   };
 
   if (isLoading) {
@@ -29,6 +36,25 @@ export const Pets = () => {
   return (
     <View style={styles.container}>
       <Text large>Mascotas</Text>
+      <RNPickerSelect
+        onValueChange={value => setType(value)}
+        items={types}
+        placeholder={'Animal'}
+        value={type}
+      />
+      <RNPickerSelect
+        onValueChange={value => setRegion(value)}
+        items={provinces}
+        placeholder={'Provincia'}
+        value={region}
+      />
+      <RNPickerSelect
+        onValueChange={value => setAge(value)}
+        items={ages}
+        placeholder={'Edad'}
+        value={age}
+      />
+
       <Button title="Buscar" onPress={handleSearch} />
       <ScrollView>
         {pets.length > 0 ? (

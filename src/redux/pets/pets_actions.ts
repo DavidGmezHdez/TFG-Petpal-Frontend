@@ -72,29 +72,31 @@ export type PetsAction =
   | DeletePetsSuccessAction
   | DeletePetError;
 
-export const fetchPets = () => async (dispatch: Dispatch<PetsAction>) => {
-  try {
-    dispatch({
-      type: PetsActionTypes.PETS_LOADING,
-    });
-    const res = await PetsService.fetchPets();
-    const pets = res.data;
-    dispatch({
-      type: PetsActionTypes.PETS_SUCCESS,
-      payload: {pets},
-    });
-    dispatch({
-      type: PetsActionTypes.CLEAR_ERROR,
-    });
-    return pets;
-  } catch (e) {
-    console.log(e);
-    dispatch({
-      type: PetsActionTypes.PET_ERROR_FETCH,
-      payload: {msg: e.response.data.message},
-    });
-  }
-};
+export const fetchPets =
+  (params: any) => async (dispatch: Dispatch<PetsAction>) => {
+    try {
+      console.log(params);
+      dispatch({
+        type: PetsActionTypes.PETS_LOADING,
+      });
+      const res = await PetsService.fetchPets(params);
+      const pets = res.data;
+      dispatch({
+        type: PetsActionTypes.PETS_SUCCESS,
+        payload: {pets},
+      });
+      dispatch({
+        type: PetsActionTypes.CLEAR_ERROR,
+      });
+      return pets;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: PetsActionTypes.PET_ERROR_FETCH,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };
 
 export const sendPet = (pet: any) => async (dispatch: Dispatch<PetsAction>) => {
   try {

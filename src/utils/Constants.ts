@@ -2,265 +2,250 @@ import {Dimensions} from 'react-native';
 
 export const px = 1 / Dimensions.get('screen').scale;
 
+// TODO: MOVE TO BACKEND
 export const provinces = [
   {
-    parent_code: '01',
-    code: '04',
-    label: 'Almería',
+    label: 'Álava',
+    value: 'Álava',
   },
   {
-    parent_code: '01',
-    code: '11',
-    label: 'Cádiz',
-  },
-  {
-    parent_code: '01',
-    code: '14',
-    label: 'Córdoba',
-  },
-  {
-    parent_code: '01',
-    code: '18',
-    label: 'Granada',
-  },
-  {
-    parent_code: '01',
-    code: '21',
-    label: 'Huelva',
-  },
-  {
-    parent_code: '01',
-    code: '23',
-    label: 'Jaén',
-  },
-  {
-    parent_code: '01',
-    code: '29',
-    label: 'Málaga',
-  },
-  {
-    parent_code: '01',
-    code: '41',
-    label: 'Sevilla',
-  },
-  {
-    parent_code: '02',
-    code: '22',
-    label: 'Huesca',
-  },
-  {
-    parent_code: '02',
-    code: '44',
-    label: 'Teruel',
-  },
-  {
-    parent_code: '02',
-    code: '50',
-    label: 'Zaragoza',
-  },
-  {
-    parent_code: '03',
-    code: '33',
-    label: 'Asturias',
-  },
-  {
-    parent_code: '04',
-    code: '07',
-    label: 'Balears, Illes',
-  },
-  {
-    parent_code: '05',
-    code: '35',
-    label: 'Palmas, Las',
-  },
-  {
-    parent_code: '05',
-    code: '38',
-    label: 'Santa Cruz de Tenerife',
-  },
-  {
-    parent_code: '06',
-    code: '39',
-    label: 'Cantabria',
-  },
-  {
-    parent_code: '07',
-    code: '05',
-    label: 'Ávila',
-  },
-  {
-    parent_code: '07',
-    code: '09',
-    label: 'Burgos',
-  },
-  {
-    parent_code: '07',
-    code: '24',
-    label: 'León',
-  },
-  {
-    parent_code: '07',
-    code: '34',
-    label: 'Palencia',
-  },
-  {
-    parent_code: '07',
-    code: '37',
-    label: 'Salamanca',
-  },
-  {
-    parent_code: '07',
-    code: '40',
-    label: 'Segovia',
-  },
-  {
-    parent_code: '07',
-    code: '42',
-    label: 'Soria',
-  },
-  {
-    parent_code: '07',
-    code: '47',
-    label: 'Valladolid',
-  },
-  {
-    parent_code: '07',
-    code: '49',
-    label: 'Zamora',
-  },
-  {
-    parent_code: '08',
-    code: '02',
     label: 'Albacete',
+    value: 'Albacete',
   },
   {
-    parent_code: '08',
-    code: '13',
-    label: 'Ciudad Real',
+    label: 'Almería',
+    value: 'Almería',
   },
   {
-    parent_code: '08',
-    code: '16',
-    label: 'Cuenca',
-  },
-  {
-    parent_code: '08',
-    code: '19',
-    label: 'Guadalajara',
-  },
-  {
-    parent_code: '08',
-    code: '45',
-    label: 'Toledo',
-  },
-  {
-    parent_code: '09',
-    code: '08',
-    label: 'Barcelona',
-  },
-  {
-    parent_code: '09',
-    code: '17',
-    label: 'Girona',
-  },
-  {
-    parent_code: '09',
-    code: '25',
-    label: 'Lleida',
-  },
-  {
-    parent_code: '09',
-    code: '43',
-    label: 'Tarragona',
-  },
-  {
-    parent_code: '10',
-    code: '03',
     label: 'Alicante/Alacant',
+    value: 'Alicante/Alacant',
   },
   {
-    parent_code: '10',
-    code: '12',
-    label: 'Castellón/Castelló',
+    label: 'Ávila',
+    value: 'Ávila',
   },
   {
-    parent_code: '10',
-    code: '46',
-    label: 'Valencia/València',
+    label: 'Asturias',
+    value: 'Asturias',
   },
   {
-    parent_code: '11',
-    code: '06',
+    label: 'A Coruña',
+    value: 'A Coruña',
+  },
+  {
+    label: 'Barcelona',
+    value: 'Barcelona',
+  },
+  {
     label: 'Badajoz',
+    value: 'Badajoz',
   },
   {
-    parent_code: '11',
-    code: '10',
-    label: 'Cáceres',
+    label: 'Burgos',
+    value: 'Burgos',
   },
   {
-    parent_code: '12',
-    code: '15',
-    label: 'Coruña, A',
-  },
-  {
-    parent_code: '12',
-    code: '27',
-    label: 'Lugo',
-  },
-  {
-    parent_code: '12',
-    code: '32',
-    label: 'Ourense',
-  },
-  {
-    parent_code: '12',
-    code: '36',
-    label: 'Pontevedra',
-  },
-  {
-    parent_code: '13',
-    code: '28',
-    label: 'Madrid',
-  },
-  {
-    parent_code: '14',
-    code: '30',
-    label: 'Murcia',
-  },
-  {
-    parent_code: '15',
-    code: '31',
-    label: 'Navarra',
-  },
-  {
-    parent_code: '16',
-    code: '01',
-    label: 'Araba/Álava',
-  },
-  {
-    parent_code: '16',
-    code: '48',
     label: 'Bizkaia',
+    value: 'Bizkaia',
   },
   {
-    parent_code: '16',
-    code: '20',
-    label: 'Gipuzkoa',
+    label: 'Cáceres',
+    value: 'Cáceres',
   },
   {
-    parent_code: '17',
-    code: '26',
-    label: 'Rioja, La',
+    label: 'Cádiz',
+    value: 'Cádiz',
   },
   {
-    parent_code: '18',
-    code: '51',
+    label: 'Cantabria',
+    value: 'Cantabria',
+  },
+  {
+    label: 'Castellón/Castelló',
+    value: 'Castellón/Castelló',
+  },
+  {
     label: 'Ceuta',
+    value: 'Ceuta',
   },
   {
-    parent_code: '19',
-    code: '52',
+    label: 'Cuenca',
+    value: 'Cuenca',
+  },
+  {
+    label: 'Ciudad Real',
+    value: 'Ciudad Real',
+  },
+  {
+    label: 'Córdoba',
+    value: 'Córdoba',
+  },
+  {
+    label: 'Gipuzkoa',
+    value: 'Gipuzkoa',
+  },
+  {
+    label: 'Girona',
+    value: 'Girona',
+  },
+  {
+    label: 'Granada',
+    value: 'Granada',
+  },
+  {
+    label: 'Guadalajara',
+    value: 'Guadalajara',
+  },
+  {
+    label: 'Huelva',
+    value: 'Huelva',
+  },
+  {
+    label: 'Huesca',
+    value: 'Huesca',
+  },
+  {
+    label: 'Illes Balears',
+    value: 'Illes Balears',
+  },
+  {
+    label: 'Jaén',
+    value: 'Jaén',
+  },
+  {
+    label: 'La Rioja',
+    value: 'La Rioja',
+  },
+  {
+    label: 'Las Palmas',
+    value: 'Las Palmas',
+  },
+  {
+    label: 'León',
+    value: 'León',
+  },
+  {
+    label: 'Lleida',
+    value: 'Lleida',
+  },
+  {
+    label: 'Lugo',
+    value: 'Lugo',
+  },
+  {
+    label: 'Madrid',
+    value: 'Madrid',
+  },
+  {
+    label: 'Málaga',
+    value: 'Málaga',
+  },
+  {
     label: 'Melilla',
+    value: 'Melilla',
+  },
+  {
+    label: 'Murcia',
+    value: 'Murcia',
+  },
+
+  {
+    label: 'Navarra',
+    value: 'Navarra',
+  },
+  {
+    label: 'Ourense',
+    value: 'Ourense',
+  },
+
+  {
+    label: 'Palencia',
+    value: 'Palencia',
+  },
+  {
+    label: 'Pontevedra',
+    value: 'Pontevedra',
+  },
+  {
+    label: 'Salamanca',
+    value: 'Salamanca',
+  },
+  {
+    label: 'Santa Cruz de Tenerife',
+    value: 'Santa Cruz de Tenerife',
+  },
+  {
+    label: 'Segovia',
+    value: 'Segovia',
+  },
+  {
+    label: 'Sevilla',
+    value: 'Sevilla',
+  },
+  {
+    label: 'Soria',
+    value: 'Soria',
+  },
+  {
+    label: 'Tarragona',
+    value: 'Tarragona',
+  },
+  {
+    label: 'Teruel',
+    value: 'Teruel',
+  },
+  {
+    label: 'Toledo',
+    value: 'Toledo',
+  },
+  {
+    label: 'Valencia/València',
+    value: 'Valencia/València',
+  },
+  {
+    label: 'Valladolid',
+    value: 'Valladolid',
+  },
+  {
+    label: 'Zamora',
+    value: 'Zamora',
+  },
+  {
+    label: 'Zaragoza',
+    value: 'Zaragoza',
+  },
+];
+
+export const types = [
+  {
+    label: 'Perro',
+    value: 'Perro',
+  },
+  {
+    label: 'Gato',
+    value: 'Gato',
+  },
+  {
+    label: 'Otro',
+    value: 'Otro',
+  },
+];
+
+export const ages = [
+  {
+    label: 'Entre 0 y 5 años',
+    value: 0,
+  },
+  {
+    label: 'Entre 5 y 10 años',
+    value: 1,
+  },
+  {
+    label: 'Entre 10 y 15 años',
+    value: 2,
+  },
+  {
+    label: 'Entre 15 y 20 años',
+    value: 3,
   },
 ];

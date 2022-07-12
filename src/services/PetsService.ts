@@ -1,7 +1,8 @@
 import axios from '@utils/api/axios';
 
-const fetchPets = async () => {
-  return await axios.get('/pets');
+const fetchPets = async (params: any) => {
+  console.log('SERIVCE PARAMS', params);
+  return await axios.get('/pets', {params});
 };
 
 const sendPet = async (pet: any) => {

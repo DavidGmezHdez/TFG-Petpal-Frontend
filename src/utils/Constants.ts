@@ -249,3 +249,41 @@ export const ages = [
     value: 3,
   },
 ];
+
+export const dogRace = [
+  {
+    label: 'Labrador',
+    value: 'Labrador',
+  },
+  {
+    label: 'Pastor Alemán',
+    value: 'Pastor Alemán',
+  },
+  {
+    label: 'Beagle',
+    value: 'Beagle',
+  },
+  {
+    label: 'Dálmata',
+    value: 'Dálmata',
+  },
+];
+
+export const catRace = [
+  {
+    label: 'Gato Persa',
+    value: 'Gato Persa',
+  },
+  {
+    label: 'Bengala',
+    value: 'Bengala',
+  },
+  {
+    label: 'Siberiano',
+    value: 'Siberiano',
+  },
+  {
+    label: 'Gato siamés',
+    value: 'Gato siamés',
+  },
+];

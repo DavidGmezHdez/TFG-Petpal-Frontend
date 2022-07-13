@@ -16,6 +16,7 @@ export const Pet = ({pet}: Props) => {
       <Text large>Color: {pet.color}</Text>
       <Text large>Tamaño: {pet.size}</Text>
       <Text large>Raza: {pet.race}</Text>
+      <Text large>Descripcion: {pet.description}</Text>
       <Text large>Rasgos especiales</Text>
       {pet.specialTraits && pet.specialTraits.length ? (
         pet.specialTraits.map((trait: string) => <Text large>{trait}</Text>)

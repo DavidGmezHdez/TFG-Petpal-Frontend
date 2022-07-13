@@ -52,6 +52,7 @@ export type IPet = {
   _id: string;
   name: string;
   type: string;
+  description: string;
   age: number;
   race: string;
   color: string;

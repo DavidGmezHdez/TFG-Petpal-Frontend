@@ -4,6 +4,7 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import {useSelector} from 'react-redux';
 import {RootState} from '@redux/store';
 import {Feed, Events, Pets, Profile} from '..';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const TabsNavigator = () => {
   const Tab = createMaterialBottomTabNavigator();
@@ -17,18 +18,90 @@ export const TabsNavigator = () => {
   }, []);
 
   return (
-    <Tab.Navigator initialRouteName={'feed'}>
+    <Tab.Navigator
+      initialRouteName={'feed'}
+      activeColor={'white'}
+      inactiveColor={'gray'}
+      barStyle={{backgroundColor: 'tomato'}}>
       {rol === 'Usuario' ? (
         <>
-          <Tab.Screen name="Tablón" component={Feed} options={{}} />
-          <Tab.Screen name="Eventos" component={Events} options={{}} />
-          <Tab.Screen name="Mascotas" component={Pets} options={{}} />
-          <Tab.Screen name="Perfil" component={Profile} options={{}} />
+          <Tab.Screen
+            name="Tablón"
+            component={Feed}
+            options={{
+              tabBarIcon: ({color}: any) => (
+                <MaterialCommunityIcons
+                  name="post-outline"
+                  color={color}
+                  size={26}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Eventos"
+            component={Events}
+            options={{
+              tabBarIcon: ({color}: any) => (
+                <MaterialCommunityIcons
+                  name="camera-party-mode"
+                  color={color}
+                  size={26}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Mascotas"
+            component={Pets}
+            options={{
+              tabBarIcon: ({color}: any) => (
+                <MaterialCommunityIcons name="dog" color={color} size={26} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Perfil"
+            component={Profile}
+            options={{
+              tabBarIcon: ({color}: any) => (
+                <MaterialCommunityIcons
+                  name="account"
+                  color={color}
+                  size={26}
+                />
+              ),
+            }}
+          />
         </>
       ) : (
         <>
-          <Tab.Screen name="Tablón" component={Feed} options={{}} />
-          <Tab.Screen name="Perfil" component={Profile} options={{}} />
+          <Tab.Screen
+            name="Tablón"
+            component={Feed}
+            options={{
+              tabBarIcon: ({color}: any) => (
+                <MaterialCommunityIcons
+                  name="post-outline"
+                  color={color}
+                  size={26}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Perfil"
+            component={Profile}
+            options={{
+              tabBarIcon: ({color}: any) => (
+                <MaterialCommunityIcons
+                  name="account"
+                  color={color}
+                  size={26}
+                />
+              ),
+            }}
+          />
         </>
       )}
     </Tab.Navigator>

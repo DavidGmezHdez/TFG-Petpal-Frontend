@@ -7,4 +7,5 @@ export type RootStackParam = {
   feed: undefined;
   pets: undefined;
   profile: undefined;
+  events: undefined;
 };

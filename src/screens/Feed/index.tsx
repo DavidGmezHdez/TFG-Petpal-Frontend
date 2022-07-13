@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Button, StyleSheet, View, ScrollView} from 'react-native';
+import {Button, StyleSheet, View} from 'react-native';
 import {Text} from '@components/Text';
 import {useDispatch, useSelector} from 'react-redux';
 import {getLoadingPosts, getPosts} from '@redux/posts/posts_reducer';
@@ -9,6 +9,7 @@ import {IPost} from 'utils/Types';
 import {ActivityIndicator} from 'react-native-paper';
 import {CreatePostModal} from '@modals/CreatePost';
 import {SendCommentModal} from '@modals/SendComment';
+import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 
 export const Feed = () => {
   const dispatch = useDispatch<any>();
@@ -40,20 +41,18 @@ export const Feed = () => {
         postId={postId}
       />
       <Text>Tablón</Text>
-      <ScrollView>
-        {posts.length > 0 ? (
-          posts.map((post: IPost) => (
-            <Post
-              key={post._id}
-              post={post}
-              setShowModal={setShowModalComment}
-              setPostId={setPostId}
-            />
-          ))
-        ) : (
-          <Text>No hay ningún post. Actualiza</Text>
+      <FlashList
+        renderItem={(post: ListRenderItemInfo<IPost>) => (
+          <Post
+            key={post.item._id}
+            post={post.item}
+            setShowModal={setShowModalComment}
+            setPostId={setPostId}
+          />
         )}
-      </ScrollView>
+        estimatedItemSize={200}
+        data={posts}
+      />
       <Button title="Actualizar" onPress={_handleUpdate} />
       <Button title="Crear post" onPress={() => setShowModal(true)} />
     </View>
@@ -62,11 +61,9 @@ export const Feed = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '100%',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

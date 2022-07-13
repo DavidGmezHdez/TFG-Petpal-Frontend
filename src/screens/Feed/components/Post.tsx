@@ -166,6 +166,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'space-around',
+    display: 'flex',
+    borderColor: '#2196F3',
+    borderWidth: 5,
   },
   button: {
     borderRadius: 20,

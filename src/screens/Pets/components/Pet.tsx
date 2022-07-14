@@ -7,7 +7,6 @@ type Props = {
 };
 
 export const Pet = ({pet}: Props) => {
-  console.log({pet});
   return (
     <View style={styles.container}>
       <Text large>Nombre: {pet.name}</Text>

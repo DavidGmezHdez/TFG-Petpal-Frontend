@@ -20,7 +20,6 @@ export const Pets = () => {
   const [age, setAge] = useState<number>(-1);
   const [race, setRace] = useState<string | null>(null);
 
-  console.log(age);
   const handleSearch = () => {
     dispatch(fetchPets({type, region, age, race}));
   };

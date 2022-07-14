@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {Dispatch, SetStateAction, useCallback} from 'react';
 import {Modal, StyleSheet, View, TextInput} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
@@ -17,30 +17,34 @@ type Props = {
 export const CreatePostModal = ({showModal, setShowModal}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
-  const _handleSubmit = async (values: any) => {
-    try {
-      const post = {
-        text: values.text,
-        author: user._id,
-        name: user.name,
-        likes: 0,
-        image: '',
-      };
-      const createdPost = await dispatch(sendPost(post));
-      if (createdPost) {
-        const posts = [...(user.posts ?? []), createdPost._id];
-        await dispatch(updateUser(user._id, {posts}, user.rol));
-        setShowModal(false);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
-  const cancel = () => {
+  const _handleSubmit = useCallback(
+    async (values: any) => {
+      try {
+        const post = {
+          text: values.text,
+          author: user._id,
+          name: user.name,
+          likes: 0,
+          image: '',
+        };
+        const createdPost = await dispatch(sendPost(post));
+        if (createdPost) {
+          const posts = [...(user.posts ?? []), createdPost._id];
+          await dispatch(updateUser(user._id, {posts}, user.rol));
+          setShowModal(false);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [dispatch, setShowModal, user],
+  );
+
+  const cancel = useCallback(() => {
     dispatch(clearErrorPost());
     setShowModal(false);
-  };
+  }, [dispatch, setShowModal]);
 
   return (
     <Modal animationType={'fade'} transparent={true} visible={showModal}>

@@ -17,7 +17,6 @@ export const Event = ({event}: Props) => {
   const user = useSelector(getUser);
   const joinedByUser = event.attendants?.some(usr => usr._id === user._id);
   const ownedByUser = event.host._id === user._id;
-  console.log(event, user);
 
   const _joinEvent = async (joined: boolean) => {
     const attendingEvents = joinedByUser

@@ -20,7 +20,6 @@ export const EditProfileModal = ({showModal, setShowModal}: Props) => {
   const userError = useSelector(getUserError);
   const userErrorMsg = useSelector(getUserErrorMsg);
 
-  console.log(user);
   const _handleSubmit = async (values: UserTypes) => {
     const sendUser = {
       ...user,

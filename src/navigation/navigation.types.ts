@@ -5,6 +5,7 @@ export type RootStackParam = {
   login: undefined;
   tabs_navigator: undefined;
   feed: undefined;
-  search: undefined;
+  pets: undefined;
   profile: undefined;
+  events: undefined;
 };

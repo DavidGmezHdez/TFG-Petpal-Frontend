@@ -21,6 +21,10 @@ export type IUser = {
   likedPosts: Array<any>;
   rol: string;
   token: string;
+  contactPhone: string;
+  direction: string;
+  availablePets: IPet[];
+  region: string;
 };
 
 export type IEvent = {
@@ -42,4 +46,19 @@ export type IComment = {
   authorName: string;
   comment: string;
   createdAt: string;
+};
+
+export type IPet = {
+  _id: string;
+  name: string;
+  type: string;
+  description: string;
+  age: number;
+  race: string;
+  color: string;
+  size: string;
+  specialTraits: string[];
+  owner: string;
+  image: string;
+  protector: IUser;
 };

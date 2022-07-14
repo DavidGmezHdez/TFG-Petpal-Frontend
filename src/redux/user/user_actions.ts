@@ -120,7 +120,6 @@ export const updateUser =
       });
       const res = await UserService.updateUser(userId, user, rol);
       const updatedUser = res.data;
-      console.log(updatedUser);
       dispatch({
         type: AuthActionTypes.UPDATE_USER_SUCCESS,
         payload: {user: updatedUser},

@@ -1,6 +1,6 @@
 import {Feed} from '@screens/Feed';
-import {Search} from '@screens/Search';
+import {Pets} from '@screens/Pets';
 import {Profile} from '@screens/Profile';
 import {Events} from '@screens/Events';
 
-export {Feed, Search, Profile, Events};
+export {Feed, Pets, Profile, Events};

@@ -154,7 +154,6 @@ export const deletePost =
       });
       const res = await PostsService.deletePost(postId);
       const deletedPost = res.data;
-      console.log(res);
       dispatch({
         type: PostsActionTypes.DELETE_POSTS_SUCCESS,
         payload: {post: deletedPost},

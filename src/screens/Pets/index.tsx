@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchPets} from '@redux/pets/pets_actions';
@@ -7,6 +7,7 @@ import {Text} from '@components/TextWrapper';
 import {IPet} from '@utils/Types';
 import {getLoadingPets, getPets} from '@redux/pets/posts_reducer';
 import {Pet} from './components/Pet';
+import {Pressable} from '@components/Pressable';
 import RNPickerSelect from 'react-native-picker-select';
 import {provinces, types, ages, dogRace, catRace} from '@utils/Constants';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
@@ -76,15 +77,24 @@ export const Pets = () => {
         placeholder={{label: 'Cualquier edad', value: null}}
         value={age}
       />
-
-      <Button title="Buscar" onPress={handleSearch} />
-      <FlashList
-        renderItem={(pet: ListRenderItemInfo<IPet>) => (
-          <Pet key={pet.item._id} pet={pet.item} />
-        )}
-        estimatedItemSize={200}
-        data={pets}
-      />
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={handleSearch}>
+        <Text large style={styles.textStyle}>
+          Buscar
+        </Text>
+      </Pressable>
+      {pets.length ? (
+        <FlashList
+          renderItem={(pet: ListRenderItemInfo<IPet>) => (
+            <Pet key={pet.item._id} pet={pet.item} />
+          )}
+          estimatedItemSize={200}
+          data={pets}
+        />
+      ) : (
+        <Text large>No existen mascotas con esos parámetros de búsqueda</Text>
+      )}
     </View>
   );
 };
@@ -95,5 +105,19 @@ const styles = StyleSheet.create({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    margin: 10,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
   },
 });

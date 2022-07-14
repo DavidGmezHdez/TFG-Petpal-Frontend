@@ -46,6 +46,15 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.2,
   },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    margin: 10,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
 });
 
 export {PressableOpacity as Pressable};

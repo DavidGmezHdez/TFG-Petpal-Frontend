@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Text} from '@components/Text';
+import {Text} from '@components/TextWrapper';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
 import {getEvents, getLoadingEvents} from '@redux/events/events_reducer';
@@ -11,6 +17,7 @@ import {fetchEvents} from '@redux/events/events_actions';
 import {CreateEventModal} from '@modals/CreateEvent';
 import {clearErrorUser} from '@redux/user/user_actions';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
+import {Pressable} from '@components/Pressable';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'events'>;
 
@@ -23,9 +30,10 @@ export const Events = ({}: Props) => {
   const events = useSelector(getEvents);
   const isLoading = useSelector(getLoadingEvents);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [title, setTitle] = useState<string | undefined>();
 
-  const _handleUpdate = () => {
-    dispatch(fetchEvents());
+  const handleUpdate = () => {
+    dispatch(fetchEvents(title));
   };
 
   if (isLoading) {
@@ -40,16 +48,34 @@ export const Events = ({}: Props) => {
   return (
     <View style={styles.container}>
       <CreateEventModal showModal={showModal} setShowModal={setShowModal} />
-      <Text>Quedadas</Text>
+      <Text large>Buscar Evento</Text>
 
-      <FlashList
-        renderItem={(event: ListRenderItemInfo<IEvent>) => (
-          <Event key={event.item._id} event={event.item} />
-        )}
-        estimatedItemSize={200}
-        data={events}
+      <TextInput
+        onChangeText={(t: string) => setTitle(t)}
+        value={title}
+        placeholder={'Buscar quedada...'}
+        maxLength={20}
       />
-      <Button title="Actualizar" onPress={_handleUpdate} />
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={handleUpdate}>
+        <Text large style={styles.textStyle}>
+          Buscar
+        </Text>
+      </Pressable>
+
+      {events.length ? (
+        <FlashList
+          renderItem={(event: ListRenderItemInfo<IEvent>) => (
+            <Event key={event.item._id} event={event.item} />
+          )}
+          estimatedItemSize={200}
+          data={events}
+        />
+      ) : (
+        <Text large>No existen eventos con ese título</Text>
+      )}
+
       <Button
         title="Crear evento"
         onPress={() => {
@@ -67,5 +93,19 @@ const styles = StyleSheet.create({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    margin: 10,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
   },
 });

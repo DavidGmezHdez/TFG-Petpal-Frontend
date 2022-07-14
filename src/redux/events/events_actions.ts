@@ -72,26 +72,27 @@ export type EventsActions =
   | DeleteEventSuccessAction
   | DeleteEventError;
 
-export const fetchEvents = () => async (dispatch: Dispatch<EventsActions>) => {
-  try {
-    dispatch({
-      type: EventsActionTypes.EVENTS_LOADING,
-    });
-    const res = await EventsService.fetchEvents();
-    const events = res.data;
-    dispatch({
-      type: EventsActionTypes.EVENTS_SUCCESS,
-      payload: {events},
-    });
-    return events;
-  } catch (e) {
-    console.log(e);
-    dispatch({
-      type: EventsActionTypes.EVENTS_ERROR_FETCH,
-      payload: {msg: e.response.data.message},
-    });
-  }
-};
+export const fetchEvents =
+  (title: string | undefined) => async (dispatch: Dispatch<EventsActions>) => {
+    try {
+      dispatch({
+        type: EventsActionTypes.EVENTS_LOADING,
+      });
+      const res = await EventsService.fetchEvents(title);
+      const events = res.data;
+      dispatch({
+        type: EventsActionTypes.EVENTS_SUCCESS,
+        payload: {events},
+      });
+      return events;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: EventsActionTypes.EVENTS_ERROR_FETCH,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };
 
 export const sendEvent =
   (event: any) => async (dispatch: Dispatch<EventsActions>) => {

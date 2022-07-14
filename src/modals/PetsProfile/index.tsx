@@ -5,13 +5,21 @@ import {getUser} from '@redux/user/user_reducer';
 import {clearErrorUser} from '@redux/user/user_actions';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
+import {Pet} from '@screens/Pets/components/Pet';
+import {IPet} from '@utils/Types';
+import {clearErrorPet} from '@redux/pets/pets_actions';
 
 type Props = {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  setShowCreatePetModal: Dispatch<SetStateAction<boolean>>;
 };
 
-export const PetsProfileModal = ({showModal, setShowModal}: Props) => {
+export const PetsProfileModal = ({
+  showModal,
+  setShowModal,
+  setShowCreatePetModal,
+}: Props) => {
   const dispatch = useDispatch<any>();
   const pets = useSelector(getUser).pets;
 
@@ -20,18 +28,30 @@ export const PetsProfileModal = ({showModal, setShowModal}: Props) => {
     setShowModal(false);
   };
 
+  const showAddPetModal = () => {
+    dispatch(clearErrorPet());
+    setShowCreatePetModal(true);
+  };
+
   return (
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Text large>Mis mascotas</Text>
           <ScrollView>
-            {pets.length > 0 ? (
-              pets.map(() => <Text large>Pet</Text>)
+            {pets && pets.length > 0 ? (
+              pets.map((pet: IPet) => <Pet key={pet._id} pet={pet} />)
             ) : (
-              <Text large>No has adoptado ninguna mascota</Text>
+              <Text large>No has añadido ninguna mascota</Text>
             )}
           </ScrollView>
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={showAddPetModal}>
+            <Text large style={styles.textStyle}>
+              Añadir Mascota
+            </Text>
+          </Pressable>
           <Pressable
             style={[styles.button, styles.buttonOpen]}
             onPress={cancel}>

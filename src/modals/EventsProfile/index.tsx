@@ -32,7 +32,7 @@ export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
         <View style={styles.modalView}>
           <Text large>Mis Quedadas</Text>
           <ScrollView>
-            {events.length > 0 ? (
+            {events && events.length > 0 ? (
               events.map((event: IEvent) => (
                 <ProfileEvent key={event._id} event={event} />
               ))

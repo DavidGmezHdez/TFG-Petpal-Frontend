@@ -231,6 +231,21 @@ export const types = [
   },
 ];
 
+export const sizes = [
+  {
+    label: 'Grande',
+    value: 'Grande',
+  },
+  {
+    label: 'Mediano',
+    value: 'Mediano',
+  },
+  {
+    label: 'Pequeño',
+    value: 'Pequeño',
+  },
+];
+
 export const ages = [
   {
     label: 'Entre 0 y 5 años',

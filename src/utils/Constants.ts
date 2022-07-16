@@ -231,6 +231,17 @@ export const types = [
   },
 ];
 
+export const sexs = [
+  {
+    label: 'Masculino',
+    value: 'Masculino',
+  },
+  {
+    label: 'Femenino',
+    value: 'Femenino',
+  },
+];
+
 export const sizes = [
   {
     label: 'Grande',

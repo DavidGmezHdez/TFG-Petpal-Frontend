@@ -12,4 +12,5 @@ export const PetSchema = Yup.object().shape({
   size: Yup.string().required('Campo obligatorio'),
   race: Yup.string().required('Campo obligatorio'),
   description: Yup.string().required('Campo obligatorio'),
+  sex: Yup.string().required('Campo obligatorio'),
 });

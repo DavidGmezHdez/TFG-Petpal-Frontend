@@ -1,5 +1,12 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Modal, StyleSheet, View, TextInput, ScrollView} from 'react-native';
+import {
+  Modal,
+  StyleSheet,
+  View,
+  TextInput,
+  ScrollView,
+  Image,
+} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
@@ -11,9 +18,13 @@ import {getMessagePets} from '@redux/pets/pets_reducer';
 import {PetSchema} from './lib';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
-import {px, sizes, types} from '@utils/Constants';
+import {px, sexs, sizes, types} from '@utils/Constants';
 
 import {getRaces} from '@utils/Helpers';
+import {
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker';
 
 type Props = {
   showModal: boolean;
@@ -24,9 +35,18 @@ type petValuesTypes = {
   name: string;
   description: string;
   type: string;
+  sex: string;
   age: string;
   race: string;
   size: string;
+  imageUri: string;
+  imageType: string;
+  imageName: string;
+};
+
+const options: ImageLibraryOptions = {
+  mediaType: 'photo',
+  selectionLimit: 1,
 };
 
 export const CreatePetModal = ({showModal, setShowModal}: Props) => {
@@ -37,26 +57,39 @@ export const CreatePetModal = ({showModal, setShowModal}: Props) => {
   const initialValues: petValuesTypes = {
     name: '',
     description: '',
+    sex: '',
     type: '',
     age: '',
     race: '',
     size: '',
+    imageUri: '',
+    imageType: '',
+    imageName: '',
   };
 
   const _handleSubmit = async (values: petValuesTypes) => {
     try {
-      const pet = {
-        name: values.name,
-        description: values.description,
-        protector: user._id,
-        type: values.type,
-        age: values.age,
-        race: values.race,
-        region: user.region,
-        size: values.size,
-      };
+      const formData = new FormData();
+      formData.append('name', values.name);
+      formData.append('description', values.description);
+      formData.append('protector', user._id);
+      formData.append('type', values.type);
+      formData.append('age', values.age);
+      formData.append('race', values.race);
+      formData.append('region', user.region);
+      formData.append('size', values.size);
+      formData.append('sex', values.sex);
 
-      const createdPet = await dispatch(sendPet(pet));
+      if (values.imageUri) {
+        formData.append('image', {
+          // @ts-ignore: Type error
+          uri: values.imageUri,
+          type: values.imageType,
+          name: values.name,
+        });
+      }
+
+      const createdPet = await dispatch(sendPet(formData));
       if (createdPet) {
         const pets = [...(user.pets ?? []), createdPet._id];
         await dispatch(updateUser(user._id, {pets}, user.rol));
@@ -102,6 +135,19 @@ export const CreatePetModal = ({showModal, setShowModal}: Props) => {
                   {errors.name && touched.name ? (
                     <Text large color={'red'}>
                       {errors.name}
+                    </Text>
+                  ) : null}
+
+                  <RNPickerSelect
+                    onValueChange={value => setFieldValue('sex', value)}
+                    items={sexs}
+                    placeholder={{label: 'Selecciona sexo', value: null}}
+                    value={values.sex}
+                  />
+
+                  {errors.sex && touched.sex ? (
+                    <Text large color={'red'}>
+                      {errors.sex}
                     </Text>
                   ) : null}
 
@@ -176,6 +222,28 @@ export const CreatePetModal = ({showModal, setShowModal}: Props) => {
                     <Text large color={'red'}>
                       {errors.description}
                     </Text>
+                  ) : null}
+
+                  <Pressable
+                    style={[styles.button, styles.buttonOpen]}
+                    onPress={async () => {
+                      const {assets} = await launchImageLibrary(options);
+                      setFieldValue('imageUri', assets![0].uri);
+                      setFieldValue('imageType', assets![0].type);
+                      setFieldValue('imageName', assets![0].fileName);
+                      console.log(values);
+                      console.log(assets);
+                    }}>
+                    <Text large style={styles.textStyle}>
+                      Subir Foto
+                    </Text>
+                  </Pressable>
+
+                  {values.imageUri.length ? (
+                    <Image
+                      source={{uri: values.imageUri}}
+                      style={styles.images}
+                    />
                   ) : null}
 
                   <Pressable
@@ -275,5 +343,12 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 20 * px,
     marginBottom: 10,
+  },
+  images: {
+    width: 200 * px,
+    height: 200 * px,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginHorizontal: 3,
   },
 });

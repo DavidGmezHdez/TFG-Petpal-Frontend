@@ -25,6 +25,8 @@ export type IUser = {
   direction: string;
   availablePets: IPet[];
   region: string;
+  image: string;
+  imageKey: string;
 };
 
 export type IEvent = {

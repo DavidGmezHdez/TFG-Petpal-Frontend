@@ -3,11 +3,10 @@ import {Modal, StyleSheet, View, TextInput} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser, getUserError, getUserErrorMsg} from '@redux/user/user_reducer';
-import {clearErrorUser, updateUser} from '@redux/user/user_actions';
+import {clearErrorUser, updateUserProfile} from '@redux/user/user_actions';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
-import {UserTypes} from '@screens/RegisterUser/lib';
-import {UserSchemaEdit} from './lib';
+import {UserSchemaEdit, UserTypes} from './lib';
 
 type Props = {
   showModal: boolean;
@@ -20,19 +19,27 @@ export const EditProfileModal = ({showModal, setShowModal}: Props) => {
   const userError = useSelector(getUserError);
   const userErrorMsg = useSelector(getUserErrorMsg);
 
-  const _handleSubmit = async (values: UserTypes) => {
-    const sendUser = {
-      ...user,
-      email: values.email,
-      name: values.name,
-      password: values.password,
-    };
+  const submit = async (values: UserTypes) => {
+    const formData = new FormData();
+    formData.append('name', values.name);
+    formData.append('email', values.email);
+    formData.append('password', values.password);
+    formData.append('_method', 'PATCH');
 
-    const finalUser = await dispatch(updateUser(user._id, sendUser, user.rol));
-    if (finalUser) setShowModal(false);
-    try {
-    } catch (e) {
-      console.log(e);
+    if (values.imageUri) {
+      formData.append('image', {
+        // @ts-ignore: Type error
+        uri: values.imageUri,
+        type: values.imageType,
+        name: values.name,
+      });
+    }
+
+    const finalUser = await dispatch(
+      updateUserProfile(user._id, formData, user.rol),
+    );
+    if (finalUser) {
+      setShowModal(false);
     }
   };
 
@@ -50,8 +57,11 @@ export const EditProfileModal = ({showModal, setShowModal}: Props) => {
               name: user.name,
               email: user.email,
               password: '',
+              imageUri: '',
+              imageType: '',
+              imageName: '',
             }}
-            onSubmit={_handleSubmit}
+            onSubmit={submit}
             validationSchema={UserSchemaEdit}>
             {({
               handleChange,

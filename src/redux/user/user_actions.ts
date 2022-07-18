@@ -138,6 +138,32 @@ export const updateUser =
     }
   };
 
+export const updateUserProfile =
+  (userId: string, user: any, rol: string) =>
+  async (dispatch: Dispatch<AuthAction>) => {
+    try {
+      dispatch({
+        type: AuthActionTypes.AUTH_LOADING,
+      });
+      const res = await UserService.updateUserProfile(userId, user, rol);
+      const updatedUser = res.data;
+      dispatch({
+        type: AuthActionTypes.UPDATE_USER_SUCCESS,
+        payload: {user: updatedUser},
+      });
+      dispatch({
+        type: AuthActionTypes.CLEAR_ERROR,
+      });
+      return updatedUser;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: AuthActionTypes.UPDATE_USER_ERROR,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };
+
 export const clearErrorUser = () => (dispatch: Dispatch<AuthAction>) => {
   dispatch({
     type: AuthActionTypes.CLEAR_ERROR,

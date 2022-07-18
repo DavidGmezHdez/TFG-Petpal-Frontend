@@ -41,7 +41,7 @@ export const Pet = ({pet}: Props) => {
         onPress={hanldeAdoption}>
         <Text large style={styles.textStyle}>
           {`Marcar como ${
-            pet.sex === 'Masculino' ? `Adoptado` : `Adptadada`
+            pet.sex === 'Masculino' ? `adoptado` : `adptadada`
           } y borrar de la lista`}
         </Text>
       </Pressable>

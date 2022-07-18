@@ -5,9 +5,9 @@ import {getUser} from '@redux/user/user_reducer';
 import {clearErrorUser} from '@redux/user/user_actions';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
-import {Pet} from '@screens/Pets/components/Pet';
 import {IPet} from '@utils/Types';
 import {clearErrorPet} from '@redux/pets/pets_actions';
+import {Pet} from './components/Pet';
 
 type Props = {
   showModal: boolean;

@@ -12,5 +12,31 @@ export const PetSchema = Yup.object().shape({
   size: Yup.string().required('Campo obligatorio'),
   race: Yup.string().required('Campo obligatorio'),
   description: Yup.string().required('Campo obligatorio'),
-  sex: Yup.string().required('Campo obligatorio'),
+  sex: Yup.string().required('Campo obligatorio').nullable(),
 });
+
+export type petValuesTypes = {
+  name: string;
+  description: string;
+  type: string;
+  sex: string;
+  age: string;
+  race: string;
+  size: string;
+  imageUri: string;
+  imageType: string;
+  imageName: string;
+};
+
+export const initialValues: petValuesTypes = {
+  name: '',
+  description: '',
+  sex: '',
+  type: '',
+  age: '',
+  race: '',
+  size: '',
+  imageUri: '',
+  imageType: '',
+  imageName: '',
+};

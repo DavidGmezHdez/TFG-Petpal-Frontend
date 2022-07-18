@@ -21,6 +21,8 @@ const initialState: AuthState = {
     contactPhone: '',
     availablePets: [],
     region: '',
+    image: '',
+    imageKey: '',
   },
   isAuthenticated: false,
   isLoading: false,

@@ -1,12 +1,19 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Modal, StyleSheet, View, TextInput} from 'react-native';
+import {Modal, StyleSheet, View, TextInput, Image} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
+import RNPickerSelect from 'react-native-picker-select';
 import {getUser, getUserError, getUserErrorMsg} from '@redux/user/user_reducer';
-import {clearErrorUser, updateUserProfile} from '@redux/user/user_actions';
+import {
+  clearErrorUser,
+  updateUser,
+  updateUserProfile,
+} from '@redux/user/user_actions';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
-import {UserSchemaEdit, UserTypes} from './lib';
+import {options, ProtectorSchemaEdit, UserSchemaEdit, UserTypes} from './lib';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {provinces, px} from '@utils/Constants';
 
 type Props = {
   showModal: boolean;
@@ -21,10 +28,26 @@ export const EditProfileModal = ({showModal, setShowModal}: Props) => {
 
   const submit = async (values: UserTypes) => {
     const formData = new FormData();
-    formData.append('name', values.name);
-    formData.append('email', values.email);
-    formData.append('password', values.password);
-    formData.append('_method', 'PATCH');
+    const sendUser =
+      user.rol === 'Usuario'
+        ? {
+            ...user,
+            email: values.email,
+            name: values.name,
+            password: values.password,
+          }
+        : {
+            ...user,
+            email: values.email,
+            name: values.name,
+            password: values.password,
+            region: values.region,
+            direction: values.direction,
+            contactPhone: values.contactPhone,
+          };
+
+    console.log(user);
+    const finalUser = await dispatch(updateUser(user._id, sendUser, user.rol));
 
     if (values.imageUri) {
       formData.append('image', {
@@ -33,11 +56,11 @@ export const EditProfileModal = ({showModal, setShowModal}: Props) => {
         type: values.imageType,
         name: values.name,
       });
+      formData.append('_method', 'PATCH');
+
+      await dispatch(updateUserProfile(user._id, formData, user.rol));
     }
 
-    const finalUser = await dispatch(
-      updateUserProfile(user._id, formData, user.rol),
-    );
     if (finalUser) {
       setShowModal(false);
     }
@@ -57,21 +80,46 @@ export const EditProfileModal = ({showModal, setShowModal}: Props) => {
               name: user.name,
               email: user.email,
               password: '',
+              region: user.region ?? '',
+              direction: user.direction ?? '',
+              contactPhone: user.contactPhone ?? '',
               imageUri: '',
               imageType: '',
               imageName: '',
             }}
             onSubmit={submit}
-            validationSchema={UserSchemaEdit}>
+            validationSchema={
+              user.rol === 'Usuario' ? UserSchemaEdit : ProtectorSchemaEdit
+            }>
             {({
               handleChange,
               handleBlur,
               handleSubmit,
+              setFieldValue,
               values,
               errors,
               touched,
             }) => (
               <View style={styles.centeredViewForm}>
+                {values.imageUri.length ? (
+                  <Image
+                    source={{uri: values.imageUri}}
+                    style={styles.images}
+                  />
+                ) : null}
+                <Pressable
+                  style={[styles.button, styles.buttonOpen]}
+                  onPress={async () => {
+                    const {assets} = await launchImageLibrary(options);
+                    setFieldValue('imageUri', assets![0].uri);
+                    setFieldValue('imageType', assets![0].type);
+                    setFieldValue('imageName', assets![0].fileName);
+                  }}>
+                  <Text large style={styles.textStyle}>
+                    {user.image ? 'Cambiar foto' : 'Subir foto'}
+                  </Text>
+                </Pressable>
+
                 <TextInput
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
@@ -101,6 +149,43 @@ export const EditProfileModal = ({showModal, setShowModal}: Props) => {
                 />
                 {errors.password && touched.password ? (
                   <Text large>{errors.password}</Text>
+                ) : null}
+
+                {user.rol === 'Protectora' ? (
+                  <>
+                    <RNPickerSelect
+                      onValueChange={value => setFieldValue('region', value)}
+                      items={provinces}
+                      placeholder={{label: 'Cualquier provincia', value: null}}
+                      value={values.region}
+                    />
+                    {errors.region && touched.region ? (
+                      <Text large>{errors.region}</Text>
+                    ) : null}
+
+                    <TextInput
+                      onChangeText={handleChange('direction')}
+                      onBlur={handleBlur('direction')}
+                      value={values.direction}
+                      placeholder={'Direccion'}
+                    />
+                    {errors.password && touched.password ? (
+                      <Text large>{errors.password}</Text>
+                    ) : null}
+
+                    <TextInput
+                      onChangeText={handleChange('contactPhone')}
+                      value={values.contactPhone}
+                      keyboardType="numeric"
+                      placeholder={'Teléfono de contacto'}
+                      maxLength={9}
+                    />
+                    {errors.contactPhone && touched.contactPhone ? (
+                      <Text large color={'red'}>
+                        {errors.contactPhone}
+                      </Text>
+                    ) : null}
+                  </>
                 ) : null}
 
                 {userError && userErrorMsg ? (
@@ -197,5 +282,12 @@ const styles = StyleSheet.create({
     height: 100,
     padding: 10,
     marginBottom: 10,
+  },
+  images: {
+    width: 200 * px,
+    height: 200 * px,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginHorizontal: 3,
   },
 });

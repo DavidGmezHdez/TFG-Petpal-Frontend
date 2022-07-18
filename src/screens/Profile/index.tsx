@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
 import {useDispatch, useSelector} from 'react-redux';
@@ -14,6 +14,7 @@ import {PetsProfileModal} from '@modals/PetsProfile';
 import {CreatePetModal} from '@modals/CreatePet';
 import {Pressable} from '@components/Pressable';
 import {Text} from '@components/TextWrapper';
+import {px} from '@utils/Constants';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'feed'>;
 
@@ -25,6 +26,7 @@ export const Profile = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
   const isLoading = useSelector(getLoadingUser);
   const rol = useSelector(getUser).rol;
+  const user = useSelector(getUser);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showPostsModal, setShowPostsModal] = useState<boolean>(false);
   const [showEventsModal, setShowEventsModal] = useState<boolean>(false);
@@ -56,6 +58,9 @@ export const Profile = ({navigation}: Props) => {
         setShowModal={setShowPostsModal}
       />
       <Text large>Perfil</Text>
+      {user.image && user.image.length ? (
+        <Image source={{uri: user.image}} style={styles.images} />
+      ) : null}
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setShowEditModal(true)}>
@@ -154,5 +159,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  images: {
+    width: 200 * px,
+    height: 200 * px,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginHorizontal: 3,
   },
 });

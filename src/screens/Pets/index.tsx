@@ -5,12 +5,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchPets} from '@redux/pets/pets_actions';
 import {Text} from '@components/TextWrapper';
 import {IPet} from '@utils/Types';
-import {getLoadingPets, getPets} from '@redux/pets/posts_reducer';
+import {getLoadingPets, getPets} from '@redux/pets/pets_reducer';
 import {Pet} from './components/Pet';
 import {Pressable} from '@components/Pressable';
 import RNPickerSelect from 'react-native-picker-select';
-import {provinces, types, ages, dogRace, catRace} from '@utils/Constants';
+import {provinces, types, ages} from '@utils/Constants';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
+import {getRaces} from '@utils/Helpers';
 
 export const Pets = () => {
   const dispatch = useDispatch<any>();
@@ -23,16 +24,6 @@ export const Pets = () => {
 
   const handleSearch = () => {
     dispatch(fetchPets({type, region, age, race}));
-  };
-
-  const getRaces = () => {
-    if (type === 'Perro') {
-      return dogRace;
-    } else if (type === 'Gato') {
-      return catRace;
-    } else {
-      return [];
-    }
   };
 
   if (isLoading) {
@@ -65,7 +56,7 @@ export const Pets = () => {
       {type === 'Perro' || type === 'Gato' ? (
         <RNPickerSelect
           onValueChange={value => setRace(value)}
-          items={getRaces()}
+          items={getRaces(type)}
           placeholder={{label: 'Cualquier raza', value: null}}
           value={race}
         />

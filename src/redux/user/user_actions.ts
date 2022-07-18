@@ -71,6 +71,7 @@ export const login =
     try {
       const res = await AuthService.login(email, password);
       const user = res.data.user;
+      console.log('USER ACTION', user);
       dispatch({
         type: AuthActionTypes.LOGIN_SUCCESS,
         payload: {user, token: user.token},

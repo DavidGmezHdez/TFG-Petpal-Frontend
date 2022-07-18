@@ -5,12 +5,13 @@ import {RootStackParam} from 'navigation/navigation.types';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '@redux/user/user_actions';
 import {ActivityIndicator} from 'react-native-paper';
-import {getLoadingUser} from '@redux/user/user_reducer';
+import {getLoadingUser, getUser} from '@redux/user/user_reducer';
 import {EditProfileModal} from '@modals/EditProfile';
 import {PostsProfileModal} from '@modals/PostsProfile';
 import {EventsProfileModal} from '@modals/EventsProfile';
 import {JoinedEventsProfileModal} from '@modals/JoinedEvents';
 import {PetsProfileModal} from '@modals/PetsProfile';
+import {CreatePetModal} from '@modals/CreatePet';
 import {Pressable} from '@components/Pressable';
 import {Text} from '@components/TextWrapper';
 
@@ -23,12 +24,14 @@ type Props = {
 export const Profile = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
   const isLoading = useSelector(getLoadingUser);
+  const rol = useSelector(getUser).rol;
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showPostsModal, setShowPostsModal] = useState<boolean>(false);
   const [showEventsModal, setShowEventsModal] = useState<boolean>(false);
   const [showJoinedEventsModal, setShowJoinedEventsModal] =
     useState<boolean>(false);
   const [showPetsModal, setShowPetsModal] = useState<boolean>(false);
+  const [showCreatePetModal, setShowCreatePetsModal] = useState<boolean>(false);
 
   const _handleLogout = () => {
     dispatch(logout());
@@ -52,22 +55,6 @@ export const Profile = ({navigation}: Props) => {
         showModal={showPostsModal}
         setShowModal={setShowPostsModal}
       />
-      <EventsProfileModal
-        showModal={showEventsModal}
-        setShowModal={setShowEventsModal}
-      />
-      <EventsProfileModal
-        showModal={showEventsModal}
-        setShowModal={setShowEventsModal}
-      />
-      <JoinedEventsProfileModal
-        showModal={showJoinedEventsModal}
-        setShowModal={setShowJoinedEventsModal}
-      />
-      <PetsProfileModal
-        showModal={showPetsModal}
-        setShowModal={setShowPetsModal}
-      />
       <Text large>Perfil</Text>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
@@ -83,27 +70,54 @@ export const Profile = ({navigation}: Props) => {
           Ver Posts
         </Text>
       </Pressable>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setShowEventsModal(true)}>
-        <Text large style={styles.textStyle}>
-          Ver mis quedadas creadas
-        </Text>
-      </Pressable>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setShowJoinedEventsModal(true)}>
-        <Text large style={styles.textStyle}>
-          Ver mis quedadas apuntadas
-        </Text>
-      </Pressable>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setShowPetsModal(true)}>
-        <Text large style={styles.textStyle}>
-          Ver mis mascotas
-        </Text>
-      </Pressable>
+      {rol !== 'Protectora' ? (
+        <>
+          <EventsProfileModal
+            showModal={showEventsModal}
+            setShowModal={setShowEventsModal}
+          />
+          <JoinedEventsProfileModal
+            showModal={showJoinedEventsModal}
+            setShowModal={setShowJoinedEventsModal}
+          />
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setShowEventsModal(true)}>
+            <Text large style={styles.textStyle}>
+              Ver mis quedadas creadas
+            </Text>
+          </Pressable>
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setShowJoinedEventsModal(true)}>
+            <Text large style={styles.textStyle}>
+              Ver mis quedadas apuntadas
+            </Text>
+          </Pressable>
+        </>
+      ) : null}
+
+      {rol === 'Protectora' ? (
+        <>
+          <PetsProfileModal
+            showModal={showPetsModal}
+            setShowModal={setShowPetsModal}
+            setShowCreatePetModal={setShowCreatePetsModal}
+          />
+          <CreatePetModal
+            showModal={showCreatePetModal}
+            setShowModal={setShowCreatePetsModal}
+          />
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setShowPetsModal(true)}>
+            <Text large style={styles.textStyle}>
+              Ver mis mascotas
+            </Text>
+          </Pressable>
+        </>
+      ) : null}
+
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={_handleLogout}>

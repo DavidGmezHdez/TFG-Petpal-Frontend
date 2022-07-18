@@ -5,7 +5,14 @@ const fetchPets = async (params: any) => {
 };
 
 const sendPet = async (pet: any) => {
-  return await axios.post('/pets', {pet: pet});
+  return await axios.post('/pets', pet, {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+    transformRequest: (data: any) => {
+      return data;
+    },
+  });
 };
 
 const updatePet = async (petId: string, pet: any) => {

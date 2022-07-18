@@ -3,11 +3,27 @@ import {StyleSheet, View, Image} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPet} from '@utils/Types';
 import {px} from '@utils/Constants';
+import {Pressable} from '@components/Pressable';
+import {useDispatch, useSelector} from 'react-redux';
+import {deletePet} from '@redux/pets/pets_actions';
+import {getUser} from '@redux/user/user_reducer';
+import {updateUser} from '@redux/user/user_actions';
 type Props = {
   pet: IPet;
 };
 
 export const Pet = ({pet}: Props) => {
+  const dispatch = useDispatch<any>();
+  const user = useSelector(getUser);
+
+  const hanldeAdoption = async () => {
+    await dispatch(deletePet(pet._id));
+
+    const pets = user.pets.filter((upet: IPet) => upet._id !== pet._id);
+
+    await dispatch(updateUser(user._id, {pets}, user.rol));
+  };
+
   return (
     <View style={styles.container}>
       <Text large>Nombre: {pet.name}</Text>
@@ -17,14 +33,18 @@ export const Pet = ({pet}: Props) => {
       <Text large>Tamaño: {pet.size}</Text>
       <Text large>Raza: {pet.race}</Text>
       <Text large>Descripcion: {pet.description}</Text>
-      <Text large>Rasgos especiales</Text>
-      <Text large>Nombre protectora: {pet.protector.name}</Text>
-      <Text large>Telefono de contacto: {pet.protector.contactPhone}</Text>
-      <Text large>Direccion: {pet.protector.direction}</Text>
-      <Text large>Provincia: {pet.protector.region}</Text>
       {pet.image ? (
         <Image source={{uri: pet.image}} style={styles.images} />
       ) : null}
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={hanldeAdoption}>
+        <Text large style={styles.textStyle}>
+          {`Marcar como ${
+            pet.sex === 'Masculino' ? `Adoptado` : `Adptadada`
+          } y borrar de la lista`}
+        </Text>
+      </Pressable>
     </View>
   );
 };

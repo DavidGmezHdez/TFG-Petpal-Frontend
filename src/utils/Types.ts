@@ -53,11 +53,11 @@ export type IPet = {
   name: string;
   type: string;
   description: string;
+  sex: string;
   age: number;
   race: string;
   color: string;
   size: string;
-  specialTraits: string[];
   owner: string;
   image: string;
   protector: IUser;

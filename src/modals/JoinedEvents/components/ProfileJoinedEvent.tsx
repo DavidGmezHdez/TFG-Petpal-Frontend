@@ -15,6 +15,7 @@ type Props = {
 export const ProfileJoinedEvent = ({event}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
+  console.log('USER', user);
 
   const quitEvent = async () => {
     const attendingEvents = user.attendingEvents?.filter(

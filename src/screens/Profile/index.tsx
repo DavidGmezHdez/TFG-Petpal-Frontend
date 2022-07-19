@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
+import FastImage from 'react-native-fast-image';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '@redux/user/user_actions';
 import {ActivityIndicator} from 'react-native-paper';
@@ -56,7 +57,10 @@ export const Profile = ({navigation}: Props) => {
       />
       <Text large>Perfil</Text>
       {user.image && user.image.length ? (
-        <Image source={{uri: user.image}} style={styles.images} />
+        <FastImage
+          source={{uri: user.image + '?' + new Date()}}
+          style={styles.images}
+        />
       ) : null}
       <Pressable
         style={[styles.button, styles.buttonOpen]}

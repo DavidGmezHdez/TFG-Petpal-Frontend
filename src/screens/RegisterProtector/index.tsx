@@ -7,7 +7,7 @@ import {ProtectorSchema, ProtectorTypes} from './lib';
 import {Text} from '@components/TextWrapper';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
-import {register} from '@redux/user/user_actions';
+import {clearErrorUser, register} from '@redux/user/user_actions';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserError, getUserErrorMsg} from '@redux/user/user_reducer';
 import {options, provinces, px} from '@utils/Constants';
@@ -53,6 +53,7 @@ export const RegisterProtector = ({navigation}: RegisterProtectorProps) => {
       const res = await dispatch(register(formData, 'Protectora'));
       if (res) {
         navigation.navigate('login');
+        dispatch(clearErrorUser());
       }
     } catch (error) {
       console.log(error);

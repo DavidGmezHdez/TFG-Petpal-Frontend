@@ -15,4 +15,7 @@ export type UserTypes = {
   email: string;
   password: string;
   name: string;
+  imageUri: string;
+  imageType: string;
+  imageName: string;
 };

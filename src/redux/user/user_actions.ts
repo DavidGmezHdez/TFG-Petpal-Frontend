@@ -97,10 +97,9 @@ export const login =
   };
 
 export const register =
-  (name: string, email: string, password: string, rol: string) =>
-  async (dispatch: Dispatch<AuthAction>) => {
+  (user: FormData, rol: string) => async (dispatch: Dispatch<AuthAction>) => {
     try {
-      const res = await AuthService.register(name, email, password, rol);
+      const res = await AuthService.register(user, rol);
       dispatch({type: AuthActionTypes.REGISTER_SUCCESS, payload: res.data});
       dispatch({
         type: AuthActionTypes.CLEAR_ERROR,

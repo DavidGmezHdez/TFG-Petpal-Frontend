@@ -1,4 +1,3 @@
-import {ImageLibraryOptions} from 'react-native-image-picker';
 import * as Yup from 'yup';
 export const UserSchemaEdit = Yup.object().shape({
   name: Yup.string()
@@ -33,9 +32,4 @@ export type UserTypes = {
   region: string;
   direction: string;
   contactPhone: string;
-};
-
-export const options: ImageLibraryOptions = {
-  mediaType: 'photo',
-  selectionLimit: 1,
 };

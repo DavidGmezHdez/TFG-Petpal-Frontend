@@ -1,35 +1,23 @@
 import axios from '@utils/api/axios';
 
 const updateUser = async (userId: string, user: any, rol: string) => {
-  if (rol === 'Usuario') {
-    return await axios.patch(`/users/${userId}`, {user});
-  } else {
-    console.log('AAA', user);
-    return await axios.patch(`/protectors/${userId}`, {protector: user});
-  }
+  const apiURL =
+    rol === 'Usuario' ? `/users/${userId}` : `/protectors/${userId}`;
+  const body = rol === 'Usuario' ? {user} : {protector: user};
+  return await axios.patch(apiURL, body);
 };
 
 const updateUserProfile = async (userId: string, user: any, rol: string) => {
-  console.log(userId);
-  if (rol === 'Usuario') {
-    return await axios.post(`/users/${userId}`, user, {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-      transformRequest: (data: any) => {
-        return data;
-      },
-    });
-  } else {
-    return await axios.post(`/protectors/${userId}`, user, {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-      transformRequest: (data: any) => {
-        return data;
-      },
-    });
-  }
+  const apiURL =
+    rol === 'Usuario' ? `/users/${userId}` : `/protectors/${userId}`;
+  return await axios.post(apiURL, user, {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+    transformRequest: (data: any) => {
+      return data;
+    },
+  });
 };
 
 export default {

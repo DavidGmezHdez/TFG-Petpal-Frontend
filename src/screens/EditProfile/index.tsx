@@ -12,9 +12,9 @@ import {
 } from '@redux/user/user_actions';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
-import {options, ProtectorSchemaEdit, UserSchemaEdit, UserTypes} from './lib';
+import {ProtectorSchemaEdit, UserSchemaEdit, UserTypes} from './lib';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {provinces, px} from '@utils/Constants';
+import {options, provinces, px} from '@utils/Constants';
 import {RootStackParam} from 'navigation/navigation.types';
 
 type NavigationStackProp = NativeStackScreenProps<
@@ -51,8 +51,6 @@ export const EditProfileScreen = ({navigation}: Props) => {
             direction: values.direction,
             contactPhone: values.contactPhone,
           };
-    const finalUser = await dispatch(updateUser(user._id, sendUser, user.rol));
-
     if (values.imageUri) {
       formData.append('image', {
         // @ts-ignore: Type error
@@ -64,6 +62,8 @@ export const EditProfileScreen = ({navigation}: Props) => {
 
       await dispatch(updateUserProfile(user._id, formData, user.rol));
     }
+
+    const finalUser = await dispatch(updateUser(user._id, sendUser, user.rol));
 
     if (finalUser) {
       navigation.navigate('tabs_navigator');

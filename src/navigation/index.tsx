@@ -5,6 +5,7 @@ import {WelcomeScreen} from '@screens/WelcomeScreen';
 import {RegisterUser} from '@screens/RegisterUser';
 import {RegisterProtector} from '@screens/RegisterProtector';
 import {Login} from '@screens/Login';
+import {CreatePetScreen} from '@screens/CreatePet';
 import {TabsNavigator} from './tabs-navigator';
 import {useSelector} from 'react-redux';
 import {RootState} from '@redux/store';
@@ -44,6 +45,11 @@ export const Navigation = () => {
         <Stack.Screen
           name={'tabs_navigator'}
           component={TabsNavigator}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'createPets'}
+          component={CreatePetScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

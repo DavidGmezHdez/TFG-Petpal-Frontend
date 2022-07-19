@@ -11,7 +11,6 @@ import {PostsProfileModal} from '@modals/PostsProfile';
 import {EventsProfileModal} from '@modals/EventsProfile';
 import {JoinedEventsProfileModal} from '@modals/JoinedEvents';
 import {PetsProfileModal} from '@modals/PetsProfile';
-import {CreatePetModal} from '@modals/CreatePet';
 import {Pressable} from '@components/Pressable';
 import {Text} from '@components/TextWrapper';
 import {px} from '@utils/Constants';
@@ -33,11 +32,14 @@ export const Profile = ({navigation}: Props) => {
   const [showJoinedEventsModal, setShowJoinedEventsModal] =
     useState<boolean>(false);
   const [showPetsModal, setShowPetsModal] = useState<boolean>(false);
-  const [showCreatePetModal, setShowCreatePetsModal] = useState<boolean>(false);
 
   const _handleLogout = () => {
     dispatch(logout());
     navigation.navigate('login');
+  };
+
+  const hanldeAddPet = () => {
+    navigation.navigate('createPets');
   };
 
   if (isLoading) {
@@ -107,11 +109,7 @@ export const Profile = ({navigation}: Props) => {
           <PetsProfileModal
             showModal={showPetsModal}
             setShowModal={setShowPetsModal}
-            setShowCreatePetModal={setShowCreatePetsModal}
-          />
-          <CreatePetModal
-            showModal={showCreatePetModal}
-            setShowModal={setShowCreatePetsModal}
+            navigateCreatePet={hanldeAddPet}
           />
           <Pressable
             style={[styles.button, styles.buttonOpen]}

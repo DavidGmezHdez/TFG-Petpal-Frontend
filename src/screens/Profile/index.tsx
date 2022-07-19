@@ -6,7 +6,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '@redux/user/user_actions';
 import {ActivityIndicator} from 'react-native-paper';
 import {getLoadingUser, getUser} from '@redux/user/user_reducer';
-import {EditProfileModal} from '@modals/EditProfile';
 import {PostsProfileModal} from '@modals/PostsProfile';
 import {EventsProfileModal} from '@modals/EventsProfile';
 import {JoinedEventsProfileModal} from '@modals/JoinedEvents';
@@ -26,7 +25,7 @@ export const Profile = ({navigation}: Props) => {
   const isLoading = useSelector(getLoadingUser);
   const rol = useSelector(getUser).rol;
   const user = useSelector(getUser);
-  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  // TODO: GET RID OF THIS AND MOVE IT TO A USE REDUCER
   const [showPostsModal, setShowPostsModal] = useState<boolean>(false);
   const [showEventsModal, setShowEventsModal] = useState<boolean>(false);
   const [showJoinedEventsModal, setShowJoinedEventsModal] =
@@ -51,10 +50,6 @@ export const Profile = ({navigation}: Props) => {
   }
   return (
     <View style={styles.container}>
-      <EditProfileModal
-        showModal={showEditModal}
-        setShowModal={setShowEditModal}
-      />
       <PostsProfileModal
         showModal={showPostsModal}
         setShowModal={setShowPostsModal}
@@ -65,7 +60,7 @@ export const Profile = ({navigation}: Props) => {
       ) : null}
       <Pressable
         style={[styles.button, styles.buttonOpen]}
-        onPress={() => setShowEditModal(true)}>
+        onPress={() => navigation.navigate('editProfile')}>
         <Text large style={styles.textStyle}>
           Editar Perfil
         </Text>

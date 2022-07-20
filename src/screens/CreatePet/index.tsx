@@ -219,8 +219,6 @@ export const CreatePetScreen = ({navigation}: Props) => {
                     setFieldValue('imageUri', assets![0].uri);
                     setFieldValue('imageType', assets![0].type);
                     setFieldValue('imageName', assets![0].fileName);
-                    console.log(values);
-                    console.log(assets);
                   }}>
                   <Text large style={styles.textStyle}>
                     Subir Foto

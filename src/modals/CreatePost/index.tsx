@@ -2,12 +2,16 @@ import React, {Dispatch, SetStateAction, useCallback} from 'react';
 import {Modal, StyleSheet, View, TextInput} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {getUser} from '@redux/user/user_reducer';
 import {clearErrorPost, sendPost} from '@redux/posts/posts_actions';
 import {updateUser} from '@redux/user/user_actions';
 import {PostSchema} from './lib';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
+import FastImage from 'react-native-fast-image';
+
+import {options, px} from '@utils/Constants';
 
 type Props = {
   showModal: boolean;
@@ -21,14 +25,21 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
   const _handleSubmit = useCallback(
     async (values: any) => {
       try {
-        const post = {
-          text: values.text,
-          author: user._id,
-          name: user.name,
-          likes: 0,
-          image: '',
-        };
-        const createdPost = await dispatch(sendPost(post));
+        const formData = new FormData();
+        formData.append('name', user.name);
+        formData.append('text', values.text);
+        formData.append('author', user._id);
+
+        if (values.imageUri) {
+          formData.append('image', {
+            // @ts-ignore: Type error
+            uri: values.imageUri,
+            type: values.imageType,
+            name: user.name,
+          });
+        }
+
+        const createdPost = await dispatch(sendPost(formData));
         if (createdPost) {
           const posts = [...(user.posts ?? []), createdPost._id];
           await dispatch(updateUser(user._id, {posts}, user.rol));
@@ -51,13 +62,19 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Formik
-            initialValues={{text: ''}}
+            initialValues={{
+              text: '',
+              imageUri: '',
+              imageType: '',
+              imageName: '',
+            }}
             onSubmit={_handleSubmit}
             validationSchema={PostSchema}>
             {({
               handleChange,
               handleBlur,
               handleSubmit,
+              setFieldValue,
               values,
               errors,
               touched,
@@ -77,6 +94,40 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
                   <Text large color={'red'}>
                     {errors.text}
                   </Text>
+                ) : null}
+
+                {!values.imageUri ? (
+                  <Pressable
+                    style={[styles.button, styles.buttonOpen]}
+                    onPress={async () => {
+                      const {assets} = await launchImageLibrary(options);
+                      setFieldValue('imageUri', assets![0].uri);
+                      setFieldValue('imageType', assets![0].type);
+                      setFieldValue('imageName', assets![0].fileName);
+                    }}>
+                    <Text large style={styles.textStyle}>
+                      Subir Foto
+                    </Text>
+                  </Pressable>
+                ) : (
+                  <Pressable
+                    style={[styles.button, styles.buttonOpen]}
+                    onPress={async () => {
+                      setFieldValue('imageUri', '');
+                      setFieldValue('imageType', '');
+                      setFieldValue('imageName', '');
+                    }}>
+                    <Text large style={styles.textStyle}>
+                      Borrar foto
+                    </Text>
+                  </Pressable>
+                )}
+
+                {values.imageUri.length ? (
+                  <FastImage
+                    source={{uri: values.imageUri}}
+                    style={styles.images}
+                  />
                 ) : null}
                 <Pressable
                   style={[styles.button, styles.buttonOpen]}
@@ -126,7 +177,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     width: '90%',
-    height: 300,
+    height: 1200 * px,
   },
   button: {
     borderRadius: 20,
@@ -169,5 +220,12 @@ const styles = StyleSheet.create({
     height: 100,
     padding: 10,
     marginBottom: 10,
+  },
+  images: {
+    width: 200 * px,
+    height: 200 * px,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginHorizontal: 3,
   },
 });

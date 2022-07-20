@@ -5,7 +5,14 @@ const fetchPosts = async () => {
 };
 
 const sendPost = async (post: any) => {
-  return await axios.post('/posts', {post: post});
+  return await axios.post('/posts', post, {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+    transformRequest: (data: any) => {
+      return data;
+    },
+  });
 };
 
 const updatePost = async (postId: string, post: any) => {

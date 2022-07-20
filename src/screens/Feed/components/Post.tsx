@@ -12,6 +12,8 @@ import {
 } from '@redux/posts/posts_actions';
 import {updateUser} from '@redux/user/user_actions';
 import {Pressable} from '@components/Pressable';
+import FastImage from 'react-native-fast-image';
+import {px} from '@utils/Constants';
 
 type Props = {
   post: IPost;
@@ -82,6 +84,9 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
           : null}
       </Text>
       <Text large>Likes: {post.likes}</Text>
+      {post.image ? (
+        <FastImage source={{uri: post.image}} style={styles.images} />
+      ) : null}
       {!ownedByUser ? (
         <Pressable
           style={[styles.button, styles.buttonOpen]}
@@ -186,5 +191,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  images: {
+    width: 200 * px,
+    height: 200 * px,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginHorizontal: 3,
   },
 });

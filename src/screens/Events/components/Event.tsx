@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
 import {deleteEvent, updateEvent} from '@redux/events/events_actions';
 import {updateUser} from '@redux/user/user_actions';
+import {hasPermissions} from '@utils/Helpers';
 
 type Props = {
   event: IEvent;
@@ -17,6 +18,7 @@ export const Event = ({event}: Props) => {
   const user = useSelector(getUser);
   const joinedByUser = event.attendants?.some(usr => usr._id === user._id);
   const ownedByUser = event.host._id === user._id;
+  const canDelete = ownedByUser || hasPermissions(user);
 
   const _joinEvent = async (joined: boolean) => {
     const attendingEvents = joinedByUser
@@ -60,10 +62,10 @@ export const Event = ({event}: Props) => {
         <Text large>No hay nadie apuntado</Text>
       )}
 
-      {ownedByUser ? (
+      {!ownedByUser ? (
         <Pressable
           style={[styles.button, styles.buttonOpen]}
-          onPress={() => (joinedByUser ? _joinEvent(true) : _joinEvent(false))}>
+          onPress={() => _joinEvent(joinedByUser)}>
           {joinedByUser ? (
             <Text large style={styles.textStyle}>
               Desapuntarse
@@ -76,7 +78,7 @@ export const Event = ({event}: Props) => {
         </Pressable>
       ) : null}
 
-      {ownedByUser ? (
+      {canDelete ? (
         <Pressable
           style={[styles.button, styles.buttonOpen]}
           onPress={_deleteEvent}>

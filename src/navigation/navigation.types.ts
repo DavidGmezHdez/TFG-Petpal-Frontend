@@ -8,4 +8,6 @@ export type RootStackParam = {
   pets: undefined;
   profile: undefined;
   events: undefined;
+  createPets: undefined;
+  editProfile: undefined;
 };

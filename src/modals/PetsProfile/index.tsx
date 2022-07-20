@@ -12,13 +12,13 @@ import {Pet} from './components/Pet';
 type Props = {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
-  setShowCreatePetModal: Dispatch<SetStateAction<boolean>>;
+  navigateCreatePet: () => void;
 };
 
 export const PetsProfileModal = ({
   showModal,
   setShowModal,
-  setShowCreatePetModal,
+  navigateCreatePet,
 }: Props) => {
   const dispatch = useDispatch<any>();
   const pets = useSelector(getUser).pets;
@@ -30,7 +30,8 @@ export const PetsProfileModal = ({
 
   const showAddPetModal = () => {
     dispatch(clearErrorPet());
-    setShowCreatePetModal(true);
+    setShowModal(false);
+    navigateCreatePet();
   };
 
   return (

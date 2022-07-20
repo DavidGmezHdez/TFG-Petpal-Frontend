@@ -1,4 +1,5 @@
 import {catRace, dogRace} from './Constants';
+import {IUser} from './Types';
 
 export const getRaces = (type: string) => {
   if (type === 'Perro') {
@@ -8,4 +9,8 @@ export const getRaces = (type: string) => {
   } else {
     return [];
   }
+};
+
+export const hasPermissions = (user: IUser) => {
+  return user.rol === 'Moderador' || user.rol === 'Administrador';
 };

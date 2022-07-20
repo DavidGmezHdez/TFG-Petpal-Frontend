@@ -12,6 +12,7 @@ export enum AuthActionTypes {
   UPDATE_USER_SUCCESS = 'updateSuccess',
   UPDATE_USER_ERROR = 'updateError',
   VALID_PERSISTED_TOKEN = 'checkPersistedToken',
+  UPDATE_USER_IMAGE_SUCCESS = 'updateImageSuccess',
 }
 
 interface AuthLoadingAction {
@@ -46,6 +47,11 @@ interface UpdateErrorAction {
   payload: any;
 }
 
+interface UpdateImageSuccessAction {
+  type: AuthActionTypes.UPDATE_USER_IMAGE_SUCCESS;
+  payload: {image: any};
+}
+
 interface ClearErrorAction {
   type: AuthActionTypes.CLEAR_ERROR;
 }
@@ -63,6 +69,7 @@ export type AuthAction =
   | LogoutSuccessAction
   | RegisterSuccessAction
   | UpdateSuccessAction
+  | UpdateImageSuccessAction
   | UpdateErrorAction;
 
 export const login =
@@ -90,10 +97,9 @@ export const login =
   };
 
 export const register =
-  (name: string, email: string, password: string, rol: string) =>
-  async (dispatch: Dispatch<AuthAction>) => {
+  (user: FormData, rol: string) => async (dispatch: Dispatch<AuthAction>) => {
     try {
-      const res = await AuthService.register(name, email, password, rol);
+      const res = await AuthService.register(user, rol);
       dispatch({type: AuthActionTypes.REGISTER_SUCCESS, payload: res.data});
       dispatch({
         type: AuthActionTypes.CLEAR_ERROR,
@@ -129,6 +135,58 @@ export const updateUser =
         type: AuthActionTypes.CLEAR_ERROR,
       });
       return updatedUser;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: AuthActionTypes.UPDATE_USER_ERROR,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };
+
+export const updateUserProfile =
+  (userId: string, user: any, rol: string) =>
+  async (dispatch: Dispatch<AuthAction>) => {
+    try {
+      dispatch({
+        type: AuthActionTypes.AUTH_LOADING,
+      });
+      const res = await UserService.updateUserProfile(userId, user, rol);
+      const updatedUser = res.data;
+      dispatch({
+        type: AuthActionTypes.UPDATE_USER_SUCCESS,
+        payload: {user: updatedUser},
+      });
+      dispatch({
+        type: AuthActionTypes.CLEAR_ERROR,
+      });
+      return updatedUser;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: AuthActionTypes.UPDATE_USER_ERROR,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };
+
+export const updateUserProfileImage =
+  (userId: string, user: any, rol: string) =>
+  async (dispatch: Dispatch<AuthAction>) => {
+    try {
+      dispatch({
+        type: AuthActionTypes.AUTH_LOADING,
+      });
+      const res = await UserService.updateUserProfile(userId, user, rol);
+      const image = res.data;
+      dispatch({
+        type: AuthActionTypes.UPDATE_USER_IMAGE_SUCCESS,
+        payload: {image: image},
+      });
+      dispatch({
+        type: AuthActionTypes.CLEAR_ERROR,
+      });
+      return image;
     } catch (e) {
       console.log(e);
       dispatch({

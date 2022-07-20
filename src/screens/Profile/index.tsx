@@ -2,18 +2,18 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
+import FastImage from 'react-native-fast-image';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '@redux/user/user_actions';
 import {ActivityIndicator} from 'react-native-paper';
 import {getLoadingUser, getUser} from '@redux/user/user_reducer';
-import {EditProfileModal} from '@modals/EditProfile';
 import {PostsProfileModal} from '@modals/PostsProfile';
 import {EventsProfileModal} from '@modals/EventsProfile';
 import {JoinedEventsProfileModal} from '@modals/JoinedEvents';
 import {PetsProfileModal} from '@modals/PetsProfile';
-import {CreatePetModal} from '@modals/CreatePet';
 import {Pressable} from '@components/Pressable';
 import {Text} from '@components/TextWrapper';
+import {px} from '@utils/Constants';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'feed'>;
 
@@ -25,17 +25,21 @@ export const Profile = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
   const isLoading = useSelector(getLoadingUser);
   const rol = useSelector(getUser).rol;
-  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const user = useSelector(getUser);
+  // TODO: GET RID OF THIS AND MOVE IT TO A USE REDUCER
   const [showPostsModal, setShowPostsModal] = useState<boolean>(false);
   const [showEventsModal, setShowEventsModal] = useState<boolean>(false);
   const [showJoinedEventsModal, setShowJoinedEventsModal] =
     useState<boolean>(false);
   const [showPetsModal, setShowPetsModal] = useState<boolean>(false);
-  const [showCreatePetModal, setShowCreatePetsModal] = useState<boolean>(false);
 
   const _handleLogout = () => {
     dispatch(logout());
     navigation.navigate('login');
+  };
+
+  const hanldeAddPet = () => {
+    navigation.navigate('createPets');
   };
 
   if (isLoading) {
@@ -47,18 +51,20 @@ export const Profile = ({navigation}: Props) => {
   }
   return (
     <View style={styles.container}>
-      <EditProfileModal
-        showModal={showEditModal}
-        setShowModal={setShowEditModal}
-      />
       <PostsProfileModal
         showModal={showPostsModal}
         setShowModal={setShowPostsModal}
       />
       <Text large>Perfil</Text>
+      {user.image && user.image.length ? (
+        <FastImage
+          source={{uri: user.image + '?' + new Date()}}
+          style={styles.images}
+        />
+      ) : null}
       <Pressable
         style={[styles.button, styles.buttonOpen]}
-        onPress={() => setShowEditModal(true)}>
+        onPress={() => navigation.navigate('editProfile')}>
         <Text large style={styles.textStyle}>
           Editar Perfil
         </Text>
@@ -102,11 +108,7 @@ export const Profile = ({navigation}: Props) => {
           <PetsProfileModal
             showModal={showPetsModal}
             setShowModal={setShowPetsModal}
-            setShowCreatePetModal={setShowCreatePetsModal}
-          />
-          <CreatePetModal
-            showModal={showCreatePetModal}
-            setShowModal={setShowCreatePetsModal}
+            navigateCreatePet={hanldeAddPet}
           />
           <Pressable
             style={[styles.button, styles.buttonOpen]}
@@ -154,5 +156,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  images: {
+    width: 200 * px,
+    height: 200 * px,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginHorizontal: 3,
   },
 });

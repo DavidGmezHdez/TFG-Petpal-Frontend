@@ -9,10 +9,19 @@ export const ProtectorSchema = Yup.object().shape({
     .max(30, 'La contraseña no puede ser más larga de 30 caracteres')
     .required('Campo obligatorio'),
   email: Yup.string().email('Email invalido').required('Campo obligatorio'),
+  region: Yup.string().required('Campo obligatorio').nullable(),
+  direction: Yup.string().required('Campo obligatorio'),
+  contactPhone: Yup.string().required('Campo obligatorio'),
 });
 
 export type ProtectorTypes = {
   email: string;
   password: string;
   name: string;
+  imageUri: string;
+  imageType: string;
+  imageName: string;
+  region: string;
+  direction: string;
+  contactPhone: string;
 };

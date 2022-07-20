@@ -1,4 +1,5 @@
 import {Dimensions} from 'react-native';
+import {ImageLibraryOptions} from 'react-native-image-picker';
 
 export const px = 1 / Dimensions.get('screen').scale;
 
@@ -313,3 +314,8 @@ export const catRace = [
     value: 'Gato siamés',
   },
 ];
+
+export const options: ImageLibraryOptions = {
+  mediaType: 'photo',
+  selectionLimit: 1,
+};

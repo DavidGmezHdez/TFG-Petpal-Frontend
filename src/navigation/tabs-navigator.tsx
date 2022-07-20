@@ -22,6 +22,7 @@ export const TabsNavigator = () => {
       initialRouteName={'feed'}
       activeColor={'white'}
       inactiveColor={'gray'}
+      // eslint-disable-next-line react-native/no-inline-styles
       barStyle={{backgroundColor: 'tomato'}}>
       {rol === 'Usuario' ? (
         <>

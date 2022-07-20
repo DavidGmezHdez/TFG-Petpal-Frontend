@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
-import {Text} from '@components/Text';
+import {Text} from '@components/TextWrapper';
 import {IPost} from 'utils/Types';
 import {ActivityIndicator} from 'react-native-paper';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
@@ -34,13 +34,17 @@ export const FeedAdmin = () => {
   return (
     <View style={styles.container}>
       <Text>Tablón Admin</Text>
-      <FlashList
-        renderItem={(post: ListRenderItemInfo<IPost>) => (
-          <PostAdmin key={post.item._id} post={post.item} />
-        )}
-        estimatedItemSize={200}
-        data={posts}
-      />
+      {posts.length ? (
+        <FlashList
+          renderItem={(post: ListRenderItemInfo<IPost>) => (
+            <PostAdmin key={post.item._id} post={post.item} />
+          )}
+          estimatedItemSize={200}
+          data={posts}
+        />
+      ) : (
+        <Text large>No existen posts</Text>
+      )}
       <Button title="Actualizar" onPress={_handleUpdate} />
     </View>
   );

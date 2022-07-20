@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {BackHandler} from 'react-native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import {Events, Pets, Profile} from '..';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {FeedAdmin} from '@screens/Admin/FeedAdmin';
+import {EventAdmin} from '@screens/Admin/EventsAdmin/components/EventAdmin';
 
 export const TabsNavigatorAdmin = () => {
   const Tab = createMaterialBottomTabNavigator();
@@ -38,7 +38,7 @@ export const TabsNavigatorAdmin = () => {
         />
         <Tab.Screen
           name="Eventos"
-          component={Events}
+          component={EventAdmin}
           options={{
             tabBarIcon: ({color}: any) => (
               <MaterialCommunityIcons
@@ -46,33 +46,6 @@ export const TabsNavigatorAdmin = () => {
                 color={color}
                 size={26}
               />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Mascotas"
-          component={Pets}
-          options={{
-            tabBarIcon: ({color}: any) => (
-              <MaterialCommunityIcons name="dog" color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Perfil"
-          component={Profile}
-          options={{
-            tabBarIcon: ({color}: any) => (
-              <MaterialCommunityIcons name="account" color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Perfil"
-          component={Profile}
-          options={{
-            tabBarIcon: ({color}: any) => (
-              <MaterialCommunityIcons name="account" color={color} size={26} />
             ),
           }}
         />

@@ -34,7 +34,7 @@ export const FeedAdmin = () => {
   return (
     <View style={styles.container}>
       <Text>Tablón Admin</Text>
-      {posts.length ? (
+      {posts && posts.length ? (
         <FlashList
           renderItem={(post: ListRenderItemInfo<IPost>) => (
             <PostAdmin key={post.item._id} post={post.item} />

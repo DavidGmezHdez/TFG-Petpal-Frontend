@@ -40,7 +40,7 @@ export const EventsAdmin = () => {
         </Text>
       </Pressable>
 
-      {events.length ? (
+      {events && events.length ? (
         <FlashList
           renderItem={(event: ListRenderItemInfo<IEvent>) => (
             <EventAdmin key={event.item._id} event={event.item} />

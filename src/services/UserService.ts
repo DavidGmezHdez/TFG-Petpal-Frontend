@@ -20,7 +20,14 @@ const updateUserProfile = async (userId: string, user: any, rol: string) => {
   });
 };
 
+const deleteUser = async (userId: string, rol: string) => {
+  const apiURL =
+    rol === 'Usuario' ? `/users/${userId}` : `/protectors/${userId}`;
+  return await axios.delete(apiURL);
+};
+
 export default {
   updateUser,
   updateUserProfile,
+  deleteUser,
 };

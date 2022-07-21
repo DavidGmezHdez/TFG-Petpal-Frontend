@@ -2,21 +2,39 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {Text} from '@components/TextWrapper';
-import {IPet} from '@utils/Types';
+import {IUser} from '@utils/Types';
 import {Pressable} from '@components/Pressable';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import PetsService from 'services/PetsService';
-import {PetAdmin} from './components/PetsAdmin';
+import {UserAdmin} from './components/UserAdmin';
+import UserService from 'services/UserService';
 
-export const PetsAdmin = () => {
-  const [pets, setPets] = useState<IPet[]>([]);
+export const UsersAdmin = () => {
+  const [users, setUsers] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSearch = async () => {
     setIsLoading(true);
-    const fetchedPets = await (await PetsService.fetchPets({})).data;
-    setPets(fetchedPets);
+    const fetchedUsers = await (await PetsService.fetchPets({})).data;
+    setUsers(fetchedUsers);
     setIsLoading(false);
+  };
+
+  const removeUser = async (userId: string) => {
+    setIsLoading(true);
+    try {
+      const deletedUser: IUser = await (
+        await UserService.deleteUser(userId, 'Usuario')
+      ).data;
+      const newUsers = users.filter(
+        (usr: IUser) => usr._id !== deletedUser._id,
+      );
+      setUsers(newUsers);
+    } catch (error) {
+      console.log("Couldn't delete user: ", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isLoading) {
@@ -29,7 +47,7 @@ export const PetsAdmin = () => {
 
   return (
     <View style={styles.container}>
-      <Text large>Mascotas</Text>
+      <Text large>Usuarios</Text>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={handleSearch}>
@@ -37,16 +55,20 @@ export const PetsAdmin = () => {
           Buscar
         </Text>
       </Pressable>
-      {pets && pets.length ? (
+      {users && users.length ? (
         <FlashList
-          renderItem={(pet: ListRenderItemInfo<IPet>) => (
-            <PetAdmin key={pet.item._id} pet={pet.item} />
+          renderItem={(user: ListRenderItemInfo<IUser>) => (
+            <UserAdmin
+              key={user.item._id}
+              user={user.item}
+              removeUser={removeUser}
+            />
           )}
           estimatedItemSize={200}
-          data={pets}
+          data={users}
         />
       ) : (
-        <Text large>No existen mascotas</Text>
+        <Text large>No existen usuarios</Text>
       )}
     </View>
   );

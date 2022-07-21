@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {Text} from '@components/TextWrapper';
@@ -12,12 +12,12 @@ export const UsersAdmin = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     setIsLoading(true);
     const fetchedUsers = await (await UserService.fetchUsers('Usuario')).data;
     setUsers(fetchedUsers);
     setIsLoading(false);
-  };
+  }, []);
 
   const removeUser = async (userId: string) => {
     setIsLoading(true);
@@ -35,6 +35,10 @@ export const UsersAdmin = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
 
   if (isLoading) {
     return (

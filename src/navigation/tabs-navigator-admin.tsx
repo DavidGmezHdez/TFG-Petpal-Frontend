@@ -5,6 +5,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {FeedAdmin} from '@screens/Admin/FeedAdmin';
 import {EventAdmin} from '@screens/Admin/EventsAdmin/components/EventAdmin';
 import {PetsAdmin} from '@screens/Admin/PetsAdmin';
+import {UserAdmin} from '@screens/Admin/UsersAdmin/components/UserAdmin';
+import {ProtectorAdmin} from '@screens/Admin/ProtectorsAdmin/components/ProtectorAdmin';
+import {ProfileAdmin} from '@screens/Admin/ProfileAdmin';
 
 export const TabsNavigatorAdmin = () => {
   const Tab = createMaterialBottomTabNavigator();
@@ -50,13 +53,53 @@ export const TabsNavigatorAdmin = () => {
             ),
           }}
         />
-
         <Tab.Screen
           name="Mascotas"
           component={PetsAdmin}
           options={{
             tabBarIcon: ({color}: any) => (
               <MaterialCommunityIcons name="dog" color={color} size={26} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Mascotas"
+          component={PetsAdmin}
+          options={{
+            tabBarIcon: ({color}: any) => (
+              <MaterialCommunityIcons name="dog" color={color} size={26} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Usuarios"
+          component={UserAdmin}
+          options={{
+            tabBarIcon: ({color}: any) => (
+              <MaterialCommunityIcons name="account" color={color} size={26} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Protectoras"
+          component={ProtectorAdmin}
+          options={{
+            tabBarIcon: ({color}: any) => (
+              <MaterialCommunityIcons
+                name="office-building-cog"
+                color={color}
+                size={26}
+              />
+            ),
+          }}
+        />
+
+        <Tab.Screen
+          name="Perfil"
+          component={ProfileAdmin}
+          options={{
+            tabBarIcon: ({color}: any) => (
+              <MaterialCommunityIcons name="turtle" color={color} size={26} />
             ),
           }}
         />

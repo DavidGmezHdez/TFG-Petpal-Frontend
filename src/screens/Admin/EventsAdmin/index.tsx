@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IEvent} from '@utils/Types';
@@ -11,7 +11,7 @@ export const EventsAdmin = () => {
   const [events, setEvents] = useState<IEvent[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleUpdate = async () => {
+  const handleUpdate = useCallback(async () => {
     setIsLoading(true);
     const fetchedEvents = await (
       await EventsService.fetchEvents(undefined)
@@ -19,7 +19,11 @@ export const EventsAdmin = () => {
 
     setEvents(fetchedEvents);
     setIsLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    handleUpdate();
+  }, [handleUpdate]);
 
   if (isLoading) {
     return (

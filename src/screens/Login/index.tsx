@@ -8,6 +8,7 @@ import {LoginSchema} from './lib';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearErrorUser, login} from '@redux/user/user_actions';
 import {getUserError, getUserErrorMsg} from '@redux/user/user_reducer';
+import {IUser} from '@utils/Types';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'login'>;
 
@@ -22,9 +23,13 @@ export const Login = ({navigation}: Props) => {
 
   const _handleSubmit = async (values: any) => {
     const {email, password} = values;
-    const userLogged = await dispatch(login(email, password));
+    const userLogged: IUser = await dispatch(login(email, password));
     if (userLogged.token) {
-      navigation.navigate('tabs_navigator');
+      if (userLogged.rol === 'Administrador') {
+        navigation.navigate('tabs_navigator_admin');
+      } else {
+        navigation.navigate('tabs_navigator');
+      }
     }
   };
   return (

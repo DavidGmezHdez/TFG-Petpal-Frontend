@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {Text} from '@components/TextWrapper';
@@ -12,14 +12,18 @@ export const ProtectorsAdmin = () => {
   const [protectors, setProtectors] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     setIsLoading(true);
     const fetchedProtectors = await (
       await UserService.fetchUsers('Protectora')
     ).data;
     setProtectors(fetchedProtectors);
     setIsLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
 
   const removeUser = async (userId: string) => {
     setIsLoading(true);

@@ -5,30 +5,32 @@ import {Text} from '@components/TextWrapper';
 import {IUser} from '@utils/Types';
 import {Pressable} from '@components/Pressable';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
-import {UserAdmin} from './components/UserAdmin';
-import UserService from '@services/UserService';
+import UserService from 'services/UserService';
+import {ProtectorAdmin} from './components/ProtectorAdmin';
 
-export const UsersAdmin = () => {
-  const [users, setUsers] = useState<IUser[]>([]);
+export const ProtectorsAdmin = () => {
+  const [protectors, setProtectors] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSearch = async () => {
     setIsLoading(true);
-    const fetchedUsers = await (await UserService.fetchUsers('Usuario')).data;
-    setUsers(fetchedUsers);
+    const fetchedProtectors = await (
+      await UserService.fetchUsers('Protectora')
+    ).data;
+    setProtectors(fetchedProtectors);
     setIsLoading(false);
   };
 
   const removeUser = async (userId: string) => {
     setIsLoading(true);
     try {
-      const deletedUser: IUser = await (
-        await UserService.deleteUser(userId, 'Usuario')
+      const deletedProtector: IUser = await (
+        await UserService.deleteUser(userId, 'Protectora')
       ).data;
-      const newUsers = users.filter(
-        (usr: IUser) => usr._id !== deletedUser._id,
+      const newProtectors = protectors.filter(
+        (prot: IUser) => prot._id !== deletedProtector._id,
       );
-      setUsers(newUsers);
+      setProtectors(newProtectors);
     } catch (error) {
       console.log("Couldn't delete user: ", error);
     } finally {
@@ -54,17 +56,17 @@ export const UsersAdmin = () => {
           Buscar
         </Text>
       </Pressable>
-      {users && users.length ? (
+      {protectors && protectors.length ? (
         <FlashList
           renderItem={(user: ListRenderItemInfo<IUser>) => (
-            <UserAdmin
+            <ProtectorAdmin
               key={user.item._id}
               user={user.item}
               removeUser={removeUser}
             />
           )}
           estimatedItemSize={200}
-          data={users}
+          data={protectors}
         />
       ) : (
         <Text large>No existen usuarios</Text>

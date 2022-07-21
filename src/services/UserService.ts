@@ -1,5 +1,10 @@
 import axios from '@utils/api/axios';
 
+const fetchUsers = async (rol: string) => {
+  const apiURL = rol === 'Usuario' ? `/users` : `/protectors`;
+  return await axios.get(apiURL);
+};
+
 const updateUser = async (userId: string, user: any, rol: string) => {
   const apiURL =
     rol === 'Usuario' ? `/users/${userId}` : `/protectors/${userId}`;
@@ -27,6 +32,7 @@ const deleteUser = async (userId: string, rol: string) => {
 };
 
 export default {
+  fetchUsers,
   updateUser,
   updateUserProfile,
   deleteUser,

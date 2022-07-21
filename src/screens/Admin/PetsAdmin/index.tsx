@@ -1,23 +1,27 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {Text} from '@components/TextWrapper';
 import {IPet} from '@utils/Types';
 import {Pressable} from '@components/Pressable';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
-import PetsService from 'services/PetsService';
+import PetsService from '@services/PetsService';
 import {PetAdmin} from './components/PetsAdmin';
 
 export const PetsAdmin = () => {
   const [pets, setPets] = useState<IPet[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     setIsLoading(true);
     const fetchedPets = await (await PetsService.fetchPets({})).data;
     setPets(fetchedPets);
     setIsLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
 
   if (isLoading) {
     return (

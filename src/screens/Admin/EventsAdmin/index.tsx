@@ -4,7 +4,7 @@ import {Text} from '@components/TextWrapper';
 import {IEvent} from '@utils/Types';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import {Pressable} from '@components/Pressable';
-import EventsService from 'services/EventsService';
+import EventsService from '@services/EventsService';
 import {EventAdmin} from './components/EventAdmin';
 
 export const EventsAdmin = () => {
@@ -16,7 +16,6 @@ export const EventsAdmin = () => {
     const fetchedEvents = await (
       await EventsService.fetchEvents(undefined)
     ).data;
-
     setEvents(fetchedEvents);
     setIsLoading(false);
   }, []);
@@ -33,7 +32,8 @@ export const EventsAdmin = () => {
     );
   }
 
-  // TODO: Make this infinite scroller
+  console.log(events);
+
   return (
     <View style={styles.container}>
       <Pressable

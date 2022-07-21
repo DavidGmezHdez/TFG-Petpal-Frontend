@@ -6,10 +6,15 @@ import {ActivityIndicator} from 'react-native-paper';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import PostsService from '@services/PostsService';
 import {PostAdmin} from './components/PostAdmin';
+import {useSelector} from 'react-redux';
+import {getUser} from '@redux/user/user_reducer';
 
 export const FeedAdmin = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [posts, setPosts] = useState<IPost[]>([]);
+  const user = useSelector(getUser);
+
+  console.log(user);
 
   const _handleUpdate = useCallback(async () => {
     setIsLoading(true);

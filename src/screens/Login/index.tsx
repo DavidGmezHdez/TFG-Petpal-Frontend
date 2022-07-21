@@ -24,6 +24,7 @@ export const Login = ({navigation}: Props) => {
   const _handleSubmit = async (values: any) => {
     const {email, password} = values;
     const userLogged: IUser = await dispatch(login(email, password));
+    console.log(userLogged);
     if (userLogged.token) {
       if (userLogged.rol === 'Administrador') {
         navigation.navigate('tabs_navigator_admin');

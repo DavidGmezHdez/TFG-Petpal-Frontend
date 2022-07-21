@@ -3,11 +3,11 @@ import {BackHandler} from 'react-native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {FeedAdmin} from '@screens/Admin/FeedAdmin';
-import {EventAdmin} from '@screens/Admin/EventsAdmin/components/EventAdmin';
 import {PetsAdmin} from '@screens/Admin/PetsAdmin';
-import {UserAdmin} from '@screens/Admin/UsersAdmin/components/UserAdmin';
-import {ProtectorAdmin} from '@screens/Admin/ProtectorsAdmin/components/ProtectorAdmin';
 import {ProfileAdmin} from '@screens/Admin/ProfileAdmin';
+import {EventsAdmin} from '@screens/Admin/EventsAdmin';
+import {UsersAdmin} from '@screens/Admin/UsersAdmin';
+import {ProtectorsAdmin} from '@screens/Admin/ProtectorsAdmin';
 
 export const TabsNavigatorAdmin = () => {
   const Tab = createMaterialBottomTabNavigator();
@@ -42,7 +42,7 @@ export const TabsNavigatorAdmin = () => {
         />
         <Tab.Screen
           name="Eventos"
-          component={EventAdmin}
+          component={EventsAdmin}
           options={{
             tabBarIcon: ({color}: any) => (
               <MaterialCommunityIcons
@@ -63,17 +63,8 @@ export const TabsNavigatorAdmin = () => {
           }}
         />
         <Tab.Screen
-          name="Mascotas"
-          component={PetsAdmin}
-          options={{
-            tabBarIcon: ({color}: any) => (
-              <MaterialCommunityIcons name="dog" color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
           name="Usuarios"
-          component={UserAdmin}
+          component={UsersAdmin}
           options={{
             tabBarIcon: ({color}: any) => (
               <MaterialCommunityIcons name="account" color={color} size={26} />
@@ -82,7 +73,7 @@ export const TabsNavigatorAdmin = () => {
         />
         <Tab.Screen
           name="Protectoras"
-          component={ProtectorAdmin}
+          component={ProtectorsAdmin}
           options={{
             tabBarIcon: ({color}: any) => (
               <MaterialCommunityIcons

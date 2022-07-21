@@ -5,7 +5,7 @@ import {Text} from '@components/TextWrapper';
 import {IUser} from '@utils/Types';
 import {Pressable} from '@components/Pressable';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
-import UserService from 'services/UserService';
+import UserService from '@services/UserService';
 import {ProtectorAdmin} from './components/ProtectorAdmin';
 
 export const ProtectorsAdmin = () => {
@@ -52,7 +52,7 @@ export const ProtectorsAdmin = () => {
 
   return (
     <View style={styles.container}>
-      <Text large>Usuarios</Text>
+      <Text large>Protectoras</Text>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={handleSearch}>

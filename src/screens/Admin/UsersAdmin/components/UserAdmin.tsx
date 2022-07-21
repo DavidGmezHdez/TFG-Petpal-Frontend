@@ -15,8 +15,8 @@ export const UserAdmin = ({user, removeUser}: Props) => {
     <View style={styles.container}>
       <Text large>Nombre: {user.name}</Text>
       <Text large>Email: {user.email}</Text>
-      <Text large>Rol: {user.rol}</Text>
       <Text large>Teléfono contacto: {user.contactPhone}</Text>
+      <Text large>Rol: {user.rol}</Text>
       {user.image ? (
         <Image source={{uri: user.image}} style={styles.images} />
       ) : null}

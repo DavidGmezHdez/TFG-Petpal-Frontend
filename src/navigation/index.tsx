@@ -8,6 +8,7 @@ import {Login} from '@screens/Login';
 import {CreatePetScreen} from '@screens/CreatePet';
 import {EditProfileScreen} from '@screens/EditProfile';
 import {TabsNavigator} from './tabs-navigator';
+import {TabsNavigatorAdmin} from './tabs-navigator-admin';
 import {useSelector} from 'react-redux';
 import {RootState} from '@redux/store';
 
@@ -56,6 +57,11 @@ export const Navigation = () => {
         <Stack.Screen
           name={'editProfile'}
           component={EditProfileScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'tabs_navigator_admin'}
+          component={TabsNavigatorAdmin}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

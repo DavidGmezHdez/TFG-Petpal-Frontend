@@ -15,8 +15,9 @@ export const ProtectorAdmin = ({user, removeUser}: Props) => {
     <View style={styles.container}>
       <Text large>Nombre: {user.name}</Text>
       <Text large>Email: {user.email}</Text>
-      <Text large>Rol: {user.rol}</Text>
       <Text large>Teléfono contacto: {user.contactPhone}</Text>
+      <Text large>Region: {user.region}</Text>
+      <Text large>Direccion: {user.direction}</Text>
       {user.image ? (
         <Image source={{uri: user.image}} style={styles.images} />
       ) : null}
@@ -24,7 +25,7 @@ export const ProtectorAdmin = ({user, removeUser}: Props) => {
         style={[styles.button, styles.buttonOpen]}
         onPress={() => removeUser(user._id)}>
         <Text large style={styles.textStyle}>
-          Borrar Usuario
+          Borrar Protectora
         </Text>
       </Pressable>
     </View>

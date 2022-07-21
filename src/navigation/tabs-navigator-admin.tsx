@@ -4,6 +4,7 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {FeedAdmin} from '@screens/Admin/FeedAdmin';
 import {EventAdmin} from '@screens/Admin/EventsAdmin/components/EventAdmin';
+import {PetsAdmin} from '@screens/Admin/PetsAdmin';
 
 export const TabsNavigatorAdmin = () => {
   const Tab = createMaterialBottomTabNavigator();
@@ -46,6 +47,16 @@ export const TabsNavigatorAdmin = () => {
                 color={color}
                 size={26}
               />
+            ),
+          }}
+        />
+
+        <Tab.Screen
+          name="Mascotas"
+          component={PetsAdmin}
+          options={{
+            tabBarIcon: ({color}: any) => (
+              <MaterialCommunityIcons name="dog" color={color} size={26} />
             ),
           }}
         />

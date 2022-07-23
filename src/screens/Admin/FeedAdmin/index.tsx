@@ -15,10 +15,16 @@ export const FeedAdmin = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
 
   const _handleUpdate = useCallback(async () => {
-    setIsLoading(true);
-    const fetchedPosts = await (await PostsService.fetchPosts()).data;
-    setPosts(fetchedPosts);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const fetchedPosts = await (await PostsService.fetchPosts()).data;
+      setPosts(fetchedPosts);
+    } catch (error) {
+      console.log(error);
+      setPosts([]);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {

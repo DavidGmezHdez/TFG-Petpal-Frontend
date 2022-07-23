@@ -1,44 +1,23 @@
-import React, {useCallback, useState} from 'react';
-import {Alert, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPost} from 'utils/Types';
 import {format} from 'date-fns';
-import {useDispatch} from 'react-redux';
-import {deleteComment, deletePost} from '@redux/posts/posts_actions';
+
 import {Pressable} from '@components/Pressable';
 import FastImage from 'react-native-fast-image';
 import {px} from '@utils/Constants';
 
 type Props = {
   post: IPost;
+  removePost: (postId: string) => void;
+  removeComment: (postId: string, commentId: string) => void;
 };
 
-export const PostAdmin = ({post}: Props) => {
-  const dispatch = useDispatch<any>();
+export const PostAdmin = ({post, removePost, removeComment}: Props) => {
   const [expanded, setExpanded] = useState<boolean>(false);
 
   const dataForDisplay = expanded ? post.comments : post.comments.slice(0, 2);
-
-  const _deletePost = useCallback(async () => {
-    try {
-      dispatch(deletePost(post._id));
-    } catch (e) {
-      console.log(e);
-      Alert.alert(e);
-    }
-  }, [dispatch, post._id]);
-
-  const _deleteComment = useCallback(
-    async (commentId: string) => {
-      try {
-        await dispatch(deleteComment(post._id, commentId));
-      } catch (e) {
-        console.log(e);
-        Alert.alert(e);
-      }
-    },
-    [dispatch, post._id],
-  );
 
   return (
     <View style={styles.container}>
@@ -57,7 +36,7 @@ export const PostAdmin = ({post}: Props) => {
 
       <Pressable
         style={[styles.button, styles.buttonOpen]}
-        onPress={_deletePost}>
+        onPress={() => removePost(post._id)}>
         <Text large style={styles.textStyle}>
           Borrar Post
         </Text>
@@ -75,7 +54,7 @@ export const PostAdmin = ({post}: Props) => {
                   </Text>
                   <Pressable
                     style={[styles.button, styles.buttonOpen]}
-                    onPress={() => _deleteComment(comment._id)}>
+                    onPress={() => removeComment(post._id, comment._id)}>
                     <Text large style={styles.textStyle}>
                       Borrar Comentario
                     </Text>

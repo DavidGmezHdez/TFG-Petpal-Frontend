@@ -14,6 +14,7 @@ instance.interceptors.request.use((config: AxiosRequestConfig) => {
   const state = store.getState();
   const token = state.user.token;
   config.headers!.Authorization = `Bearer ${token}`;
+  config.timeout = 10000;
   return config;
 });
 

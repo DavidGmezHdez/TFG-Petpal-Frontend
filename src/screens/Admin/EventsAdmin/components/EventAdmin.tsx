@@ -3,19 +3,12 @@ import {Pressable, StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IEvent, IUser} from '@utils/Types';
 import {format} from 'date-fns';
-import {useDispatch} from 'react-redux';
-import {deleteEvent} from '@redux/events/events_actions';
 
 type Props = {
   event: IEvent;
+  removeEvent: (eventId: string) => void;
 };
-export const EventAdmin = ({event}: Props) => {
-  const dispatch = useDispatch<any>();
-
-  const _deleteEvent = async () => {
-    await dispatch(deleteEvent(event._id));
-  };
-
+export const EventAdmin = ({event, removeEvent}: Props) => {
   return (
     <View style={styles.container}>
       <Text large>Event: {event.title}</Text>
@@ -41,7 +34,7 @@ export const EventAdmin = ({event}: Props) => {
 
       <Pressable
         style={[styles.button, styles.buttonOpen]}
-        onPress={_deleteEvent}>
+        onPress={() => removeEvent(event._id)}>
         <Text large style={styles.textStyle}>
           Borrar quedada
         </Text>

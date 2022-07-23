@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import {Text} from '@components/Text';
 import {useDispatch, useSelector} from 'react-redux';
@@ -24,6 +24,10 @@ export const Feed = () => {
   const _handleUpdate = useCallback(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
+
+  useEffect(() => {
+    _handleUpdate();
+  }, [_handleUpdate]);
 
   if (isLoading) {
     return (

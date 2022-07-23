@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
@@ -22,9 +22,13 @@ export const Pets = () => {
   const [age, setAge] = useState<number>(-1);
   const [race, setRace] = useState<string | null>(null);
 
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     dispatch(fetchPets({type, region, age, race}));
-  };
+  }, [age, dispatch, race, region, type]);
+
+  useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
 
   if (isLoading) {
     return (

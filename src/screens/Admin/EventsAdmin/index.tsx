@@ -6,23 +6,48 @@ import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import {Pressable} from '@components/Pressable';
 import EventsService from '@services/EventsService';
 import {EventAdmin} from './components/EventAdmin';
+import {useDispatch} from 'react-redux';
+import {deleteEvent} from '@redux/events/events_actions';
 
 export const EventsAdmin = () => {
+  const dispatch = useDispatch<any>();
   const [events, setEvents] = useState<IEvent[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleUpdate = useCallback(async () => {
     setIsLoading(true);
-    const fetchedEvents = await (
-      await EventsService.fetchEvents(undefined)
-    ).data;
-    setEvents(fetchedEvents);
-    setIsLoading(false);
+    try {
+      const fetchedEvents = await (
+        await EventsService.fetchEvents(undefined)
+      ).data;
+      setEvents(fetchedEvents);
+    } catch (error) {
+      setEvents([]);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  const removeEvent = async (eventId: string) => {
+    try {
+      setIsLoading(true);
+      const deletedEvent: IEvent = await dispatch(deleteEvent(eventId));
+      const newEvents = events.filter(
+        (ev: IEvent) => ev._id !== deletedEvent._id,
+      );
+      setEvents(newEvents);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     handleUpdate();
   }, [handleUpdate]);
+
+  console.log(events);
 
   if (isLoading) {
     return (
@@ -31,8 +56,6 @@ export const EventsAdmin = () => {
       </View>
     );
   }
-
-  console.log(events);
 
   return (
     <View style={styles.container}>
@@ -47,7 +70,11 @@ export const EventsAdmin = () => {
       {events && events.length ? (
         <FlashList
           renderItem={(event: ListRenderItemInfo<IEvent>) => (
-            <EventAdmin key={event.item._id} event={event.item} />
+            <EventAdmin
+              key={event.item._id}
+              event={event.item}
+              removeEvent={removeEvent}
+            />
           )}
           estimatedItemSize={200}
           data={events}

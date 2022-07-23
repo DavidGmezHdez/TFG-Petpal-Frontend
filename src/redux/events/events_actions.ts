@@ -103,6 +103,7 @@ export const sendEvent =
       const res = await EventsService.sendEvent(event);
       if (res.data) {
         const createdEvent = res.data;
+        console.log(createdEvent);
         dispatch({
           type: EventsActionTypes.SEND_EVENTS_SUCCESS,
           payload: {event: createdEvent},

@@ -27,6 +27,7 @@ export type IUser = {
   region: string;
   image: string;
   imageKey: string;
+  promoted: boolean;
 };
 
 export type IEvent = {

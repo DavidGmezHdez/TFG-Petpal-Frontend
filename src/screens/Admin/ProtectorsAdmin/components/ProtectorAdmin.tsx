@@ -8,9 +8,13 @@ import {Pressable} from '@components/Pressable';
 type Props = {
   user: IUser;
   removeUser: (userId: string) => void;
+  promoteProtector: (userId: string, promoted: boolean) => void;
 };
 
-export const ProtectorAdmin = ({user, removeUser}: Props) => {
+export const ProtectorAdmin = ({user, removeUser, promoteProtector}: Props) => {
+  const promText = user.promoted
+    ? 'Quitar alta de protectora'
+    : 'Dar de alta protectora';
   return (
     <View style={styles.container}>
       <Text large>Nombre: {user.name}</Text>
@@ -21,6 +25,13 @@ export const ProtectorAdmin = ({user, removeUser}: Props) => {
       {user.image ? (
         <Image source={{uri: user.image}} style={styles.images} />
       ) : null}
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => promoteProtector(user._id, !user.promoted)}>
+        <Text large style={styles.textStyle}>
+          {promText}
+        </Text>
+      </Pressable>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => removeUser(user._id)}>

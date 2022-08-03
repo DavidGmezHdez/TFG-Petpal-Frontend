@@ -13,11 +13,21 @@ export const UsersAdmin = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSearch = useCallback(async () => {
-    setIsLoading(true);
-    const fetchedUsers = await (await UserService.fetchUsers('Usuario')).data;
-    setUsers(fetchedUsers);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const fetchedUsers = await (await UserService.fetchUsers('Usuario')).data;
+      setUsers(fetchedUsers);
+    } catch (error) {
+      console.log(error);
+      setUsers([]);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
 
   const removeUser = async (userId: string) => {
     setIsLoading(true);
@@ -35,10 +45,6 @@ export const UsersAdmin = () => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    handleSearch();
-  }, [handleSearch]);
 
   if (isLoading) {
     return (

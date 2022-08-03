@@ -14,12 +14,19 @@ export const ProtectorsAdmin = () => {
 
   const handleSearch = useCallback(async () => {
     setIsLoading(true);
-    const fetchedProtectors = await (
-      await UserService.fetchUsers('Protectora')
-    ).data;
-    setProtectors(fetchedProtectors);
-    setIsLoading(false);
+    try {
+      const fetchedProtectors = await (
+        await UserService.fetchUsers('Protectora')
+      ).data;
+      setProtectors(fetchedProtectors);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  console.log(protectors);
 
   useEffect(() => {
     handleSearch();
@@ -36,7 +43,26 @@ export const ProtectorsAdmin = () => {
       );
       setProtectors(newProtectors);
     } catch (error) {
-      console.log("Couldn't delete user: ", error);
+      console.log("Couldn't delete protector: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // testp@test.co
+
+  const promoteProtector = async (userId: string, promoted: boolean) => {
+    setIsLoading(true);
+    try {
+      const promotedProtector: IUser = await (
+        await UserService.updateUser(userId, {promoted}, 'Protectora')
+      ).data;
+      const newProtectors = protectors.map((prot: IUser) =>
+        prot._id === promotedProtector._id ? promotedProtector : prot,
+      );
+      setProtectors(newProtectors);
+    } catch (error) {
+      console.log("Couldn't delete protector: ", error);
     } finally {
       setIsLoading(false);
     }
@@ -67,13 +93,14 @@ export const ProtectorsAdmin = () => {
               key={user.item._id}
               user={user.item}
               removeUser={removeUser}
+              promoteProtector={promoteProtector}
             />
           )}
           estimatedItemSize={200}
           data={protectors}
         />
       ) : (
-        <Text large>No existen usuarios</Text>
+        <Text large>No existen protectoras</Text>
       )}
     </View>
   );

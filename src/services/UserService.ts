@@ -1,7 +1,7 @@
 import axios from '@utils/api/axios';
 
 const fetchUsers = async (rol: string) => {
-  const apiURL = rol === 'Usuario' ? `/users` : `/protectors`;
+  const apiURL = rol === 'Usuario' ? '/users' : '/protectors';
   return await axios.get(apiURL);
 };
 

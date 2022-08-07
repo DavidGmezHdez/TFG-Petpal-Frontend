@@ -1,12 +1,14 @@
 import React from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
-import {Text} from '@components/Text';
+import {Text} from '@components/TextWrapper';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
 import {Formik} from 'formik';
 import {LoginSchema} from './lib';
-import {useDispatch} from 'react-redux';
-import {login} from '@redux/user/user_actions';
+import {useDispatch, useSelector} from 'react-redux';
+import {clearErrorUser, login} from '@redux/user/user_actions';
+import {getUserError, getUserErrorMsg} from '@redux/user/user_reducer';
+import {IUser} from '@utils/Types';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'login'>;
 
@@ -16,18 +18,25 @@ type Props = {
 
 export const Login = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
+  const authErrors = useSelector(getUserError);
+  const authErrorsMsg = useSelector(getUserErrorMsg);
 
   const _handleSubmit = async (values: any) => {
     const {email, password} = values;
-    const userLogged = await dispatch(login(email, password));
+    const userLogged: IUser = await dispatch(login(email, password));
+    console.log(userLogged);
     if (userLogged.token) {
-      navigation.navigate('tabs_navigator');
+      if (userLogged.rol === 'Administrador') {
+        navigation.navigate('tabs_navigator_admin');
+      } else {
+        navigation.navigate('tabs_navigator');
+      }
     }
   };
   return (
     <View style={styles.container}>
       <Formik
-        initialValues={{email: 'test@test.co', password: 'testtest1234'}}
+        initialValues={{email: 'test@test.co', password: 'test12341234'}}
         validationSchema={LoginSchema}
         onSubmit={_handleSubmit}>
         {({
@@ -56,17 +65,24 @@ export const Login = ({navigation}: Props) => {
             {errors.password && touched.password ? (
               <Text>{errors.password}</Text>
             ) : null}
+            {authErrors ? <Text large>{authErrorsMsg}</Text> : null}
             <Button onPress={() => handleSubmit()} title="Iniciar Sesión" />
           </View>
         )}
       </Formik>
       <Button
         title="Registrarse"
-        onPress={() => navigation.navigate('registerUser')}
+        onPress={() => {
+          dispatch(clearErrorUser());
+          navigation.navigate('registerUser');
+        }}
       />
       <Button
         title="Registrarse como protectora"
-        onPress={() => navigation.navigate('registerProtector')}
+        onPress={() => {
+          dispatch(clearErrorUser());
+          navigation.navigate('registerProtector');
+        }}
       />
     </View>
   );

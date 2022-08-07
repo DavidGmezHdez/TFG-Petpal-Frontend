@@ -22,8 +22,38 @@ export const TabsNavigator = () => {
       initialRouteName={'feed'}
       activeColor={'white'}
       inactiveColor={'gray'}
+      // eslint-disable-next-line react-native/no-inline-styles
       barStyle={{backgroundColor: 'tomato'}}>
-      {rol === 'Usuario' ? (
+      {rol === 'Protectora' ? (
+        <>
+          <Tab.Screen
+            name="Tablón"
+            component={Feed}
+            options={{
+              tabBarIcon: ({color}: any) => (
+                <MaterialCommunityIcons
+                  name="post-outline"
+                  color={color}
+                  size={26}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Perfil"
+            component={Profile}
+            options={{
+              tabBarIcon: ({color}: any) => (
+                <MaterialCommunityIcons
+                  name="account"
+                  color={color}
+                  size={26}
+                />
+              ),
+            }}
+          />
+        </>
+      ) : (
         <>
           <Tab.Screen
             name="Tablón"
@@ -57,35 +87,6 @@ export const TabsNavigator = () => {
             options={{
               tabBarIcon: ({color}: any) => (
                 <MaterialCommunityIcons name="dog" color={color} size={26} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Perfil"
-            component={Profile}
-            options={{
-              tabBarIcon: ({color}: any) => (
-                <MaterialCommunityIcons
-                  name="account"
-                  color={color}
-                  size={26}
-                />
-              ),
-            }}
-          />
-        </>
-      ) : (
-        <>
-          <Tab.Screen
-            name="Tablón"
-            component={Feed}
-            options={{
-              tabBarIcon: ({color}: any) => (
-                <MaterialCommunityIcons
-                  name="post-outline"
-                  color={color}
-                  size={26}
-                />
               ),
             }}
           />

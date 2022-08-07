@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Button,
@@ -32,9 +32,14 @@ export const Events = ({}: Props) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [title, setTitle] = useState<string | undefined>();
 
-  const handleUpdate = () => {
+  const handleUpdate = useCallback(() => {
     dispatch(fetchEvents(title));
-  };
+  }, [dispatch, title]);
+
+  console.log(events);
+  useEffect(() => {
+    handleUpdate();
+  }, [handleUpdate]);
 
   if (isLoading) {
     return (

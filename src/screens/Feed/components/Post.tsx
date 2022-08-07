@@ -52,7 +52,7 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
 
   const _deletePost = useCallback(async () => {
     try {
-      const posts = user.posts?.filter(pst => pst !== post._id);
+      const posts = user.posts?.filter(pst => pst._id !== post._id);
       await dispatch(deletePost(post._id));
       await dispatch(updateUser(user._id, {posts}, user.rol));
     } catch (e) {

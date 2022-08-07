@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import {Text} from '@components/Text';
 import {useDispatch, useSelector} from 'react-redux';
@@ -10,6 +10,7 @@ import {ActivityIndicator} from 'react-native-paper';
 import {CreatePostModal} from '@modals/CreatePost';
 import {SendCommentModal} from '@modals/SendComment';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
+import {store} from '@redux/store';
 
 export const Feed = () => {
   const dispatch = useDispatch<any>();
@@ -18,10 +19,15 @@ export const Feed = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showModalComment, setShowModalComment] = useState<boolean>(false);
   const [postId, setPostId] = useState<string>('');
+  console.log(store.getState());
 
   const _handleUpdate = useCallback(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
+
+  useEffect(() => {
+    _handleUpdate();
+  }, [_handleUpdate]);
 
   if (isLoading) {
     return (

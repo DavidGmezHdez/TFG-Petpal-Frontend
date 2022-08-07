@@ -23,6 +23,7 @@ const initialState: AuthState = {
     region: '',
     image: '',
     imageKey: '',
+    promoted: false,
   },
   isAuthenticated: false,
   isLoading: false,

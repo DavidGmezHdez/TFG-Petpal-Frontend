@@ -26,8 +26,8 @@ export const PetAdmin = ({pet}: Props) => {
       <Text large>Tamaño: {pet.size}</Text>
       <Text large>Raza: {pet.race}</Text>
       <Text large>Descripcion: {pet.description}</Text>
-      {pet.image ? (
-        <Image source={{uri: pet.image}} style={styles.images} />
+      {pet.image && pet.image.length ? (
+        <Image source={{uri: pet.image[0]}} style={styles.images} />
       ) : null}
       <Pressable style={[styles.button, styles.buttonOpen]} onPress={removePet}>
         <Text large style={styles.textStyle}>

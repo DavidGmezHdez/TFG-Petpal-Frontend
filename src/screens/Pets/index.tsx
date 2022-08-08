@@ -12,11 +12,15 @@ import RNPickerSelect from 'react-native-picker-select';
 import {provinces, types, ages} from '@utils/Constants';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import {getRaces} from '@utils/Helpers';
+import {PetDataModal} from '@modals/PetData';
 
 export const Pets = () => {
   const dispatch = useDispatch<any>();
   const pets = useSelector(getPets);
   const isLoading = useSelector(getLoadingPets);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedPet, setSelectedPet] = useState<IPet>();
+
   const [region, setRegion] = useState<string | null>(null);
   const [type, setType] = useState<string | null>(null);
   const [age, setAge] = useState<number>(-1);
@@ -25,6 +29,11 @@ export const Pets = () => {
   const handleSearch = useCallback(() => {
     dispatch(fetchPets({type, region, age, race}));
   }, [age, dispatch, race, region, type]);
+
+  const handleShowPet = (pet: IPet) => {
+    setSelectedPet(pet);
+    setShowModal(true);
+  };
 
   useEffect(() => {
     handleSearch();
@@ -41,6 +50,11 @@ export const Pets = () => {
   // TODO: Make this infinite scroller / lazyload
   return (
     <View style={styles.container}>
+      <PetDataModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        pet={selectedPet}
+      />
       <Text large>Mascotas</Text>
       <RNPickerSelect
         onValueChange={value => setRegion(value)}
@@ -82,7 +96,11 @@ export const Pets = () => {
       {pets.length ? (
         <FlashList
           renderItem={(pet: ListRenderItemInfo<IPet>) => (
-            <Pet key={pet.item._id} pet={pet.item} />
+            <Pet
+              key={pet.item._id}
+              pet={pet.item}
+              handleShowPet={handleShowPet}
+            />
           )}
           estimatedItemSize={200}
           data={pets}

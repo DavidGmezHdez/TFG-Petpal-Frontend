@@ -22,6 +22,7 @@ import {px, sexs, sizes, types} from '@utils/Constants';
 
 import {getRaces} from '@utils/Helpers';
 import {
+  Asset,
   ImageLibraryOptions,
   launchImageLibrary,
 } from 'react-native-image-picker';
@@ -36,7 +37,7 @@ type Props = {
 
 const options: ImageLibraryOptions = {
   mediaType: 'photo',
-  selectionLimit: 1,
+  selectionLimit: 5,
 };
 
 export const CreatePetScreen = ({navigation}: Props) => {
@@ -57,13 +58,15 @@ export const CreatePetScreen = ({navigation}: Props) => {
       formData.append('size', values.size);
       formData.append('sex', values.sex);
 
-      if (values.imageUri) {
-        formData.append('image', {
-          // @ts-ignore: Type error
-          uri: values.imageUri,
-          type: values.imageType,
-          name: values.name,
-        });
+      if (values.images && values.images.length) {
+        values.images.forEach((image: Asset) =>
+          formData.append('images', {
+            // @ts-ignore: Type error
+            uri: image.uri,
+            type: image.type ?? 'image/jpeg',
+            name: values.name,
+          }),
+        );
       }
 
       const createdPet = await dispatch(sendPet(formData));
@@ -216,21 +219,22 @@ export const CreatePetScreen = ({navigation}: Props) => {
                   style={[styles.button, styles.buttonOpen]}
                   onPress={async () => {
                     const {assets} = await launchImageLibrary(options);
-                    setFieldValue('imageUri', assets![0].uri);
-                    setFieldValue('imageType', assets![0].type);
-                    setFieldValue('imageName', assets![0].fileName);
+                    setFieldValue('images', assets?.reverse());
                   }}>
                   <Text large style={styles.textStyle}>
                     Subir Foto
                   </Text>
                 </Pressable>
 
-                {values.imageUri.length ? (
-                  <Image
-                    source={{uri: values.imageUri}}
-                    style={styles.images}
-                  />
-                ) : null}
+                {values.images && values.images.length
+                  ? values.images.map((image: Asset) => (
+                      <Image
+                        key={image.id}
+                        source={{uri: image.uri}}
+                        style={styles.images}
+                      />
+                    ))
+                  : null}
 
                 <Pressable
                   style={[styles.button, styles.buttonOpen]}

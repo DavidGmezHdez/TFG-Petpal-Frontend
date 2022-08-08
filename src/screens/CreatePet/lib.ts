@@ -1,3 +1,4 @@
+import {Asset} from 'react-native-image-picker';
 import * as Yup from 'yup';
 export const PetSchema = Yup.object().shape({
   name: Yup.string()
@@ -23,9 +24,7 @@ export type petValuesTypes = {
   age: string;
   race: string;
   size: string;
-  imageUri: string;
-  imageType: string;
-  imageName: string;
+  images: Asset[];
 };
 
 export const initialValues: petValuesTypes = {
@@ -36,7 +35,5 @@ export const initialValues: petValuesTypes = {
   age: '',
   race: '',
   size: '',
-  imageUri: '',
-  imageType: '',
-  imageName: '',
+  images: [],
 };

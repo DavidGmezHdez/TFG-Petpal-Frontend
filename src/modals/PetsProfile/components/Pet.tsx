@@ -34,7 +34,7 @@ export const Pet = ({pet}: Props) => {
       <Text large>Raza: {pet.race}</Text>
       <Text large>Descripcion: {pet.description}</Text>
       {pet.image ? (
-        <Image source={{uri: pet.image}} style={styles.images} />
+        <Image source={{uri: pet.image[0]}} style={styles.images} />
       ) : null}
       <Pressable
         style={[styles.button, styles.buttonOpen]}

@@ -62,6 +62,6 @@ export type IPet = {
   color: string;
   size: string;
   owner: string;
-  image: string;
+  image: string[];
   protector: IUser;
 };

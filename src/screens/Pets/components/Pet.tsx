@@ -3,11 +3,13 @@ import {StyleSheet, View, Image} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPet} from '@utils/Types';
 import {px} from '@utils/Constants';
+import {Pressable} from '@components/Pressable';
 type Props = {
   pet: IPet;
+  handleShowPet: (pet: IPet) => void;
 };
 
-export const Pet = ({pet}: Props) => {
+export const Pet = ({pet, handleShowPet}: Props) => {
   return (
     <View style={styles.container}>
       <Text large>Nombre: {pet.name}</Text>
@@ -17,14 +19,16 @@ export const Pet = ({pet}: Props) => {
       <Text large>Tamaño: {pet.size}</Text>
       <Text large>Raza: {pet.race}</Text>
       <Text large>Descripcion: {pet.description}</Text>
-      <Text large>Rasgos especiales</Text>
-      <Text large>Nombre protectora: {pet.protector.name}</Text>
-      <Text large>Telefono de contacto: {pet.protector.contactPhone}</Text>
-      <Text large>Direccion: {pet.protector.direction}</Text>
-      <Text large>Provincia: {pet.protector.region}</Text>
-      {pet.image ? (
-        <Image source={{uri: pet.image}} style={styles.images} />
+      {pet.image && pet.image.length ? (
+        <Image source={{uri: pet.image[0]}} style={styles.images} />
       ) : null}
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => handleShowPet(pet)}>
+        <Text large style={styles.textStyle}>
+          Mostrar datos contacto
+        </Text>
+      </Pressable>
     </View>
   );
 };

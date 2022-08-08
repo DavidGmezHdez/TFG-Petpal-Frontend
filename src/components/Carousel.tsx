@@ -18,8 +18,6 @@ type ItemProps = {
 export const CarouselImages = ({images, height, width}: Props) => {
   const [slideIndex, setSlideIndex] = useState<number>(0);
 
-  console.log(slideIndex);
-
   const renderImage = ({item}: ItemProps) => {
     return (
       <View style={styles.imageWrapper}>

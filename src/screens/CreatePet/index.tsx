@@ -70,7 +70,6 @@ export const CreatePetScreen = ({navigation}: Props) => {
       }
 
       const createdPet = await dispatch(sendPet(formData));
-      console.log(createdPet);
       if (createdPet) {
         const pets = [...(user.pets ?? []), createdPet._id];
         await dispatch(updateUser(user._id, {pets}, user.rol));

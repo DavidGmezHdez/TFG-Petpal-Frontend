@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Modal, StyleSheet, View, ScrollView, Dimensions} from 'react-native';
+import {Modal, StyleSheet, View, ScrollView} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPet} from '@utils/Types';
 import {Pressable} from '@components/Pressable';
@@ -12,7 +12,6 @@ type Props = {
 };
 
 export const PetDataModal = ({showModal, setShowModal, pet}: Props) => {
-  const widthScreen = Dimensions.get('window').width;
   const cancel = () => {
     setShowModal(false);
   };

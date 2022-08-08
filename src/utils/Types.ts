@@ -41,6 +41,7 @@ export type IEvent = {
   description: string;
   image: string;
   createdAt: string;
+  region: string;
 };
 
 export type IComment = {

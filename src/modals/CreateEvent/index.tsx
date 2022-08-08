@@ -1,5 +1,6 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Modal, StyleSheet, View, TextInput, ScrollView} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
@@ -9,7 +10,7 @@ import {updateUser} from '@redux/user/user_actions';
 import {EventSchema} from './lib';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
-import {px} from '@utils/Constants';
+import {provinces, px} from '@utils/Constants';
 import DatePicker from 'react-native-date-picker';
 import {format} from 'date-fns';
 
@@ -25,6 +26,7 @@ type eventValuesTypes = {
   place: string;
   date: Date | null;
   image: string;
+  region: string;
 };
 
 export const CreateEventModal = ({showModal, setShowModal}: Props) => {
@@ -41,6 +43,7 @@ export const CreateEventModal = ({showModal, setShowModal}: Props) => {
     place: '',
     date: null,
     image: '',
+    region: '',
   };
 
   const _handleSubmit = async (values: eventValuesTypes) => {
@@ -178,7 +181,20 @@ export const CreateEventModal = ({showModal, setShowModal}: Props) => {
                     }}
                     is24hourSource={'locale'}
                   />
-
+                  <Text large>Provincia</Text>
+                  <RNPickerSelect
+                    onValueChange={(value: string) =>
+                      setFieldValue('region', value)
+                    }
+                    items={provinces}
+                    placeholder={{label: 'Cualquier provincia', value: null}}
+                    value={values.region}
+                  />
+                  {errors.region && touched.region ? (
+                    <Text large color={'red'}>
+                      {errors.region}
+                    </Text>
+                  ) : null}
                   <Pressable
                     style={[styles.button, styles.buttonOpen]}
                     onPress={() => handleSubmit()}>

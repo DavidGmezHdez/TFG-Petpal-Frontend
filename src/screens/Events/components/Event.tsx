@@ -49,6 +49,7 @@ export const Event = ({event}: Props) => {
       </Text>
       <Text large>Fecha: {format(new Date(event.date), 'dd-MM-yy hh:mm')}</Text>
       <Text large>Descripcion: {event.description}</Text>
+      <Text large>Provincia: {event.region}</Text>
       <Text large>Apuntados: </Text>
       {event.attendants && event.attendants.length ? (
         event.attendants?.map((att: IUser) => {

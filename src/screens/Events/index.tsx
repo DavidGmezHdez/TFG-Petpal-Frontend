@@ -6,6 +6,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import {useDispatch, useSelector} from 'react-redux';
 import {Text} from '@components/TextWrapper';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -18,6 +19,7 @@ import {CreateEventModal} from '@modals/CreateEvent';
 import {clearErrorUser} from '@redux/user/user_actions';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import {Pressable} from '@components/Pressable';
+import {provinces} from '@utils/Constants';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'events'>;
 
@@ -25,21 +27,22 @@ type Props = {
   navigation: NavigationStackProp['navigation'];
 };
 
-export const Events = ({}: Props) => {
+export const Events = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
   const events = useSelector(getEvents);
   const isLoading = useSelector(getLoadingEvents);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [title, setTitle] = useState<string | undefined>();
+  const [region, setRegion] = useState<string | null>(null);
 
   const handleUpdate = useCallback(() => {
-    dispatch(fetchEvents(title));
-  }, [dispatch, title]);
+    const realTitle = title?.length ? title : undefined;
+    dispatch(fetchEvents({realTitle, region}));
+  }, [dispatch, region, title]);
 
-  console.log(events);
   useEffect(() => {
     handleUpdate();
-  }, [handleUpdate]);
+  }, []);
 
   if (isLoading) {
     return (
@@ -60,6 +63,13 @@ export const Events = ({}: Props) => {
         value={title}
         placeholder={'Buscar quedada...'}
         maxLength={20}
+      />
+      <Text large>Provincia</Text>
+      <RNPickerSelect
+        onValueChange={value => setRegion(value)}
+        items={provinces}
+        placeholder={{label: 'Cualquier provincia', value: null}}
+        value={region}
       />
       <Pressable
         style={[styles.button, styles.buttonOpen]}
@@ -85,7 +95,7 @@ export const Events = ({}: Props) => {
         title="Crear evento"
         onPress={() => {
           dispatch(clearErrorUser());
-          setShowModal(true);
+          navigation.navigate('createEvents');
         }}
       />
     </View>

@@ -73,12 +73,12 @@ export type EventsActions =
   | DeleteEventError;
 
 export const fetchEvents =
-  (title: string | undefined) => async (dispatch: Dispatch<EventsActions>) => {
+  (params: any) => async (dispatch: Dispatch<EventsActions>) => {
     try {
       dispatch({
         type: EventsActionTypes.EVENTS_LOADING,
       });
-      const res = await EventsService.fetchEvents(title);
+      const res = await EventsService.fetchEvents(params);
       const events = res.data;
       dispatch({
         type: EventsActionTypes.EVENTS_SUCCESS,

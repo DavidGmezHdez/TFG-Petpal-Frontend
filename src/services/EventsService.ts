@@ -1,7 +1,7 @@
 import axios from '@utils/api/axios';
 
-const fetchEvents = async (title: string | undefined) => {
-  return await axios.get('/events', {params: {title}});
+const fetchEvents = async (params: any) => {
+  return await axios.get('/events', {params});
 };
 
 const sendEvent = async (event: any) => {

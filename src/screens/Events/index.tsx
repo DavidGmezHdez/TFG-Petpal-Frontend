@@ -37,7 +37,7 @@ export const Events = ({navigation}: Props) => {
 
   const handleUpdate = useCallback(() => {
     const realTitle = title?.length ? title : undefined;
-    dispatch(fetchEvents({realTitle, region}));
+    dispatch(fetchEvents({title: realTitle, region}));
   }, [dispatch, region, title]);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ export const Events = ({navigation}: Props) => {
           data={events}
         />
       ) : (
-        <Text large>No existen eventos con ese título</Text>
+        <Text large>No existen eventos con esos parámetros de búsqueda</Text>
       )}
 
       <Button

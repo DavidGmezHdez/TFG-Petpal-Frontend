@@ -1,7 +1,7 @@
 import axios from '@utils/api/axios';
 
 const fetchEvents = async (params: any) => {
-  return await axios.get('/events', {params});
+  return await axios.get('/events', {params: params});
 };
 
 const sendEvent = async (event: any) => {

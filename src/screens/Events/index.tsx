@@ -20,6 +20,7 @@ import {clearErrorUser} from '@redux/user/user_actions';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import {Pressable} from '@components/Pressable';
 import {provinces} from '@utils/Constants';
+import {ConfirmationEventDelete} from '@modals/ConfirmationEventDelete';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'events'>;
 
@@ -32,6 +33,9 @@ export const Events = ({navigation}: Props) => {
   const events = useSelector(getEvents);
   const isLoading = useSelector(getLoadingEvents);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModalConfirmation, setShowModalConfirmation] =
+    useState<boolean>(false);
+  const [eventId, setEventId] = useState<string>('');
   const [title, setTitle] = useState<string | undefined>();
   const [region, setRegion] = useState<string | null>(null);
 
@@ -42,6 +46,7 @@ export const Events = ({navigation}: Props) => {
 
   useEffect(() => {
     handleUpdate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading) {
@@ -56,6 +61,11 @@ export const Events = ({navigation}: Props) => {
   return (
     <View style={styles.container}>
       <CreateEventModal showModal={showModal} setShowModal={setShowModal} />
+      <ConfirmationEventDelete
+        showModal={showModalConfirmation}
+        setShowModal={setShowModalConfirmation}
+        eventId={eventId}
+      />
       <Text large>Buscar Evento</Text>
 
       <TextInput
@@ -82,7 +92,12 @@ export const Events = ({navigation}: Props) => {
       {events.length ? (
         <FlashList
           renderItem={(event: ListRenderItemInfo<IEvent>) => (
-            <Event key={event.item._id} event={event.item} />
+            <Event
+              key={event.item._id}
+              event={event.item}
+              setShowModal={setShowModalConfirmation}
+              setSelectedEvent={setEventId}
+            />
           )}
           estimatedItemSize={200}
           data={events}

@@ -143,12 +143,13 @@ export const updateEvent =
   };
 
 export const deleteEvent =
-  (eventId: string) => async (dispatch: Dispatch<EventsActions>) => {
+  (eventId: string, reason: string) =>
+  async (dispatch: Dispatch<EventsActions>) => {
     try {
       dispatch({
         type: EventsActionTypes.EVENTS_LOADING,
       });
-      const res = await EventsService.deleteEvent(eventId);
+      const res = await EventsService.deleteEvent(eventId, reason);
       const deletedEvent = res.data;
       dispatch({
         type: EventsActionTypes.DELETE_EVENT_SUCCESS,

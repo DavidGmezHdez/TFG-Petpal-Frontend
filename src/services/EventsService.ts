@@ -12,7 +12,11 @@ const updateEvent = async (eventId: string, event: any) => {
   return await axios.patch(`/events/${eventId}`, {event: event});
 };
 
-const deleteEvent = async (eventId: string, reason: string) => {
+const deleteEvent = async (eventId: string) => {
+  return await axios.delete(`/events/delete/${eventId}`);
+};
+
+const deleteEventReason = async (eventId: string, reason: string) => {
   return await axios.put(`/events/delete/${eventId}`, {reason});
 };
 
@@ -21,4 +25,5 @@ export default {
   sendEvent,
   updateEvent,
   deleteEvent,
+  deleteEventReason,
 };

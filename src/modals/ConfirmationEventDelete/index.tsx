@@ -3,7 +3,7 @@ import {Modal, StyleSheet, View, TextInput, ScrollView} from 'react-native';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {clearErrorEvent, deleteEvent} from '@redux/events/events_actions';
+import {clearErrorEvent, deleteEventReason} from '@redux/events/events_actions';
 import {updateUser} from '@redux/user/user_actions';
 import {EventSchema} from './lib';
 import {Text} from '@components/TextWrapper';
@@ -36,7 +36,9 @@ export const ConfirmationEventDelete = ({
 
   const handleSendDelete = async (values: eventDeleteTypes) => {
     try {
-      const deletedEvent = await dispatch(deleteEvent(eventId, values.reason));
+      const deletedEvent = await dispatch(
+        deleteEventReason(eventId, values.reason),
+      );
       if (deletedEvent) {
         const hostEvents = [...(user.hostEvents ?? []), deletedEvent._id];
         await dispatch(updateUser(user._id, {hostEvents}, user.rol));

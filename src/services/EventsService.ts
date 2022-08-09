@@ -1,7 +1,7 @@
 import axios from '@utils/api/axios';
 
-const fetchEvents = async (title: string | undefined) => {
-  return await axios.get('/events', {params: {title}});
+const fetchEvents = async (params: any) => {
+  return await axios.get('/events', {params: params});
 };
 
 const sendEvent = async (event: any) => {
@@ -13,7 +13,11 @@ const updateEvent = async (eventId: string, event: any) => {
 };
 
 const deleteEvent = async (eventId: string) => {
-  return await axios.delete(`/events/${eventId}`);
+  return await axios.delete(`/events/delete/${eventId}`);
+};
+
+const deleteEventReason = async (eventId: string, reason: string) => {
+  return await axios.put(`/events/delete/${eventId}`, {reason});
 };
 
 export default {
@@ -21,4 +25,5 @@ export default {
   sendEvent,
   updateEvent,
   deleteEvent,
+  deleteEventReason,
 };

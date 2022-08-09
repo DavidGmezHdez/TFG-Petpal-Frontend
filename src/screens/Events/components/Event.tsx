@@ -1,19 +1,21 @@
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IEvent, IUser} from 'utils/Types';
 import {format} from 'date-fns';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {deleteEvent, updateEvent} from '@redux/events/events_actions';
+import {updateEvent} from '@redux/events/events_actions';
 import {updateUser} from '@redux/user/user_actions';
 import {hasPermissions} from '@utils/Helpers';
 
 type Props = {
   event: IEvent;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+  setSelectedEvent: Dispatch<SetStateAction<string>>;
 };
 
-export const Event = ({event}: Props) => {
+export const Event = ({event, setShowModal, setSelectedEvent}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
   const joinedByUser = event.attendants?.some(usr => usr._id === user._id);
@@ -34,9 +36,8 @@ export const Event = ({event}: Props) => {
   };
 
   const _deleteEvent = async () => {
-    const hostEvents = user.hostEvents?.filter(evt => evt._id !== event._id);
-    await dispatch(deleteEvent(event._id));
-    await dispatch(updateUser(user._id, {hostEvents}, user.rol));
+    setShowModal(true);
+    setSelectedEvent(event._id);
   };
 
   return (
@@ -49,6 +50,7 @@ export const Event = ({event}: Props) => {
       </Text>
       <Text large>Fecha: {format(new Date(event.date), 'dd-MM-yy hh:mm')}</Text>
       <Text large>Descripcion: {event.description}</Text>
+      <Text large>Provincia: {event.region}</Text>
       <Text large>Apuntados: </Text>
       {event.attendants && event.attendants.length ? (
         event.attendants?.map((att: IUser) => {

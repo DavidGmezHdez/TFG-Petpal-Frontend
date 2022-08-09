@@ -9,6 +9,7 @@ export type RootStackParam = {
   profile: undefined;
   events: undefined;
   createPets: undefined;
+  createEvents: undefined;
   editProfile: undefined;
   tabs_navigator_admin: undefined;
 };

@@ -7,6 +7,7 @@ import {RegisterProtector} from '@screens/RegisterProtector';
 import {Login} from '@screens/Login';
 import {CreatePetScreen} from '@screens/CreatePet';
 import {EditProfileScreen} from '@screens/EditProfile';
+import {CreateEvent} from '@screens/CreateEvent';
 import {TabsNavigator} from './tabs-navigator';
 import {TabsNavigatorAdmin} from './tabs-navigator-admin';
 import {useSelector} from 'react-redux';
@@ -52,6 +53,11 @@ export const Navigation = () => {
         <Stack.Screen
           name={'createPets'}
           component={CreatePetScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'createEvents'}
+          component={CreateEvent}
           options={{headerShown: false}}
         />
         <Stack.Screen

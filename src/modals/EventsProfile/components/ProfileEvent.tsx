@@ -1,26 +1,28 @@
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IEvent, IUser} from 'utils/Types';
 import {format} from 'date-fns';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {deleteEvent} from '@redux/events/events_actions';
-import {updateUser} from '@redux/user/user_actions';
 
 type Props = {
   event: IEvent;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+  setSelectedEvent: Dispatch<SetStateAction<string>>;
 };
 
-export const ProfileEvent = ({event}: Props) => {
-  const dispatch = useDispatch<any>();
+export const ProfileEvent = ({
+  event,
+  setShowModal,
+  setSelectedEvent,
+}: Props) => {
   const user = useSelector(getUser);
   const ownedByUser = event.host._id === user._id;
 
-  const _deleteEvent = async () => {
-    const hostEvents = user.hostEvents?.filter(evt => evt._id !== event._id);
-    await dispatch(deleteEvent(event._id));
-    await dispatch(updateUser(user._id, {hostEvents}, user.rol));
+  const deleteEvent = async () => {
+    setShowModal(true);
+    setSelectedEvent(event._id);
   };
 
   return (
@@ -48,7 +50,7 @@ export const ProfileEvent = ({event}: Props) => {
       {ownedByUser ? (
         <Pressable
           style={[styles.button, styles.buttonOpen]}
-          onPress={_deleteEvent}>
+          onPress={deleteEvent}>
           <Text large style={styles.textStyle}>
             Borrar quedada
           </Text>

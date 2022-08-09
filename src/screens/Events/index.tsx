@@ -6,6 +6,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import {useDispatch, useSelector} from 'react-redux';
 import {Text} from '@components/TextWrapper';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -18,6 +19,8 @@ import {CreateEventModal} from '@modals/CreateEvent';
 import {clearErrorUser} from '@redux/user/user_actions';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import {Pressable} from '@components/Pressable';
+import {provinces} from '@utils/Constants';
+import {ConfirmationEventDelete} from '@modals/ConfirmationEventDelete';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'events'>;
 
@@ -25,21 +28,26 @@ type Props = {
   navigation: NavigationStackProp['navigation'];
 };
 
-export const Events = ({}: Props) => {
+export const Events = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
   const events = useSelector(getEvents);
   const isLoading = useSelector(getLoadingEvents);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModalConfirmation, setShowModalConfirmation] =
+    useState<boolean>(false);
+  const [eventId, setEventId] = useState<string>('');
   const [title, setTitle] = useState<string | undefined>();
+  const [region, setRegion] = useState<string | null>(null);
 
   const handleUpdate = useCallback(() => {
-    dispatch(fetchEvents(title));
-  }, [dispatch, title]);
+    const realTitle = title?.length ? title : undefined;
+    dispatch(fetchEvents({title: realTitle, region}));
+  }, [dispatch, region, title]);
 
-  console.log(events);
   useEffect(() => {
     handleUpdate();
-  }, [handleUpdate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isLoading) {
     return (
@@ -53,6 +61,11 @@ export const Events = ({}: Props) => {
   return (
     <View style={styles.container}>
       <CreateEventModal showModal={showModal} setShowModal={setShowModal} />
+      <ConfirmationEventDelete
+        showModal={showModalConfirmation}
+        setShowModal={setShowModalConfirmation}
+        eventId={eventId}
+      />
       <Text large>Buscar Evento</Text>
 
       <TextInput
@@ -60,6 +73,13 @@ export const Events = ({}: Props) => {
         value={title}
         placeholder={'Buscar quedada...'}
         maxLength={20}
+      />
+      <Text large>Provincia</Text>
+      <RNPickerSelect
+        onValueChange={value => setRegion(value)}
+        items={provinces}
+        placeholder={{label: 'Cualquier provincia', value: null}}
+        value={region}
       />
       <Pressable
         style={[styles.button, styles.buttonOpen]}
@@ -72,20 +92,25 @@ export const Events = ({}: Props) => {
       {events.length ? (
         <FlashList
           renderItem={(event: ListRenderItemInfo<IEvent>) => (
-            <Event key={event.item._id} event={event.item} />
+            <Event
+              key={event.item._id}
+              event={event.item}
+              setShowModal={setShowModalConfirmation}
+              setSelectedEvent={setEventId}
+            />
           )}
           estimatedItemSize={200}
           data={events}
         />
       ) : (
-        <Text large>No existen eventos con ese título</Text>
+        <Text large>No existen eventos con esos parámetros de búsqueda</Text>
       )}
 
       <Button
         title="Crear evento"
         onPress={() => {
           dispatch(clearErrorUser());
-          setShowModal(true);
+          navigation.navigate('createEvents');
         }}
       />
     </View>

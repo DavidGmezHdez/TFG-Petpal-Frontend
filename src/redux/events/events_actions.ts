@@ -73,12 +73,12 @@ export type EventsActions =
   | DeleteEventError;
 
 export const fetchEvents =
-  (title: string | undefined) => async (dispatch: Dispatch<EventsActions>) => {
+  (params: any) => async (dispatch: Dispatch<EventsActions>) => {
     try {
       dispatch({
         type: EventsActionTypes.EVENTS_LOADING,
       });
-      const res = await EventsService.fetchEvents(title);
+      const res = await EventsService.fetchEvents(params);
       const events = res.data;
       dispatch({
         type: EventsActionTypes.EVENTS_SUCCESS,
@@ -149,6 +149,29 @@ export const deleteEvent =
         type: EventsActionTypes.EVENTS_LOADING,
       });
       const res = await EventsService.deleteEvent(eventId);
+      const deletedEvent = res.data;
+      dispatch({
+        type: EventsActionTypes.DELETE_EVENT_SUCCESS,
+        payload: {event: deletedEvent},
+      });
+      return deletedEvent;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: EventsActionTypes.DELETE_EVENT_ERROR,
+        payload: {msg: e.response.data.message},
+      });
+    }
+  };
+
+export const deleteEventReason =
+  (eventId: string, reason: string) =>
+  async (dispatch: Dispatch<EventsActions>) => {
+    try {
+      dispatch({
+        type: EventsActionTypes.EVENTS_LOADING,
+      });
+      const res = await EventsService.deleteEventReason(eventId, reason);
       const deletedEvent = res.data;
       dispatch({
         type: EventsActionTypes.DELETE_EVENT_SUCCESS,

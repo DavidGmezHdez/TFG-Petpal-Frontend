@@ -47,8 +47,6 @@ export const EventsAdmin = () => {
     handleUpdate();
   }, [handleUpdate]);
 
-  console.log(events);
-
   if (isLoading) {
     return (
       <View style={styles.container}>

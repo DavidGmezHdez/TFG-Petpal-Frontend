@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Modal, StyleSheet, View, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
@@ -8,6 +8,7 @@ import {Text} from '@components/TextWrapper';
 import {IEvent} from '@utils/Types';
 import {ProfileEvent} from './components/ProfileEvent';
 import {Pressable} from '@components/Pressable';
+import {ConfirmationEventDelete} from '@modals/ConfirmationEventDelete';
 
 type Props = {
   showModal: boolean;
@@ -20,6 +21,9 @@ export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
   const events = useSelector(getEvents).filter(
     evt => evt.host._id === user._id,
   );
+  const [showModalConfirmation, setShowModalConfirmation] =
+    useState<boolean>(false);
+  const [eventId, setEventId] = useState<string>('');
 
   const cancel = () => {
     dispatch(clearErrorUser());
@@ -34,7 +38,12 @@ export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
           <ScrollView>
             {events && events.length > 0 ? (
               events.map((event: IEvent) => (
-                <ProfileEvent key={event._id} event={event} />
+                <ProfileEvent
+                  key={event._id}
+                  event={event}
+                  setShowModal={setShowModalConfirmation}
+                  setSelectedEvent={setEventId}
+                />
               ))
             ) : (
               <Text large>No creado ninguna quedada</Text>
@@ -47,6 +56,11 @@ export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
               Cerrar
             </Text>
           </Pressable>
+          <ConfirmationEventDelete
+            showModal={showModalConfirmation}
+            setShowModal={setShowModalConfirmation}
+            eventId={eventId}
+          />
         </View>
       </View>
     </Modal>

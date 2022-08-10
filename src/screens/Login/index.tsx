@@ -84,6 +84,13 @@ export const Login = ({navigation}: Props) => {
           navigation.navigate('registerProtector');
         }}
       />
+      <Button
+        title="Volver pantalla bienvenida"
+        onPress={() => {
+          dispatch(clearErrorUser());
+          navigation.navigate('welcome');
+        }}
+      />
     </View>
   );
 };

@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 export const UserSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'El nombre debe de tener más de 2 caracteres')
-    .max(50, 'El nombre no puede superar los 50 caracteres')
+    .max(20, 'El nombre no puede superar los 20 caracteres')
     .required('El campo nombre es obligatorio'),
   password: Yup.string()
     .min(10, 'La contraseña debe tener mínimo 10 caracteres')

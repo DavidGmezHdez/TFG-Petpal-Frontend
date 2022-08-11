@@ -18,4 +18,10 @@ export const colors = {
   black: '#000000',
   green: '#6DD0A3',
   yellow: '#ffc247',
+  springGreen: '#157145',
+  forestGreen: '#57A773',
+  shadowBlue: '#6A8EAE',
+  lightCyan: '#D1FAFF',
+  lightBlue: '#9BD1E5',
+  error: '#ff2617',
 };

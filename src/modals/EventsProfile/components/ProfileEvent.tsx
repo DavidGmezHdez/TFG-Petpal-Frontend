@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
-import {IEvent, IUser} from 'utils/Types';
+import {IEvent} from 'utils/Types';
 import {format} from 'date-fns';
 import {useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
@@ -37,13 +37,7 @@ export const ProfileEvent = ({
       <Text large>Descripcion: {event.description}</Text>
       <Text large>Apuntados: </Text>
       {event.attendants && event.attendants.length ? (
-        event.attendants?.map((att: IUser) => {
-          return (
-            <Text large key={att._id}>
-              Usuario: {att.name}
-            </Text>
-          );
-        })
+        <Text large>{`Apuntados: ${event.attendants.length}`}</Text>
       ) : (
         <Text large>No hay nadie apuntado</Text>
       )}

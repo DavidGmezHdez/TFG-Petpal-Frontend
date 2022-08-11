@@ -13,6 +13,8 @@ export enum AuthActionTypes {
   UPDATE_USER_ERROR = 'updateError',
   VALID_PERSISTED_TOKEN = 'checkPersistedToken',
   UPDATE_USER_IMAGE_SUCCESS = 'updateImageSuccess',
+  FETCH_SUCCESS_ACTION = 'fetchSuccessAction',
+  FETCH_SUCCESS_ERROR = 'fetchErrorAction',
 }
 
 interface AuthLoadingAction {
@@ -60,6 +62,16 @@ interface ValidPersistedToken {
   type: AuthActionTypes.VALID_PERSISTED_TOKEN;
 }
 
+interface FetchSuccessAction {
+  type: AuthActionTypes.FETCH_SUCCESS_ACTION;
+  payload: {user: IUser};
+}
+
+interface FetchErrorAction {
+  type: AuthActionTypes.FETCH_SUCCESS_ERROR;
+  payload: any;
+}
+
 export type AuthAction =
   | AuthLoadingAction
   | AuthErrorAction
@@ -70,7 +82,9 @@ export type AuthAction =
   | RegisterSuccessAction
   | UpdateSuccessAction
   | UpdateImageSuccessAction
-  | UpdateErrorAction;
+  | UpdateErrorAction
+  | FetchSuccessAction
+  | FetchErrorAction;
 
 export const login =
   (email: string, password: string) =>
@@ -192,6 +206,28 @@ export const updateUserProfileImage =
       dispatch({
         type: AuthActionTypes.UPDATE_USER_ERROR,
         payload: {msg: e.response.data.message},
+      });
+    }
+  };
+
+export const fetchUser =
+  (userId: string, rol: string) => async (dispatch: Dispatch<AuthAction>) => {
+    try {
+      const res = await UserService.fetchUser(userId, rol);
+      const user = res.data;
+      dispatch({
+        type: AuthActionTypes.FETCH_SUCCESS_ACTION,
+        payload: {user},
+      });
+      dispatch({
+        type: AuthActionTypes.CLEAR_ERROR,
+      });
+      return user;
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: AuthActionTypes.FETCH_SUCCESS_ERROR,
+        payload: e.response.data.message,
       });
     }
   };

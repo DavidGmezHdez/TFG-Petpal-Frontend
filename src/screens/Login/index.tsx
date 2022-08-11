@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {clearErrorUser, login} from '@redux/user/user_actions';
 import {getUserError, getUserErrorMsg} from '@redux/user/user_reducer';
 import {IUser} from '@utils/Types';
+import config from '@config';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'login'>;
 
@@ -20,6 +21,7 @@ export const Login = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
   const authErrors = useSelector(getUserError);
   const authErrorsMsg = useSelector(getUserErrorMsg);
+  console.log(config.apiUrl);
 
   const _handleSubmit = async (values: any) => {
     const {email, password} = values;

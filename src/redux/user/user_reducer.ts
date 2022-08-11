@@ -83,6 +83,21 @@ const reducer = (state: AuthState = initialState, action: AuthAction) => {
         msg: action.payload.msg,
       };
 
+    case AuthActionTypes.FETCH_SUCCESS_ACTION:
+      return {
+        ...state,
+        isLoading: false,
+        user: action.payload.user,
+        isAuthenticated: true,
+      };
+    case AuthActionTypes.FETCH_SUCCESS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        msg: action.payload.msg,
+      };
+
     default:
       return state;
   }

@@ -5,6 +5,12 @@ const fetchUsers = async (rol: string) => {
   return await axios.get(apiURL);
 };
 
+const fetchUser = async (userId: string, rol: string) => {
+  const apiURL =
+    rol === 'Usuario' ? `/users/${userId}` : `/protectors/${userId}`;
+  return await axios.get(apiURL);
+};
+
 const updateUser = async (userId: string, user: any, rol: string) => {
   const apiURL =
     rol === 'Usuario' ? `/users/${userId}` : `/protectors/${userId}`;
@@ -33,6 +39,7 @@ const deleteUser = async (userId: string, rol: string) => {
 
 export default {
   fetchUsers,
+  fetchUser,
   updateUser,
   updateUserProfile,
   deleteUser,

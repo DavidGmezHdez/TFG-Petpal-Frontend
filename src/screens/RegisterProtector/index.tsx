@@ -14,7 +14,7 @@ import {options, provinces, px} from '@utils/Constants';
 import {Pressable} from '@components/Pressable';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {colors} from '@utils/Colors';
-import {generalStyles} from '@utils/Styles';
+import {generalStyles, pickerSelectStyles} from '@utils/Styles';
 
 type NavigationStackProp = NativeStackScreenProps<
   RootStackParam,
@@ -291,39 +291,5 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
-  },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
-    width: 800 * px,
-    backgroundColor: colors.white,
-    margin: '2%',
-    padding: '2%',
-    textAlign: 'center',
-    borderRadius: 8,
-    borderColor: colors.primary,
-    borderWidth: 2,
-  },
-  inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
-    width: 800 * px,
-    backgroundColor: colors.white,
-    margin: '2%',
-    padding: '2%',
-    textAlign: 'center',
-    borderRadius: 8,
-    borderColor: colors.primary,
-    borderWidth: 7,
-    borderStyle: 'solid',
   },
 });

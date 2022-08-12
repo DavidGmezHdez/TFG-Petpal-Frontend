@@ -12,7 +12,7 @@ import {colors} from '@utils/Colors';
 export const TabsNavigator = () => {
   const Tab = createMaterialBottomTabNavigator();
   const user = useSelector((state: RootState) => state.user.user);
-  const rol = useSelector((state: RootState) => state.user.user.rol);
+  const rol = user ? user.rol : '';
   const isAuthenticated = useSelector(
     (state: RootState) => state.user.isAuthenticated,
   );
@@ -38,7 +38,6 @@ export const TabsNavigator = () => {
       initialRouteName={'feed'}
       activeColor={'white'}
       inactiveColor={'gray'}
-      // eslint-disable-next-line react-native/no-inline-styles
       barStyle={{backgroundColor: colors.springGreen}}>
       {rol === 'Protectora' ? (
         <>

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {useDispatch, useSelector} from 'react-redux';
 import {getLoadingPosts, getPosts} from '@redux/posts/posts_reducer';

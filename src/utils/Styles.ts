@@ -32,6 +32,10 @@ export const generalStyles = StyleSheet.create({
     backgroundColor: colors.profileGradientEnd,
     width: 800 * px,
   },
+  cancelPressable: {
+    backgroundColor: colors.secondary,
+    width: 800 * px,
+  },
   images: {
     width: 200 * px,
     height: 200 * px,
@@ -51,5 +55,23 @@ export const generalStyles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 10,
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '90%',
+    height: '70%',
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 });

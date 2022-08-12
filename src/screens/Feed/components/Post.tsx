@@ -312,6 +312,7 @@ const styles = StyleSheet.create({
     width: 400 * px,
     height: 400 * px,
     borderColor: 'black',
+    borderRadius: 10,
     borderWidth: 1,
   },
 });

@@ -12,6 +12,14 @@ export const generalStyles = StyleSheet.create({
     backgroundColor: colors.lightCyan,
     height: '100%',
   },
+  loadingContainer: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+  },
   mainPressable: {
     backgroundColor: colors.forestGreen,
     width: 800 * px,

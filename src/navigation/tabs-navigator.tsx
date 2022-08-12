@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {fetchUser} from '@redux/user/user_actions';
 import {useInterval} from '@utils/hooks/useInterval';
 import {RootState} from 'redux/store';
+import {colors} from '@utils/Colors';
 
 export const TabsNavigator = () => {
   const Tab = createMaterialBottomTabNavigator();
@@ -38,7 +39,7 @@ export const TabsNavigator = () => {
       activeColor={'white'}
       inactiveColor={'gray'}
       // eslint-disable-next-line react-native/no-inline-styles
-      barStyle={{backgroundColor: 'tomato'}}>
+      barStyle={{backgroundColor: colors.springGreen}}>
       {rol === 'Protectora' ? (
         <>
           <Tab.Screen

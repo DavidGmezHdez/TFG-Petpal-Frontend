@@ -14,6 +14,7 @@ import {updateUser} from '@redux/user/user_actions';
 import {Pressable} from '@components/Pressable';
 import FastImage from 'react-native-fast-image';
 import {px} from '@utils/Constants';
+import {colors} from '@utils/Colors';
 
 type Props = {
   post: IPost;
@@ -25,7 +26,7 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
   const likedByUser = user.likedPosts?.some(pst => pst === post._id);
-  const ownedByUser = post.author === user._id;
+  const ownedByUser = post.author._id === user._id;
 
   const [expanded, setExpanded] = useState<boolean>(false);
 
@@ -72,88 +73,77 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
     },
     [dispatch, post._id],
   );
-
   return (
     <View style={styles.container}>
-      <Text large>Post: {post.text}</Text>
-      <Text large>Creador: {post.name}</Text>
-      <Text large>
-        Fecha:
-        {post.createdAt
-          ? format(new Date(post.createdAt), 'hh:mm dd-MM-yy')
-          : null}
-      </Text>
-      <Text large>Likes: {post.likes}</Text>
-      {post.image ? (
-        <FastImage source={{uri: post.image}} style={styles.images} />
-      ) : null}
-      {!ownedByUser ? (
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => (likedByUser ? likePost(true) : likePost(false))}>
-          {likedByUser ? (
-            <Text large style={styles.textStyle}>
-              Quitar Like
-            </Text>
-          ) : (
-            <Text large style={styles.textStyle}>
-              Dar like
-            </Text>
-          )}
-        </Pressable>
-      ) : null}
-
-      {ownedByUser ? (
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={_deletePost}>
-          <Text large style={styles.textStyle}>
-            Borrar Post
-          </Text>
-        </Pressable>
-      ) : null}
-
-      <Text large>Comentarios:</Text>
-      <View>
-        {dataForDisplay && dataForDisplay.length > 0 ? (
-          <>
-            {dataForDisplay.map((comment, index) => {
-              const commentOwnedByUser = comment.author === user._id;
-              return (
-                <View key={index}>
-                  <Text large>
-                    {comment.authorName} dice {comment.comment}
-                  </Text>
-                  {commentOwnedByUser ? (
-                    <Pressable
-                      style={[styles.button, styles.buttonOpen]}
-                      onPress={() => _deleteComment(comment._id)}>
-                      <Text large style={styles.textStyle}>
-                        Borrar Comentario
-                      </Text>
-                    </Pressable>
-                  ) : null}
-                </View>
-              );
-            })}
-
-            {post.comments.length > 2 ? (
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => {
-                  setExpanded(!expanded);
-                }}>
-                <Text large style={styles.textStyle}>
-                  {expanded ? 'Mostrar menos ' : 'Mostrar mas'}
-                </Text>
-              </Pressable>
+      <View style={styles.headerPost}>
+        <View style={styles.userData}>
+          <View style={styles.imageWrapper}>
+            {post.author.image ? (
+              <FastImage
+                source={{uri: post.author.image}}
+                style={styles.profileImage}
+              />
             ) : null}
-          </>
-        ) : (
-          <Text large>Este post no tiene comentarios</Text>
-        )}
+          </View>
+          <Text center xxxxlarge>
+            {`${post.author.name} dice:`}
+          </Text>
+        </View>
+        <View>
+          <Text xxlarge center>
+            {post.createdAt
+              ? format(new Date(post.createdAt), 'hh:mm dd-MM-yy')
+              : null}
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.bodyPost}>
+        <View style={styles.postWrapper}>
+          <View>
+            <Text xxxxlarge center>
+              {post.text}
+            </Text>
+          </View>
+
+          {post.image ? (
+            <FastImage source={{uri: post.image}} style={styles.imagesPost} />
+          ) : null}
+        </View>
+        <View style={styles.likesWrapper}>
+          <Text xxxxlarge>Likes: {post.likes}</Text>
+          {!ownedByUser ? (
+            <Pressable
+              style={styles.updatePressable}
+              onPress={() => (likedByUser ? likePost(true) : likePost(false))}>
+              {likedByUser ? (
+                <Text large style={styles.textStyle}>
+                  Quitar Like
+                </Text>
+              ) : (
+                <Text large style={styles.textStyle}>
+                  Dar like
+                </Text>
+              )}
+            </Pressable>
+          ) : null}
+
+          {ownedByUser ? (
+            <Pressable style={styles.updatePressable} onPress={_deletePost}>
+              <Text large style={styles.textStyle}>
+                Borrar Post
+              </Text>
+            </Pressable>
+          ) : null}
+        </View>
+      </View>
+
+      <View style={styles.commentSection}>
+        <Text xxxlarge center>
+          Comentarios
+        </Text>
         <Pressable
-          style={[styles.button, styles.buttonOpen]}
+          style={styles.updatePressable}
           onPress={() => {
             setShowModal(true);
             setPostId(post._id);
@@ -162,6 +152,55 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
             Comentar
           </Text>
         </Pressable>
+        <View style={styles.commentSection}>
+          {dataForDisplay && dataForDisplay.length > 0 ? (
+            <>
+              {dataForDisplay.map((comment, index) => {
+                const commentOwnedByUser = comment.author === user._id;
+                return (
+                  <View style={styles.comment} key={index}>
+                    <View style={styles.titleComment}>
+                      <Text xxlarge>{`${comment.authorName} comenta:`}</Text>
+                    </View>
+
+                    <View style={styles.headerPost}>
+                      <View style={styles.textComment}>
+                        <Text xxlarge center>
+                          {comment.comment}
+                        </Text>
+                      </View>
+                      {commentOwnedByUser ? (
+                        <Pressable
+                          style={styles.updatePressable}
+                          onPress={() => _deleteComment(comment._id)}>
+                          <Text large style={styles.textStyle}>
+                            Borrar Comentario
+                          </Text>
+                        </Pressable>
+                      ) : null}
+                    </View>
+                  </View>
+                );
+              })}
+
+              {post.comments.length > 2 ? (
+                <Pressable
+                  style={styles.updatePressable}
+                  onPress={() => {
+                    setExpanded(!expanded);
+                  }}>
+                  <Text large style={styles.textStyle}>
+                    {expanded ? 'Mostrar menos ' : 'Mostrar mas'}
+                  </Text>
+                </Pressable>
+              ) : null}
+            </>
+          ) : (
+            <Text xxlarge center>
+              Este post no tiene comentarios
+            </Text>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -174,29 +213,105 @@ const styles = StyleSheet.create({
     display: 'flex',
     borderColor: '#2196F3',
     borderWidth: 5,
+    flexDirection: 'column',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
+  headerPost: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '90%',
+    margin: '2%',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  userData: {
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start',
+    display: 'flex',
+    flexDirection: 'row',
+    margin: '2%',
   },
-  buttonClose: {
-    backgroundColor: '#2196F3',
+  imageWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
   },
+  profileImage: {
+    width: 200 * px,
+    height: 200 * px,
+    borderColor: colors.darkGray,
+    borderWidth: 1,
+    marginHorizontal: 3,
+    borderRadius: 50,
+  },
+
+  bodyPost: {
+    alignItems: 'flex-start',
+    justifyContent: 'space-evenly',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '90%',
+  },
+
+  postWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '2%',
+    margin: '2%',
+    width: '80%',
+  },
+
+  likesWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '2%',
+    margin: '2%',
+  },
+  updatePressable: {
+    backgroundColor: colors.primaryLight,
+  },
+
+  commentSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '90%',
+  },
+  comment: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '2%',
+    margin: '2%',
+    width: '90%',
+  },
+
+  titleComment: {
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '70%',
+  },
+  textComment: {
+    width: '70%',
+  },
+
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  images: {
-    width: 200 * px,
-    height: 200 * px,
+  imagesPost: {
+    width: 400 * px,
+    height: 400 * px,
     borderColor: 'black',
     borderWidth: 1,
-    marginHorizontal: 3,
   },
 });

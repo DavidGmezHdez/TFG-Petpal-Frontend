@@ -1,7 +1,7 @@
 export type IPost = {
   _id: string;
   text: string;
-  author: string;
+  author: IUser;
   name: string;
   likes: number;
   image: string;

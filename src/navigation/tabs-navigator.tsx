@@ -1,14 +1,22 @@
 import React, {useEffect} from 'react';
 import {BackHandler} from 'react-native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import {useSelector} from 'react-redux';
-import {RootState} from '@redux/store';
+import {useDispatch, useSelector} from 'react-redux';
 import {Feed, Events, Pets, Profile} from '..';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {fetchUser} from '@redux/user/user_actions';
+import {useInterval} from '@utils/hooks/useInterval';
+import {RootState} from 'redux/store';
+import {colors} from '@utils/Colors';
 
 export const TabsNavigator = () => {
   const Tab = createMaterialBottomTabNavigator();
+  const user = useSelector((state: RootState) => state.user.user);
   const rol = useSelector((state: RootState) => state.user.user.rol);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.user.isAuthenticated,
+  );
+  const dispatch = useDispatch<any>();
 
   //Disables hardware back button android
   useEffect(() => {
@@ -17,13 +25,21 @@ export const TabsNavigator = () => {
       BackHandler.removeEventListener('hardwareBackPress', () => true);
   }, []);
 
+  // Every 60 seconds we update the user data
+  useInterval(async () => {
+    if (user && isAuthenticated) {
+      console.log('tabs user');
+      await dispatch(fetchUser(user._id, user.rol));
+    }
+  }, 1000 * 60);
+
   return (
     <Tab.Navigator
       initialRouteName={'feed'}
       activeColor={'white'}
       inactiveColor={'gray'}
       // eslint-disable-next-line react-native/no-inline-styles
-      barStyle={{backgroundColor: 'tomato'}}>
+      barStyle={{backgroundColor: colors.springGreen}}>
       {rol === 'Protectora' ? (
         <>
           <Tab.Screen

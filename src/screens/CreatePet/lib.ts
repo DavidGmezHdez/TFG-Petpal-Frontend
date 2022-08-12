@@ -2,18 +2,20 @@ import {Asset} from 'react-native-image-picker';
 import * as Yup from 'yup';
 export const PetSchema = Yup.object().shape({
   name: Yup.string()
-    .required('Campo obligatorio')
+    .required('El nombre debe estar relleno')
     .min(1, 'Minimo 1 caracter')
     .max(15, 'Máximo 15 caracteres'),
-  type: Yup.string().required('Campo obligatorio'),
+  type: Yup.string().required('El tipo de mascota debe tener un valor'),
   age: Yup.number()
-    .required('Campo obligatorio')
+    .required('La edad es obligatoria')
     .min(0, 'La edad mínima es de 0 años')
     .max(20, 'La edad máxima es de 20 años'),
-  size: Yup.string().required('Campo obligatorio'),
-  race: Yup.string().required('Campo obligatorio'),
-  description: Yup.string().required('Campo obligatorio'),
-  sex: Yup.string().required('Campo obligatorio').nullable(),
+  size: Yup.string().required('El tamaño es obligatorio'),
+  race: Yup.string().required('La raza es obligatoria'),
+  description: Yup.string().required(
+    'Una descripción del animal es obligatorio',
+  ),
+  sex: Yup.string().required('El sexo del animal es obligatorio').nullable(),
 });
 
 export type petValuesTypes = {

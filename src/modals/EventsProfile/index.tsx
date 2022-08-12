@@ -2,7 +2,6 @@ import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Modal, StyleSheet, View, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
-import {getEvents} from '@redux/events/events_reducer';
 import {clearErrorUser} from '@redux/user/user_actions';
 import {Text} from '@components/TextWrapper';
 import {IEvent} from '@utils/Types';
@@ -18,9 +17,6 @@ type Props = {
 export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
-  const events = useSelector(getEvents).filter(
-    evt => evt.host._id === user._id,
-  );
   const [showModalConfirmation, setShowModalConfirmation] =
     useState<boolean>(false);
   const [eventId, setEventId] = useState<string>('');
@@ -36,8 +32,8 @@ export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
         <View style={styles.modalView}>
           <Text large>Mis Quedadas</Text>
           <ScrollView>
-            {events && events.length > 0 ? (
-              events.map((event: IEvent) => (
+            {user.hostEvents && user.hostEvents.length > 0 ? (
+              user.hostEvents.map((event: IEvent) => (
                 <ProfileEvent
                   key={event._id}
                   event={event}

@@ -12,6 +12,7 @@ import {Pressable} from '@components/Pressable';
 import FastImage from 'react-native-fast-image';
 
 import {options, px} from '@utils/Constants';
+import {generalStyles} from '@utils/Styles';
 
 type Props = {
   showModal: boolean;
@@ -59,8 +60,8 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
 
   return (
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
+      <View style={generalStyles.modalBackground}>
+        <View style={generalStyles.modalView}>
           <Formik
             initialValues={{
               text: '',
@@ -87,37 +88,37 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
                   placeholder={'Post....'}
                   multiline={true}
                   numberOfLines={4}
-                  maxLength={300}
+                  maxLength={60}
                   style={styles.textInput}
                 />
                 {errors.text && touched.text ? (
-                  <Text large color={'red'}>
+                  <Text large center style={generalStyles.textError}>
                     {errors.text}
                   </Text>
                 ) : null}
 
                 {!values.imageUri ? (
                   <Pressable
-                    style={[styles.button, styles.buttonOpen]}
+                    style={generalStyles.imagePressable}
                     onPress={async () => {
                       const {assets} = await launchImageLibrary(options);
                       setFieldValue('imageUri', assets![0].uri);
                       setFieldValue('imageType', assets![0].type);
                       setFieldValue('imageName', assets![0].fileName);
                     }}>
-                    <Text large style={styles.textStyle}>
+                    <Text large center style={generalStyles.textStyle}>
                       Subir Foto
                     </Text>
                   </Pressable>
                 ) : (
                   <Pressable
-                    style={[styles.button, styles.buttonOpen]}
+                    style={generalStyles.imagePressable}
                     onPress={async () => {
                       setFieldValue('imageUri', '');
                       setFieldValue('imageType', '');
                       setFieldValue('imageName', '');
                     }}>
-                    <Text large style={styles.textStyle}>
+                    <Text large center style={generalStyles.textStyle}>
                       Borrar foto
                     </Text>
                   </Pressable>
@@ -130,16 +131,16 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
                   />
                 ) : null}
                 <Pressable
-                  style={[styles.button, styles.buttonOpen]}
+                  style={generalStyles.mainPressable}
                   onPress={() => handleSubmit()}>
-                  <Text large style={styles.textStyle}>
+                  <Text large center style={generalStyles.textStyle}>
                     Enviar Post
                   </Text>
                 </Pressable>
                 <Pressable
-                  style={[styles.button, styles.buttonOpen]}
+                  style={generalStyles.cancelPressable}
                   onPress={cancel}>
-                  <Text large style={styles.textStyle}>
+                  <Text large center style={generalStyles.textStyle}>
                     Cancelar
                   </Text>
                 </Pressable>
@@ -153,49 +154,6 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
 };
 
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalView: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 10,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    elevation: 5,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: '90%',
-    height: 1200 * px,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',

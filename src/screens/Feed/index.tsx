@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Button, StyleSheet, View} from 'react-native';
-import {Text} from '@components/Text';
+import {StyleSheet, View} from 'react-native';
+import {Text} from '@components/TextWrapper';
 import {useDispatch, useSelector} from 'react-redux';
 import {getLoadingPosts, getPosts} from '@redux/posts/posts_reducer';
 import {Post} from './components/Post';
@@ -10,7 +10,9 @@ import {ActivityIndicator} from 'react-native-paper';
 import {CreatePostModal} from '@modals/CreatePost';
 import {SendCommentModal} from '@modals/SendComment';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
-import {store} from '@redux/store';
+import {colors} from '@utils/Colors';
+import {generalStyles} from '@utils/Styles';
+import {Pressable} from '@components/Pressable';
 
 export const Feed = () => {
   const dispatch = useDispatch<any>();
@@ -19,7 +21,6 @@ export const Feed = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showModalComment, setShowModalComment] = useState<boolean>(false);
   const [postId, setPostId] = useState<string>('');
-  console.log(store.getState());
 
   const _handleUpdate = useCallback(() => {
     dispatch(fetchPosts());
@@ -31,8 +32,8 @@ export const Feed = () => {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size={'large'} />
+      <View style={generalStyles.loadingContainer}>
+        <ActivityIndicator size={'large'} color={colors.springGreen} />
       </View>
     );
   }
@@ -46,21 +47,46 @@ export const Feed = () => {
         setShowModal={setShowModalComment}
         postId={postId}
       />
-      <Text>Tablón</Text>
-      <FlashList
-        renderItem={(post: ListRenderItemInfo<IPost>) => (
-          <Post
-            key={post.item._id}
-            post={post.item}
-            setShowModal={setShowModalComment}
-            setPostId={setPostId}
-          />
-        )}
-        estimatedItemSize={200}
-        data={posts}
-      />
-      <Button title="Actualizar" onPress={_handleUpdate} />
-      <Button title="Crear post" onPress={() => setShowModal(true)} />
+      <View style={styles.header}>
+        <Text style={generalStyles.textStyle} center xxxxlarge>
+          Tablón
+        </Text>
+        <View style={styles.pressables}>
+          <Pressable style={styles.updatePressable} onPress={_handleUpdate}>
+            <Text style={generalStyles.textStyle} center xxlarge>
+              Actualizar
+            </Text>
+          </Pressable>
+          <Pressable
+            style={styles.updatePressable}
+            onPress={() => setShowModal(true)}>
+            <Text style={generalStyles.textStyle} center xxlarge>
+              Crear post
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+      {posts && posts.length ? (
+        <FlashList
+          showsVerticalScrollIndicator={false}
+          renderItem={(post: ListRenderItemInfo<IPost>) => (
+            <Post
+              key={post.item._id}
+              post={post.item}
+              setShowModal={setShowModalComment}
+              setPostId={setPostId}
+            />
+          )}
+          estimatedItemSize={200}
+          data={posts}
+        />
+      ) : (
+        <View style={styles.notFound}>
+          <Text center xxlarge>
+            No hay posts disponibles en el tablón, ¡actualiza!
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -71,5 +97,32 @@ const styles = StyleSheet.create({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: colors.lightBlue,
+    height: '20%',
+  },
+  pressables: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
+  },
+  notFound: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '80%',
+  },
+  updatePressable: {
+    backgroundColor: colors.blue,
   },
 });

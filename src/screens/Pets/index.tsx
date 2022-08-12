@@ -55,7 +55,6 @@ export const Pets = () => {
         setShowModal={setShowModal}
         pet={selectedPet}
       />
-      <Text large>Mascotas</Text>
       <RNPickerSelect
         onValueChange={value => setRegion(value)}
         items={provinces}

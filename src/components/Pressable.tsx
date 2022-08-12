@@ -32,6 +32,7 @@ const PressableOpacity = ({
     <Pressable
       onPress={onPress}
       style={({pressed}) => [
+        styles.button,
         style,
         pressed ? pressedStyle : {},
         activeOpacity ? {opacity: activeOpacity} : {},
@@ -51,8 +52,6 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     margin: 10,
-  },
-  buttonOpen: {
     backgroundColor: '#F194FF',
   },
 });

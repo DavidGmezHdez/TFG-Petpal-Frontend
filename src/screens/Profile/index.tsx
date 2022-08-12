@@ -55,7 +55,7 @@ export const Profile = ({navigation}: Props) => {
         showModal={showPostsModal}
         setShowModal={setShowPostsModal}
       />
-      <Text large>Perfil</Text>
+      <Text large>{`¡Hola ${user.name}!`}</Text>
       {user.image && user.image.length ? (
         <FastImage
           source={{uri: user.image + '?' + new Date()}}
@@ -114,7 +114,7 @@ export const Profile = ({navigation}: Props) => {
             style={[styles.button, styles.buttonOpen]}
             onPress={() => setShowPetsModal(true)}>
             <Text large style={styles.textStyle}>
-              Ver mis mascotas
+              Gestión de mascotas
             </Text>
           </Pressable>
         </>

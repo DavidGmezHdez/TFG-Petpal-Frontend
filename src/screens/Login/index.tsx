@@ -45,7 +45,7 @@ export const Login = ({navigation}: Props) => {
       </View>
 
       <Formik
-        initialValues={{email: 'test@test.co', password: 'test12341234'}}
+        initialValues={{email: 'testu@test.co', password: 'testtest1234'}}
         validationSchema={LoginSchema}
         onSubmit={_handleSubmit}>
         {({

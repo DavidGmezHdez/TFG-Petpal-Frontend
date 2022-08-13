@@ -80,7 +80,7 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
               errors,
               touched,
             }) => (
-              <View style={styles.centeredViewForm}>
+              <View style={generalStyles.centeredViewForm}>
                 <TextInput
                   onChangeText={handleChange('text')}
                   onBlur={handleBlur('text')}
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'space-around',
-    height: '50%',
+    height: '90%',
     width: '100%',
     padding: '2%',
   },

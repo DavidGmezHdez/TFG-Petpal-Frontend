@@ -66,13 +66,23 @@ export const generalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     width: '90%',
-    height: '70%',
+    height: '90%',
   },
   modalBackground: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  centeredViewForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'space-around',
+    padding: '2%',
+    height: '100%',
+    width: '100%',
   },
 });
 

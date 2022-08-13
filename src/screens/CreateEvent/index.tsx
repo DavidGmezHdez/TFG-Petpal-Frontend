@@ -15,6 +15,8 @@ import DatePicker from 'react-native-date-picker';
 import {format} from 'date-fns';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
+import {generalStyles, pickerSelectStyles} from '@utils/Styles';
+import {colors} from '@utils/Colors';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'createPets'>;
 
@@ -80,7 +82,9 @@ export const CreateEvent = ({navigation}: Props) => {
 
   return (
     <View style={styles.centeredView}>
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={generalStyles.scrollViewStyles}
+        showsVerticalScrollIndicator={false}>
         <Formik
           initialValues={initialValues}
           onSubmit={_handleSubmit}
@@ -94,7 +98,8 @@ export const CreateEvent = ({navigation}: Props) => {
             errors,
             touched,
           }) => (
-            <View style={styles.centeredViewForm}>
+            <View style={generalStyles.centeredViewForm}>
+              {console.log(values.date)}
               <TextInput
                 onChangeText={handleChange('title')}
                 onBlur={handleBlur('title')}
@@ -104,7 +109,7 @@ export const CreateEvent = ({navigation}: Props) => {
                 style={styles.textInput}
               />
               {errors.title && touched.title ? (
-                <Text large color={'red'}>
+                <Text large center style={generalStyles.textError}>
                   {errors.title}
                 </Text>
               ) : null}
@@ -117,10 +122,10 @@ export const CreateEvent = ({navigation}: Props) => {
                 multiline={true}
                 numberOfLines={4}
                 maxLength={300}
-                style={styles.textInput}
+                style={styles.textInputDescription}
               />
               {errors.description && touched.description ? (
-                <Text large color={'red'}>
+                <Text large center style={generalStyles.textError}>
                   {errors.description}
                 </Text>
               ) : null}
@@ -134,7 +139,7 @@ export const CreateEvent = ({navigation}: Props) => {
                 maxLength={3}
               />
               {errors.price && touched.price ? (
-                <Text large color={'red'}>
+                <Text large center style={generalStyles.textError}>
                   {errors.price}
                 </Text>
               ) : null}
@@ -148,26 +153,29 @@ export const CreateEvent = ({navigation}: Props) => {
                 style={styles.textInput}
               />
               {errors.place && touched.place ? (
-                <Text large color={'red'}>
+                <Text large center style={generalStyles.textError}>
                   {errors.place}
                 </Text>
               ) : null}
 
               {values.date ? (
-                <Text large>{format(values.date, 'dd-MM-yy hh:mm')}</Text>
-              ) : null}
-              {errors.date && touched.date ? (
-                <Text large color={'red'}>
-                  {errors.date}
+                <Text large center>
+                  {format(values.date, 'dd-MM-yy hh:mm')}
                 </Text>
               ) : null}
+
               <Pressable
-                style={[styles.button, styles.buttonOpen]}
+                style={generalStyles.imagePressable}
                 onPress={() => setOpen(true)}>
-                <Text large style={styles.textStyle}>
+                <Text large style={generalStyles.textStyle}>
                   Seleccionar Día y Hora
                 </Text>
               </Pressable>
+              {errors.date && touched.date ? (
+                <Text large center style={generalStyles.textError}>
+                  {errors.date}
+                </Text>
+              ) : null}
               <DatePicker
                 modal
                 open={open}
@@ -191,29 +199,28 @@ export const CreateEvent = ({navigation}: Props) => {
                 items={provinces}
                 placeholder={{label: 'Cualquier provincia', value: null}}
                 value={values.region}
+                style={pickerSelectStyles}
               />
               {errors.region && touched.region ? (
-                <Text large color={'red'}>
+                <Text large center style={generalStyles.textError}>
                   {errors.region}
                 </Text>
               ) : null}
               <Pressable
-                style={[styles.button, styles.buttonOpen]}
+                style={generalStyles.mainPressable}
                 onPress={() => handleSubmit()}>
-                <Text large style={styles.textStyle}>
+                <Text large style={generalStyles.textStyle}>
                   Crear Quedada
                 </Text>
               </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={cancel}>
-                <Text large style={styles.textStyle}>
+              <Pressable style={generalStyles.cancelPressable} onPress={cancel}>
+                <Text large style={generalStyles.textStyle}>
                   Cancelar
                 </Text>
               </Pressable>
 
               {eventsMessage ? (
-                <Text large color={'red'}>
+                <Text large center style={generalStyles.textError}>
                   {eventsMessage}
                 </Text>
               ) : null}
@@ -231,44 +238,32 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    height: '100%',
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
   },
-  centeredViewForm: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'space-around',
-    padding: '2%',
-  },
   textInput: {
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderRadius: 10,
+    width: 800 * px,
+    backgroundColor: colors.white,
+    margin: '2%',
+    padding: '2%',
+    borderRadius: 8,
+    borderColor: colors.primary,
     borderWidth: 2,
-    textAlign: 'center',
-    width: '100%',
-    padding: 20 * px,
+    fontSize: 48 * px,
+  },
+  textInputDescription: {
+    textAlignVertical: 'top',
+    borderRadius: 8,
+    backgroundColor: colors.white,
+    borderColor: colors.primary,
+    borderWidth: 2,
+    fontSize: 48 * px,
+    width: 800 * px,
+    height: 100,
+    padding: 10,
     marginBottom: 10,
   },
 });

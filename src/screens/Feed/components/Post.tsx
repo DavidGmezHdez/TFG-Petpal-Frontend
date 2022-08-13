@@ -129,7 +129,7 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
           ) : null}
 
           {ownedByUser ? (
-            <Pressable style={styles.updatePressable} onPress={_deletePost}>
+            <Pressable style={styles.deletePressable} onPress={_deletePost}>
               <Text large style={styles.textStyle}>
                 Borrar Post
               </Text>
@@ -171,7 +171,7 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
                       </View>
                       {commentOwnedByUser ? (
                         <Pressable
-                          style={styles.updatePressable}
+                          style={styles.deletePressable}
                           onPress={() => _deleteComment(comment._id)}>
                           <Text large style={styles.textStyle}>
                             Borrar Comentario
@@ -273,6 +273,9 @@ const styles = StyleSheet.create({
   },
   updatePressable: {
     backgroundColor: colors.primaryLight,
+  },
+  deletePressable: {
+    backgroundColor: colors.secondary,
   },
 
   commentSection: {

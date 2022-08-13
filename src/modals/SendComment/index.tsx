@@ -7,6 +7,7 @@ import {clearErrorPost, sendComment} from '@redux/posts/posts_actions';
 import {CommentSchema} from './lib';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
+import {generalStyles} from '@utils/Styles';
 
 type Props = {
   showModal: boolean;
@@ -42,8 +43,8 @@ export const SendCommentModal = ({showModal, setShowModal, postId}: Props) => {
 
   return (
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
+      <View style={generalStyles.modalBackground}>
+        <View style={generalStyles.modalView}>
           <Formik
             initialValues={{text: ''}}
             onSubmit={_handleSubmit}
@@ -56,7 +57,7 @@ export const SendCommentModal = ({showModal, setShowModal, postId}: Props) => {
               errors,
               touched,
             }) => (
-              <View style={styles.centeredViewForm}>
+              <View style={generalStyles.centeredViewForm}>
                 <TextInput
                   onChangeText={handleChange('text')}
                   onBlur={handleBlur('text')}
@@ -66,21 +67,21 @@ export const SendCommentModal = ({showModal, setShowModal, postId}: Props) => {
                   style={styles.textInput}
                 />
                 {errors.text && touched.text ? (
-                  <Text large color={'red'}>
+                  <Text large center style={generalStyles.textError}>
                     {errors.text}
                   </Text>
                 ) : null}
                 <Pressable
-                  style={[styles.button, styles.buttonOpen]}
+                  style={generalStyles.mainPressable}
                   onPress={() => handleSubmit()}>
-                  <Text large style={styles.textStyle}>
+                  <Text large style={generalStyles.textStyle}>
                     Enviar Comentario
                   </Text>
                 </Pressable>
                 <Pressable
-                  style={[styles.button, styles.buttonOpen]}
+                  style={generalStyles.cancelPressable}
                   onPress={cancel}>
-                  <Text large style={styles.textStyle}>
+                  <Text large style={generalStyles.textStyle}>
                     Cancelar
                   </Text>
                 </Pressable>
@@ -94,53 +95,6 @@ export const SendCommentModal = ({showModal, setShowModal, postId}: Props) => {
 };
 
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalView: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 10,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    elevation: 5,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: '90%',
-    height: 300,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
   centeredViewForm: {
     display: 'flex',
     flexDirection: 'column',

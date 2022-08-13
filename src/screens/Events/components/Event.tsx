@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IEvent, IUser} from 'utils/Types';
 import {format} from 'date-fns';
@@ -8,6 +8,9 @@ import {getUser} from '@redux/user/user_reducer';
 import {updateEvent} from '@redux/events/events_actions';
 import {updateUser} from '@redux/user/user_actions';
 import {hasPermissions} from '@utils/Helpers';
+import {colors} from '@utils/Colors';
+import {generalStyles} from '@utils/Styles';
+import {Pressable} from '@components/Pressable';
 
 type Props = {
   event: IEvent;
@@ -40,55 +43,104 @@ export const Event = ({event, setShowModal, setSelectedEvent}: Props) => {
     setSelectedEvent(event._id);
   };
 
+  const renderAttendants = () => {
+    const dataForDisplay =
+      event.attendants.length <= 2
+        ? event.attendants
+        : event.attendants.slice(0, 2);
+    const restOfUserS = event.attendants.length - 2;
+    if (event.attendants.length <= 2) {
+      return dataForDisplay.map((att: IUser) => (
+        <Text large key={att._id}>
+          {att.name}
+        </Text>
+      ));
+    } else {
+      return (
+        <>
+          {dataForDisplay.map((att: IUser) => (
+            <Text large key={att._id}>
+              {att.name}
+            </Text>
+          ))}
+          <Text large>{`Y ${restOfUserS} ${
+            restOfUserS === 1 ? 'usuario' : 'usuarios'
+          } más`}</Text>
+        </>
+      );
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text large>Event: {event.title}</Text>
-      <Text large>Creador: {event.host.name}</Text>
-      <Text large>Lugar: {event.place}</Text>
-      <Text large>
-        Precio: {event.price || event.price > 0 ? event.price : 'Gratis'}
-      </Text>
-      <Text large>Fecha: {format(new Date(event.date), 'dd-MM-yy hh:mm')}</Text>
-      <Text large>Descripcion: {event.description}</Text>
-      <Text large>Provincia: {event.region}</Text>
-      <Text large>Apuntados: </Text>
-      {event.attendants && event.attendants.length ? (
-        event.attendants?.map((att: IUser) => {
-          return (
-            <Text large key={att._id}>
-              Usuario: {att.name}
-            </Text>
-          );
-        })
-      ) : (
-        <Text large>No hay nadie apuntado</Text>
-      )}
-
-      {!ownedByUser ? (
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => _joinEvent(joinedByUser)}>
-          {joinedByUser ? (
-            <Text large style={styles.textStyle}>
-              Desapuntarse
-            </Text>
-          ) : (
-            <Text large style={styles.textStyle}>
-              Apuntarse
-            </Text>
-          )}
-        </Pressable>
-      ) : null}
-
-      {canDelete ? (
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={_deleteEvent}>
-          <Text large style={styles.textStyle}>
-            Borrar quedada
+      <View style={styles.headerEvent}>
+        <View style={styles.title}>
+          <Text xxxlarge center>
+            {event.title}
           </Text>
-        </Pressable>
-      ) : null}
+        </View>
+        <View style={styles.title}>
+          <Text xxxlarge center>
+            {event.host.name}
+          </Text>
+        </View>
+        <View style={styles.title}>
+          <Text xxxlarge center>
+            {format(new Date(event.date), 'dd-MM-yy hh:mm')}
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.bodyEvent}>
+        <View style={styles.eventBody}>
+          <Text xxlarge>{event.description}</Text>
+          <Text xlarge>
+            Precio: {event.price || event.price > 0 ? event.price : 'Gratis'}
+          </Text>
+          <Text xlarge>
+            {event.place} en {event.region}
+          </Text>
+        </View>
+        <View style={styles.eventBody}>
+          {canDelete ? (
+            <Pressable style={styles.deletePressable} onPress={_deleteEvent}>
+              <Text large center style={generalStyles.textStyle}>
+                Borrar quedada
+              </Text>
+            </Pressable>
+          ) : null}
+          {!ownedByUser ? (
+            <Pressable
+              style={styles.updatePressable}
+              onPress={() => _joinEvent(joinedByUser)}>
+              {joinedByUser ? (
+                <Text large style={generalStyles.textStyle}>
+                  Desapuntarse
+                </Text>
+              ) : (
+                <Text large style={generalStyles.textStyle}>
+                  Apuntarse
+                </Text>
+              )}
+            </Pressable>
+          ) : null}
+        </View>
+      </View>
+
+      <View style={styles.bodyEvent}>
+        <View style={styles.eventBody}>
+          <Text xlarge center>
+            Apuntados
+          </Text>
+        </View>
+        <View style={styles.eventBody}>
+          {event.attendants && event.attendants.length ? (
+            renderAttendants()
+          ) : (
+            <Text large>No hay nadie apuntado</Text>
+          )}
+        </View>
+      </View>
     </View>
   );
 };
@@ -97,22 +149,42 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'space-around',
+    display: 'flex',
+    borderColor: colors.green,
+    borderWidth: 5,
+    flexDirection: 'column',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
+  headerEvent: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '90%',
+    margin: '2%',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  title: {
+    width: '35%',
   },
-  buttonClose: {
-    backgroundColor: '#2196F3',
+  bodyEvent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '90%',
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  eventBody: {
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '2%',
+    margin: '2%',
+    width: '50%',
+  },
+  updatePressable: {
+    backgroundColor: colors.primaryLight,
+  },
+  deletePressable: {
+    backgroundColor: colors.secondary,
   },
 });

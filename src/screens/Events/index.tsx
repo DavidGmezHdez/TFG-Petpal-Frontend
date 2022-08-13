@@ -63,7 +63,7 @@ export const Events = ({navigation}: Props) => {
         eventId={eventId}
       />
       <View style={styles.header}>
-        <Text xxlarge center>
+        <Text style={generalStyles.textStyle} center xxxxlarge>
           Eventos
         </Text>
       </View>
@@ -142,11 +142,6 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: colors.lightBlue,
     height: '10%',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
   input: {
     width: '90%',

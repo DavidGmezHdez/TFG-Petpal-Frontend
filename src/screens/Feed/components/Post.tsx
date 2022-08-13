@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     display: 'flex',
-    borderColor: '#2196F3',
+    borderColor: colors.green,
     borderWidth: 5,
     flexDirection: 'column',
   },

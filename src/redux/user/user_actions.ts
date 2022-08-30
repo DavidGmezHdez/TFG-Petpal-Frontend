@@ -92,7 +92,6 @@ export const login =
     try {
       const res = await AuthService.login(email, password);
       const user = res.data.user;
-      console.log('USER ACTION', user);
       dispatch({
         type: AuthActionTypes.LOGIN_SUCCESS,
         payload: {user, token: user.token},
@@ -141,7 +140,6 @@ export const updateUser =
       });
       const res = await UserService.updateUser(userId, user, rol);
       const updatedUser = res.data;
-      console.log(updatedUser);
       dispatch({
         type: AuthActionTypes.UPDATE_USER_SUCCESS,
         payload: {user: updatedUser},

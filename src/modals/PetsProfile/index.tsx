@@ -22,7 +22,7 @@ export const PetsProfileModal = ({
   navigateCreatePet,
 }: Props) => {
   const dispatch = useDispatch<any>();
-  const pets = useSelector(getUser).pets;
+  const user = useSelector(getUser);
 
   const cancel = () => {
     dispatch(clearErrorUser());
@@ -40,14 +40,12 @@ export const PetsProfileModal = ({
       <View style={generalStyles.modalBackground}>
         <View style={generalStyles.modalView}>
           <ScrollView>
-            {pets && pets.length > 0 ? (
-              pets.map((pet: IPet) => (
-                <View>
-                  <Pet key={pet._id} pet={pet} />
-                </View>
-              ))
+            {user.pets && user.pets.length > 0 ? (
+              user.pets.map((pet: IPet) => <Pet key={pet._id} pet={pet} />)
             ) : (
-              <Text large>No has añadido ninguna mascota</Text>
+              <Text large center>
+                No has añadido ninguna mascota
+              </Text>
             )}
           </ScrollView>
           <Pressable

@@ -33,8 +33,6 @@ export const ProfileJoinedEvent = ({event}: Props) => {
     } catch (error) {
       console.log(error);
     }
-
-    console.log(user);
   };
 
   return (

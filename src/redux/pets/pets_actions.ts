@@ -154,7 +154,6 @@ export const deletePet =
       });
       const res = await PetsService.deletePet(petId);
       const deletedPet = res.data;
-      console.log(res);
       dispatch({
         type: PetsActionTypes.DELETE_PETS_SUCCESS,
         payload: {pet: deletedPet},

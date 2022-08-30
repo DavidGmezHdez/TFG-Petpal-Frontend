@@ -99,7 +99,6 @@ export const CreateEvent = ({navigation}: Props) => {
             touched,
           }) => (
             <View style={generalStyles.centeredViewForm}>
-              {console.log(values.date)}
               <TextInput
                 onChangeText={handleChange('title')}
                 onBlur={handleBlur('title')}

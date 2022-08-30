@@ -28,7 +28,6 @@ export const TabsNavigator = () => {
   // Every 60 seconds we update the user data
   useInterval(async () => {
     if (user && isAuthenticated) {
-      console.log('tabs user');
       await dispatch(fetchUser(user._id, user.rol));
     }
   }, 1000 * 60);

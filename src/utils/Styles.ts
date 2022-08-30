@@ -84,6 +84,16 @@ export const generalStyles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
+  textInput: {
+    width: 800 * px,
+    backgroundColor: colors.white,
+    margin: '2%',
+    padding: '2%',
+    borderRadius: 8,
+    borderColor: colors.primary,
+    borderWidth: 2,
+    fontSize: 48 * px,
+  },
 });
 
 export const pickerSelectStyles = StyleSheet.create({

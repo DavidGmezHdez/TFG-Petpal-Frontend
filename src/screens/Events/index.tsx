@@ -34,6 +34,9 @@ export const Events = ({navigation}: Props) => {
   const [eventId, setEventId] = useState<string>('');
   const [title, setTitle] = useState<string | undefined>();
   const [region, setRegion] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState<boolean>(false);
+
+  const showText = showFilters ? 'Ocultar filtros' : 'Mostrar Filtros';
 
   const handleUpdate = useCallback(() => {
     const realTitle = title?.length ? title : undefined;
@@ -69,7 +72,7 @@ export const Events = ({navigation}: Props) => {
       </View>
       <View style={styles.filters}>
         <Pressable
-          style={generalStyles.mainPressable}
+          style={styles.updatePressable}
           onPress={() => {
             dispatch(clearErrorUser());
             navigation.navigate('createEvents');
@@ -79,32 +82,47 @@ export const Events = ({navigation}: Props) => {
           </Text>
         </Pressable>
       </View>
+
       <View style={styles.filters}>
-        <Text xlarge center>
-          Buscar por título
-        </Text>
-        <TextInput
-          onChangeText={(t: string) => setTitle(t)}
-          value={title}
-          placeholder={'Buscar quedada...'}
-          maxLength={20}
-          style={styles.input}
-        />
-        <Text xlarge center>
-          Buscar por provincia
-        </Text>
-        <RNPickerSelect
-          onValueChange={value => setRegion(value)}
-          items={provinces}
-          placeholder={{label: 'Cualquier provincia', value: null}}
-          value={region}
-          style={pickerSelectStyles}
-        />
-        <Pressable style={generalStyles.mainPressable} onPress={handleUpdate}>
-          <Text large style={generalStyles.textStyle}>
-            Buscar
-          </Text>
-        </Pressable>
+        {showFilters ? (
+          <>
+            <Text xlarge center>
+              Buscar por título
+            </Text>
+            <TextInput
+              onChangeText={(t: string) => setTitle(t)}
+              value={title}
+              placeholder={'Buscar quedada...'}
+              maxLength={20}
+              style={styles.input}
+            />
+            <Text xlarge center>
+              Buscar por provincia
+            </Text>
+            <RNPickerSelect
+              onValueChange={value => setRegion(value)}
+              items={provinces}
+              placeholder={{label: 'Cualquier provincia', value: null}}
+              value={region}
+              style={pickerSelectStyles}
+            />
+          </>
+        ) : null}
+
+        <View style={styles.buttonFilters}>
+          <Pressable style={styles.updatePressable} onPress={handleUpdate}>
+            <Text large style={generalStyles.textStyle}>
+              Buscar
+            </Text>
+          </Pressable>
+          <Pressable
+            style={styles.updatePressable}
+            onPress={() => setShowFilters(!showFilters)}>
+            <Text large style={generalStyles.textStyle}>
+              {showText}
+            </Text>
+          </Pressable>
+        </View>
       </View>
       {events.length ? (
         <FlashList
@@ -121,7 +139,9 @@ export const Events = ({navigation}: Props) => {
           showsVerticalScrollIndicator={false}
         />
       ) : (
-        <Text large>No existen eventos con esos parámetros de búsqueda</Text>
+        <Text large center color={colors.error}>
+          No existen eventos con esos parámetros de búsqueda
+        </Text>
       )}
     </View>
   );
@@ -161,5 +181,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+  },
+
+  buttonFilters: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
+  },
+  updatePressable: {
+    backgroundColor: colors.blue,
+    width: '45%',
   },
 });

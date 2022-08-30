@@ -13,6 +13,8 @@ import {provinces, types, ages} from '@utils/Constants';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import {getRaces} from '@utils/Helpers';
 import {PetDataModal} from '@modals/PetData';
+import {generalStyles} from '@utils/Styles';
+import {colors} from '@utils/Colors';
 
 export const Pets = () => {
   const dispatch = useDispatch<any>();
@@ -25,6 +27,10 @@ export const Pets = () => {
   const [type, setType] = useState<string | null>(null);
   const [age, setAge] = useState<number>(-1);
   const [race, setRace] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState<boolean>(false);
+
+  const showText = showFilters ? 'Ocultar filtros' : 'Mostrar Filtros';
+  const showRace = type === 'Perro' || type === 'Gato';
 
   const handleSearch = useCallback(() => {
     dispatch(fetchPets({type, region, age, race}));
@@ -50,48 +56,66 @@ export const Pets = () => {
   // TODO: Make this infinite scroller / lazyload
   return (
     <View style={styles.container}>
-      <PetDataModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        pet={selectedPet}
-      />
-      <RNPickerSelect
-        onValueChange={value => setRegion(value)}
-        items={provinces}
-        placeholder={{label: 'Cualquier provincia', value: null}}
-        value={region}
-      />
-      <RNPickerSelect
-        onValueChange={value => {
-          setType(value);
-          setRace(null);
-        }}
-        items={types}
-        placeholder={{label: 'Cualquier tipo', value: null}}
-        value={type}
-      />
-      {type === 'Perro' || type === 'Gato' ? (
-        <RNPickerSelect
-          onValueChange={value => setRace(value)}
-          items={getRaces(type)}
-          placeholder={{label: 'Cualquier raza', value: null}}
-          value={race}
-        />
-      ) : null}
-
-      <RNPickerSelect
-        onValueChange={value => setAge(value)}
-        items={ages}
-        placeholder={{label: 'Cualquier edad', value: null}}
-        value={age}
-      />
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={handleSearch}>
-        <Text large style={styles.textStyle}>
-          Buscar
+      <View style={styles.header}>
+        <Text style={generalStyles.textStyle} center xxxxlarge>
+          Mascotas
         </Text>
-      </Pressable>
+      </View>
+      <View style={styles.filters}>
+        {showFilters ? (
+          <>
+            <PetDataModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+              pet={selectedPet}
+            />
+            <RNPickerSelect
+              onValueChange={value => setRegion(value)}
+              items={provinces}
+              placeholder={{label: 'Cualquier provincia', value: null}}
+              value={region}
+            />
+            <RNPickerSelect
+              onValueChange={value => {
+                setType(value);
+                setRace(null);
+              }}
+              items={types}
+              placeholder={{label: 'Cualquier tipo', value: null}}
+              value={type}
+            />
+            {showRace ? (
+              <RNPickerSelect
+                onValueChange={value => setRace(value)}
+                items={getRaces(type)}
+                placeholder={{label: 'Cualquier raza', value: null}}
+                value={race}
+              />
+            ) : null}
+            <RNPickerSelect
+              onValueChange={value => setAge(value)}
+              items={ages}
+              placeholder={{label: 'Cualquier edad', value: null}}
+              value={age}
+            />
+          </>
+        ) : null}
+
+        <View style={styles.buttonFilters}>
+          <Pressable style={styles.updatePressable} onPress={handleSearch}>
+            <Text large style={generalStyles.textStyle}>
+              Buscar
+            </Text>
+          </Pressable>
+          <Pressable
+            style={styles.updatePressable}
+            onPress={() => setShowFilters(!showFilters)}>
+            <Text large style={generalStyles.textStyle}>
+              {showText}
+            </Text>
+          </Pressable>
+        </View>
+      </View>
       {pets.length ? (
         <FlashList
           renderItem={(pet: ListRenderItemInfo<IPet>) => (
@@ -105,7 +129,9 @@ export const Pets = () => {
           data={pets}
         />
       ) : (
-        <Text large>No existen mascotas con esos parámetros de búsqueda</Text>
+        <Text xxlarge center color={colors.error}>
+          No existen mascotas con esos parámetros de búsqueda
+        </Text>
       )}
     </View>
   );
@@ -118,18 +144,31 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: colors.lightBlue,
+    height: '10%',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
+  filters: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  buttonFilters: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
+  },
+  updatePressable: {
+    backgroundColor: colors.blue,
+    width: '45%',
   },
 });

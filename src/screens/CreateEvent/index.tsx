@@ -149,7 +149,7 @@ export const CreateEvent = ({navigation}: Props) => {
                 onBlur={handleBlur('place')}
                 value={values.place}
                 placeholder={'Lugar'}
-                maxLength={20}
+                maxLength={60}
                 style={styles.textInput}
               />
               {errors.place && touched.place ? (

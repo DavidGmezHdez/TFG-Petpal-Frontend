@@ -24,6 +24,7 @@ export const Event = ({event, setShowModal, setSelectedEvent}: Props) => {
   const joinedByUser = event.attendants?.some(usr => usr._id === user._id);
   const ownedByUser = event.host._id === user._id;
   const canDelete = ownedByUser || hasPermissions(user);
+  const joinText = joinedByUser ? 'Apuntarse' : 'Desapuntarse';
 
   const _joinEvent = async (joined: boolean) => {
     const attendingEvents = joinedByUser
@@ -113,15 +114,9 @@ export const Event = ({event, setShowModal, setSelectedEvent}: Props) => {
             <Pressable
               style={styles.updatePressable}
               onPress={() => _joinEvent(joinedByUser)}>
-              {joinedByUser ? (
-                <Text large style={generalStyles.textStyle}>
-                  Desapuntarse
-                </Text>
-              ) : (
-                <Text large style={generalStyles.textStyle}>
-                  Apuntarse
-                </Text>
-              )}
+              <Text large style={generalStyles.textStyle}>
+                {joinText}
+              </Text>
             </Pressable>
           ) : null}
         </View>

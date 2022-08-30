@@ -14,6 +14,7 @@ import {PetsProfileModal} from '@modals/PetsProfile';
 import {Pressable} from '@components/Pressable';
 import {Text} from '@components/TextWrapper';
 import {px} from '@utils/Constants';
+import {generalStyles} from '@utils/Styles';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'feed'>;
 
@@ -55,7 +56,7 @@ export const Profile = ({navigation}: Props) => {
         showModal={showPostsModal}
         setShowModal={setShowPostsModal}
       />
-      <Text large>{`¡Hola ${user.name}!`}</Text>
+      <Text large center>{`¡Hola ${user.name}!`}</Text>
       {user.image && user.image.length ? (
         <FastImage
           source={{uri: user.image + '?' + new Date()}}
@@ -63,16 +64,16 @@ export const Profile = ({navigation}: Props) => {
         />
       ) : null}
       <Pressable
-        style={[styles.button, styles.buttonOpen]}
+        style={generalStyles.mainPressable}
         onPress={() => navigation.navigate('editProfile')}>
-        <Text large style={styles.textStyle}>
+        <Text large center style={generalStyles.textStyle}>
           Editar Perfil
         </Text>
       </Pressable>
       <Pressable
-        style={[styles.button, styles.buttonOpen]}
+        style={generalStyles.mainPressable}
         onPress={() => setShowPostsModal(true)}>
-        <Text large style={styles.textStyle}>
+        <Text large center style={generalStyles.textStyle}>
           Ver Posts
         </Text>
       </Pressable>
@@ -87,16 +88,16 @@ export const Profile = ({navigation}: Props) => {
             setShowModal={setShowJoinedEventsModal}
           />
           <Pressable
-            style={[styles.button, styles.buttonOpen]}
+            style={generalStyles.mainPressable}
             onPress={() => setShowEventsModal(true)}>
-            <Text large style={styles.textStyle}>
+            <Text large style={generalStyles.textStyle}>
               Ver mis quedadas creadas
             </Text>
           </Pressable>
           <Pressable
-            style={[styles.button, styles.buttonOpen]}
+            style={generalStyles.mainPressable}
             onPress={() => setShowJoinedEventsModal(true)}>
-            <Text large style={styles.textStyle}>
+            <Text large style={generalStyles.textStyle}>
               Ver mis quedadas apuntadas
             </Text>
           </Pressable>
@@ -111,19 +112,17 @@ export const Profile = ({navigation}: Props) => {
             navigateCreatePet={hanldeAddPet}
           />
           <Pressable
-            style={[styles.button, styles.buttonOpen]}
+            style={generalStyles.mainPressable}
             onPress={() => setShowPetsModal(true)}>
-            <Text large style={styles.textStyle}>
+            <Text large style={generalStyles.textStyle}>
               Gestión de mascotas
             </Text>
           </Pressable>
         </>
       ) : null}
 
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={_handleLogout}>
-        <Text large style={styles.textStyle}>
+      <Pressable style={generalStyles.mainPressable} onPress={_handleLogout}>
+        <Text large style={generalStyles.textStyle}>
           Cerrar Sesión
         </Text>
       </Pressable>
@@ -139,23 +138,6 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
   images: {
     width: 200 * px,

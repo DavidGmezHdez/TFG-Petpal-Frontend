@@ -28,10 +28,7 @@ export const ProfileJoinedEvent = ({event}: Props) => {
       );
       const updatedEvent = await dispatch(updateEvent(event._id, {attendants}));
       if (updatedEvent) {
-        const updatedUser = await dispatch(
-          updateUser(user._id, {attendingEvents}, user.rol),
-        );
-        console.log('UPDATED USER', updatedUser);
+        await dispatch(updateUser(user._id, {attendingEvents}, user.rol));
       }
     } catch (error) {
       console.log(error);

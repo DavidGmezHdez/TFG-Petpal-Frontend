@@ -84,9 +84,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
-    width: '90%',
-    height: '50%',
-    maxWidth: 250 * px,
-    maxHeight: 250 * px,
+    height: 250 * px,
+    width: 250 * px,
   },
 });

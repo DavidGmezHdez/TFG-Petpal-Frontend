@@ -32,25 +32,28 @@ export const EditProfileScreen = ({navigation}: Props) => {
   const user = useSelector(getUser);
   const userError = useSelector(getUserError);
   const userErrorMsg = useSelector(getUserErrorMsg);
-
   const submit = async (values: UserTypes) => {
     const formData = new FormData();
     const sendUser =
       user.rol === 'Usuario'
         ? {
             ...user,
-            email: values.email ?? user.email,
-            name: values.name ?? user.name,
-            password: values.password ?? user.password,
+            email: values.email.length ? values.email : user.email,
+            name: values.name.length ? values.name : user.name,
+            password: values.password.length ? values.password : user.password,
           }
         : {
             ...user,
-            email: values.email ?? user.email,
-            name: values.name ?? user.name,
-            password: values.password ?? user.password,
-            region: values.region ?? user.region,
-            direction: values.direction ?? user.direction,
-            contactPhone: values.contactPhone ?? user.contactPhone,
+            email: values.email.length ? values.email : user.email,
+            name: values.name.length ? values.name : user.name,
+            password: values.password.length ? values.password : '',
+            region: values.region.length ? values.region : user.region,
+            direction: values.direction.length
+              ? values.direction
+              : user.direction,
+            contactPhone: values.contactPhone.length
+              ? values.contactPhone
+              : user.contactPhone,
           };
     if (values.imageUri) {
       formData.append('image', {

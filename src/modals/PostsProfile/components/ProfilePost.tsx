@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPost} from 'utils/Types';

@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Modal, StyleSheet, View, ScrollView} from 'react-native';
+import {Modal, View, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
 import {clearErrorUser} from '@redux/user/user_actions';

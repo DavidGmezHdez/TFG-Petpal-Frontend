@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IEvent} from 'utils/Types';
 import {format} from 'date-fns';
@@ -7,6 +7,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
 import {updateEvent} from '@redux/events/events_actions';
 import {updateUser} from '@redux/user/user_actions';
+import {generalStyles} from '@utils/Styles';
+import {colors} from '@utils/Colors';
+import {Pressable} from '@components/Pressable';
 
 type Props = {
   event: IEvent;
@@ -15,40 +18,75 @@ type Props = {
 export const ProfileJoinedEvent = ({event}: Props) => {
   const dispatch = useDispatch<any>();
   const user = useSelector(getUser);
-  console.log('USER', user);
-
   const quitEvent = async () => {
-    const attendingEvents = user.attendingEvents?.filter(
-      evt => evt !== event._id,
-    );
+    try {
+      const attendingEvents = user.attendingEvents?.filter(
+        evt => evt._id !== event._id,
+      );
+      console.log(attendingEvents);
+      const attendants = event.attendants?.filter(
+        us => (us as unknown as string) !== user._id,
+      );
+      const updatedEvent = await dispatch(updateEvent(event._id, {attendants}));
+      console.log('UPDATED USER', updatedEvent);
+      if (updatedEvent) {
+        const updatedUser = await dispatch(
+          updateUser(user._id, {attendingEvents}, user.rol),
+        );
+        console.log('UPDATED USER', updatedUser);
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
-    const attendants = event.attendants?.filter(us => us._id !== user._id);
-
-    await dispatch(updateEvent(event._id, {attendants}));
-    await dispatch(updateUser(user._id, {attendingEvents}, user.rol));
+    console.log(user);
   };
 
   return (
     <View style={styles.container}>
-      <Text large>Event: {event.title}</Text>
-      <Text large>Creador: {event.host.name}</Text>
-      <Text large>Lugar: {event.place}</Text>
-      <Text large>
-        Precio: {event.price || event.price > 0 ? event.price : 'Gratis'}
-      </Text>
-      <Text large>Fecha: {format(new Date(event.date), 'dd-MM-yy hh:mm')}</Text>
-      <Text large>Descripcion: {event.description}</Text>
-      <Text large>Apuntados: </Text>
-      {event.attendants && event.attendants.length ? (
-        <Text large>{`Apuntados: ${event.attendants.length}`}</Text>
-      ) : (
-        <Text large>No hay nadie apuntado</Text>
-      )}
-      <Pressable style={[styles.button, styles.buttonOpen]} onPress={quitEvent}>
-        <Text large style={styles.textStyle}>
-          Desapuntarse
-        </Text>
-      </Pressable>
+      <View style={styles.headerEvent}>
+        <View style={styles.title}>
+          <Text xxxlarge center>
+            {event.title}
+          </Text>
+        </View>
+        <View style={styles.title}>
+          <Text xxxlarge center>
+            {format(new Date(event.date), 'dd-MM-yy hh:mm')}
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.bodyEvent}>
+        <View style={styles.eventBody}>
+          <Text xxlarge>{event.description}</Text>
+          <Text xlarge>
+            Precio: {event.price || event.price > 0 ? event.price : 'Gratis'}
+          </Text>
+          <Text xlarge>
+            {event.place} en {event.region}
+          </Text>
+        </View>
+        <View style={styles.eventBody}>
+          <Pressable style={styles.updatePressable} onPress={quitEvent}>
+            <Text large center style={generalStyles.textStyle}>
+              Desapuntarse
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+
+      <View style={styles.bodyEvent}>
+        <View style={styles.eventBody}>
+          {event.attendants && event.attendants.length ? (
+            <Text large>{`Apuntados: Tu y ${
+              event.attendants.length - 1
+            } personas más`}</Text>
+          ) : (
+            <Text large>No hay nadie apuntado</Text>
+          )}
+        </View>
+      </View>
     </View>
   );
 };
@@ -58,21 +96,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
+  headerEvent: {
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '90%',
+    margin: '2%',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  title: {
+    width: '35%',
   },
-  buttonClose: {
-    backgroundColor: '#2196F3',
+  bodyEvent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '90%',
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  eventBody: {
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '2%',
+    margin: '2%',
+    width: '50%',
+  },
+  updatePressable: {
+    backgroundColor: colors.primaryLight,
   },
 });

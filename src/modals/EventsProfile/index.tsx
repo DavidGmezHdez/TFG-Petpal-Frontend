@@ -31,7 +31,6 @@ export const EventsProfileModal = ({showModal, setShowModal}: Props) => {
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
       <View style={generalStyles.modalBackground}>
         <View style={generalStyles.modalView}>
-          <Text large>Mis Quedadas</Text>
           <ScrollView>
             {user.hostEvents && user.hostEvents.length > 0 ? (
               user.hostEvents.map((event: IEvent) => (

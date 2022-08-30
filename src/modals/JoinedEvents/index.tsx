@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Modal, StyleSheet, View, ScrollView} from 'react-native';
+import {Modal, View, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '@redux/user/user_reducer';
 import {clearErrorUser} from '@redux/user/user_actions';
@@ -7,6 +7,7 @@ import {Text} from '@components/TextWrapper';
 import {IEvent} from '@utils/Types';
 import {ProfileJoinedEvent} from './components/ProfileJoinedEvent';
 import {Pressable} from '@components/Pressable';
+import {generalStyles} from '@utils/Styles';
 
 type Props = {
   showModal: boolean;
@@ -24,22 +25,21 @@ export const JoinedEventsProfileModal = ({showModal, setShowModal}: Props) => {
 
   return (
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text large>Quedadas unidas</Text>
+      <View style={generalStyles.modalBackground}>
+        <View style={generalStyles.modalView}>
           <ScrollView>
             {user.attendingEvents && user.attendingEvents.length > 0 ? (
               user.attendingEvents.map((event: IEvent) => (
                 <ProfileJoinedEvent key={event._id} event={event} />
               ))
             ) : (
-              <Text large>No te has unido a ninguna quedada</Text>
+              <Text large center>
+                No te has unido a ninguna quedada
+              </Text>
             )}
           </ScrollView>
-          <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={cancel}>
-            <Text large style={styles.textStyle}>
+          <Pressable style={generalStyles.cancelPressable} onPress={cancel}>
+            <Text large style={generalStyles.textStyle}>
               Cerrar
             </Text>
           </Pressable>
@@ -48,74 +48,3 @@ export const JoinedEventsProfileModal = ({showModal, setShowModal}: Props) => {
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalView: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 10,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    elevation: 5,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: '90%',
-    height: '90%',
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  centeredViewForm: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'space-around',
-    height: '50%',
-    width: '100%',
-    padding: '2%',
-  },
-  textInput: {
-    textAlignVertical: 'top',
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderRadius: 10,
-    borderWidth: 2,
-    width: '100%',
-    height: 100,
-    padding: 10,
-    marginBottom: 10,
-  },
-});

@@ -75,7 +75,6 @@ export type PetsAction =
 export const fetchPets =
   (params: any) => async (dispatch: Dispatch<PetsAction>) => {
     try {
-      console.log(params);
       dispatch({
         type: PetsActionTypes.PETS_LOADING,
       });

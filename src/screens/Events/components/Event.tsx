@@ -24,19 +24,23 @@ export const Event = ({event, setShowModal, setSelectedEvent}: Props) => {
   const joinedByUser = event.attendants?.some(usr => usr._id === user._id);
   const ownedByUser = event.host._id === user._id;
   const canDelete = ownedByUser || hasPermissions(user);
-  const joinText = joinedByUser ? 'Apuntarse' : 'Desapuntarse';
+  const joinText = joinedByUser ? 'Desapuntarse' : 'Apuntarse';
 
   const _joinEvent = async (joined: boolean) => {
-    const attendingEvents = joinedByUser
-      ? user.attendingEvents?.filter(evt => evt !== event._id)
-      : [...(user.attendingEvents ?? []), event._id];
+    try {
+      const attendingEvents = joinedByUser
+        ? user.attendingEvents?.filter(evt => evt._id !== event._id)
+        : [...(user.attendingEvents ?? []), event._id];
 
-    const attendants = joined
-      ? event.attendants?.filter(us => us._id !== user._id)
-      : [...(event.attendants ?? []), user._id];
+      const attendants = joined
+        ? event.attendants?.filter(us => us._id !== user._id)
+        : [...(event.attendants ?? []), user._id];
 
-    await dispatch(updateEvent(event._id, {attendants}));
-    await dispatch(updateUser(user._id, {attendingEvents}, user.rol));
+      await dispatch(updateEvent(event._id, {attendants}));
+      await dispatch(updateUser(user._id, {attendingEvents}, user.rol));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const _deleteEvent = async () => {

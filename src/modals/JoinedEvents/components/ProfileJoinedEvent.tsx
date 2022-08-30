@@ -23,12 +23,10 @@ export const ProfileJoinedEvent = ({event}: Props) => {
       const attendingEvents = user.attendingEvents?.filter(
         evt => evt._id !== event._id,
       );
-      console.log(attendingEvents);
       const attendants = event.attendants?.filter(
         us => (us as unknown as string) !== user._id,
       );
       const updatedEvent = await dispatch(updateEvent(event._id, {attendants}));
-      console.log('UPDATED USER', updatedEvent);
       if (updatedEvent) {
         const updatedUser = await dispatch(
           updateUser(user._id, {attendingEvents}, user.rol),

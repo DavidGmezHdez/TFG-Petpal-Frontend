@@ -116,15 +116,9 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
             <Pressable
               style={styles.updatePressable}
               onPress={() => (likedByUser ? likePost(true) : likePost(false))}>
-              {likedByUser ? (
-                <Text large style={styles.textStyle}>
-                  Quitar Like
-                </Text>
-              ) : (
-                <Text large style={styles.textStyle}>
-                  Dar like
-                </Text>
-              )}
+              <Text large style={styles.textStyle}>
+                {likedByUser ? 'Quitar Like' : 'Dar Like'}
+              </Text>
             </Pressable>
           ) : null}
 

@@ -56,6 +56,11 @@ export const Pets = () => {
   // TODO: Make this infinite scroller / lazyload
   return (
     <View style={styles.container}>
+      <PetDataModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        pet={selectedPet}
+      />
       <View style={styles.header}>
         <Text style={generalStyles.textStyle} center xxxxlarge>
           Mascotas
@@ -64,11 +69,6 @@ export const Pets = () => {
       <View style={styles.filters}>
         {showFilters ? (
           <>
-            <PetDataModal
-              showModal={showModal}
-              setShowModal={setShowModal}
-              pet={selectedPet}
-            />
             <RNPickerSelect
               onValueChange={value => setRegion(value)}
               items={provinces}

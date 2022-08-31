@@ -7,6 +7,8 @@ import {Pressable} from '@components/Pressable';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import {UserAdmin} from './components/UserAdmin';
 import UserService from '@services/UserService';
+import {colors} from '@utils/Colors';
+import {generalStyles} from '@utils/Styles';
 
 export const UsersAdmin = () => {
   const [users, setUsers] = useState<IUser[]>([]);
@@ -56,14 +58,19 @@ export const UsersAdmin = () => {
 
   return (
     <View style={styles.container}>
-      <Text large>Usuarios</Text>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={handleSearch}>
-        <Text large style={styles.textStyle}>
-          Buscar
+      <View style={styles.header}>
+        <Text style={generalStyles.textStyle} center xxxxlarge>
+          Usuarios
         </Text>
-      </Pressable>
+      </View>
+
+      <View style={styles.buttonFilters}>
+        <Pressable style={styles.updatePressable} onPress={handleSearch}>
+          <Text large style={generalStyles.textStyle}>
+            Buscar
+          </Text>
+        </Pressable>
+      </View>
       {users && users.length ? (
         <FlashList
           renderItem={(user: ListRenderItemInfo<IUser>) => (
@@ -77,7 +84,9 @@ export const UsersAdmin = () => {
           data={users}
         />
       ) : (
-        <Text large>No existen usuarios</Text>
+        <Text xxlarge center color={colors.error}>
+          No existen mascotas con esos parámetros de búsqueda
+        </Text>
       )}
     </View>
   );
@@ -90,18 +99,32 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: colors.lightBlue,
+    height: '10%',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
+  filters: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  buttonFilters: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: colors.lightBlue,
+    width: '100%',
+  },
+  updatePressable: {
+    backgroundColor: colors.blue,
+    width: '45%',
   },
 });

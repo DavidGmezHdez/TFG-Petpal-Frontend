@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPost} from 'utils/Types';
 import {useDispatch} from 'react-redux';
@@ -8,6 +8,9 @@ import {ActivityIndicator} from 'react-native-paper';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import PostsService from '@services/PostsService';
 import {PostAdmin} from './components/PostAdmin';
+import {generalStyles} from '@utils/Styles';
+import {Pressable} from '@components/Pressable';
+import {colors} from '@utils/Colors';
 
 export const FeedAdmin = () => {
   const dispatch = useDispatch<any>();
@@ -78,9 +81,21 @@ export const FeedAdmin = () => {
   // TODO: Make this infinite scroller / lazyload
   return (
     <View style={styles.container}>
-      <Text>Tablón Admin</Text>
+      <View style={styles.header}>
+        <Text style={generalStyles.textStyle} center xxxxlarge>
+          Tablón
+        </Text>
+        <View style={styles.pressables}>
+          <Pressable style={styles.updatePressable} onPress={_handleUpdate}>
+            <Text style={generalStyles.textStyle} center xxlarge>
+              Actualizar
+            </Text>
+          </Pressable>
+        </View>
+      </View>
       {posts && posts.length ? (
         <FlashList
+          showsVerticalScrollIndicator={false}
           renderItem={(post: ListRenderItemInfo<IPost>) => (
             <PostAdmin
               key={post.item._id}
@@ -93,9 +108,12 @@ export const FeedAdmin = () => {
           data={posts}
         />
       ) : (
-        <Text large>No existen posts</Text>
+        <View style={styles.notFound}>
+          <Text center xxlarge>
+            No hay posts disponibles en el tablón, ¡actualiza!
+          </Text>
+        </View>
       )}
-      <Button title="Actualizar" onPress={_handleUpdate} />
     </View>
   );
 };
@@ -106,5 +124,32 @@ const styles = StyleSheet.create({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: colors.lightBlue,
+    height: '20%',
+  },
+  pressables: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
+  },
+  notFound: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '80%',
+  },
+  updatePressable: {
+    backgroundColor: colors.blue,
   },
 });

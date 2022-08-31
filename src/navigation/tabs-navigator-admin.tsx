@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {BackHandler} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {FeedAdmin} from '@screens/Admin/FeedAdmin';
@@ -8,9 +9,18 @@ import {ProfileAdmin} from '@screens/Admin/ProfileAdmin';
 import {EventsAdmin} from '@screens/Admin/EventsAdmin';
 import {UsersAdmin} from '@screens/Admin/UsersAdmin';
 import {ProtectorsAdmin} from '@screens/Admin/ProtectorsAdmin';
+import {RootState} from '@redux/store';
+import {useInterval} from '@utils/hooks/useInterval';
+import {fetchUser} from '@redux/user/user_actions';
+import {colors} from '@utils/Colors';
 
 export const TabsNavigatorAdmin = () => {
   const Tab = createMaterialBottomTabNavigator();
+  const user = useSelector((state: RootState) => state.user.user);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.user.isAuthenticated,
+  );
+  const dispatch = useDispatch<any>();
 
   //Disables hardware back button android
   useEffect(() => {
@@ -19,13 +29,19 @@ export const TabsNavigatorAdmin = () => {
       BackHandler.removeEventListener('hardwareBackPress', () => true);
   }, []);
 
+  // Every 60 seconds we update the user data
+  useInterval(async () => {
+    if (user && isAuthenticated) {
+      await dispatch(fetchUser(user._id, user.rol));
+    }
+  }, 1000 * 60);
+
   return (
     <Tab.Navigator
       initialRouteName={'feed'}
       activeColor={'white'}
-      inactiveColor={'gray'}
-      // eslint-disable-next-line react-native/no-inline-styles
-      barStyle={{backgroundColor: 'tomato'}}>
+      inactiveColor={'black'}
+      barStyle={{backgroundColor: colors.shadowBlue}}>
       <>
         <Tab.Screen
           name="Tablón"

@@ -140,10 +140,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   images: {
-    width: 200 * px,
-    height: 200 * px,
+    width: 500 * px,
+    height: 500 * px,
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
+    borderRadius: 100,
   },
 });

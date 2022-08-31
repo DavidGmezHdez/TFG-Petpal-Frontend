@@ -7,6 +7,8 @@ import {Pressable} from '@components/Pressable';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import UserService from '@services/UserService';
 import {ProtectorAdmin} from './components/ProtectorAdmin';
+import {colors} from '@utils/Colors';
+import {generalStyles} from '@utils/Styles';
 
 export const ProtectorsAdmin = () => {
   const [protectors, setProtectors] = useState<IUser[]>([]);
@@ -25,8 +27,6 @@ export const ProtectorsAdmin = () => {
       setIsLoading(false);
     }
   }, []);
-
-  console.log(protectors);
 
   useEffect(() => {
     handleSearch();
@@ -48,8 +48,6 @@ export const ProtectorsAdmin = () => {
       setIsLoading(false);
     }
   };
-
-  // testp@test.co
 
   const promoteProtector = async (userId: string, promoted: boolean) => {
     setIsLoading(true);
@@ -78,14 +76,19 @@ export const ProtectorsAdmin = () => {
 
   return (
     <View style={styles.container}>
-      <Text large>Protectoras</Text>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={handleSearch}>
-        <Text large style={styles.textStyle}>
-          Buscar
+      <View style={styles.header}>
+        <Text style={generalStyles.textStyle} center xxxxlarge>
+          Protectoras
         </Text>
-      </Pressable>
+      </View>
+
+      <View style={styles.buttonFilters}>
+        <Pressable style={styles.updatePressable} onPress={handleSearch}>
+          <Text large style={generalStyles.textStyle}>
+            Buscar
+          </Text>
+        </Pressable>
+      </View>
       {protectors && protectors.length ? (
         <FlashList
           renderItem={(user: ListRenderItemInfo<IUser>) => (
@@ -100,7 +103,9 @@ export const ProtectorsAdmin = () => {
           data={protectors}
         />
       ) : (
-        <Text large>No existen protectoras</Text>
+        <Text xxlarge center color={colors.error}>
+          No existen mascotas con esos parámetros de búsqueda
+        </Text>
       )}
     </View>
   );
@@ -113,18 +118,32 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: colors.lightBlue,
+    height: '10%',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
+  filters: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  buttonFilters: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: colors.lightBlue,
+    width: '100%',
+  },
+  updatePressable: {
+    backgroundColor: colors.blue,
+    width: '45%',
   },
 });

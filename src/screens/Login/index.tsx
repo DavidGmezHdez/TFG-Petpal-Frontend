@@ -13,6 +13,7 @@ import {colors} from '@utils/Colors';
 import {Pressable} from '@components/Pressable';
 import {px} from '@utils/Constants';
 import {generalStyles} from '@utils/Styles';
+import FastImage from 'react-native-fast-image';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'login'>;
 
@@ -45,9 +46,10 @@ export const Login = ({navigation}: Props) => {
   return (
     <View style={generalStyles.container}>
       <View style={styles.header}>
-        <Text center xxxxlarge>
-          PET PAL
-        </Text>
+        <FastImage
+          source={require('../../../assets/images/Petpallogo.png')}
+          style={styles.images}
+        />
       </View>
 
       <Formik
@@ -203,5 +205,11 @@ const styles = StyleSheet.create({
   secondaryPressables: {
     backgroundColor: colors.shadowBlue,
     width: 800 * px,
+  },
+
+  images: {
+    width: 400 * px,
+    height: 400 * px,
+    borderRadius: 70,
   },
 });

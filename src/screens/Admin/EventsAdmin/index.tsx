@@ -8,6 +8,9 @@ import EventsService from '@services/EventsService';
 import {EventAdmin} from './components/EventAdmin';
 import {useDispatch} from 'react-redux';
 import {deleteEvent} from '@redux/events/events_actions';
+import {colors} from '@utils/Colors';
+import {px} from '@utils/Constants';
+import {generalStyles} from '@utils/Styles';
 
 export const EventsAdmin = () => {
   const dispatch = useDispatch<any>();
@@ -57,15 +60,14 @@ export const EventsAdmin = () => {
 
   return (
     <View style={styles.container}>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={handleUpdate}>
-        <Text large style={styles.textStyle}>
-          Buscar
-        </Text>
-      </Pressable>
-
-      {events && events.length ? (
+      <View style={styles.buttonFilters}>
+        <Pressable style={styles.updatePressable} onPress={handleUpdate}>
+          <Text large style={generalStyles.textStyle}>
+            Buscar
+          </Text>
+        </Pressable>
+      </View>
+      {events.length ? (
         <FlashList
           renderItem={(event: ListRenderItemInfo<IEvent>) => (
             <EventAdmin
@@ -76,9 +78,12 @@ export const EventsAdmin = () => {
           )}
           estimatedItemSize={200}
           data={events}
+          showsVerticalScrollIndicator={false}
         />
       ) : (
-        <Text large>No existen eventos</Text>
+        <Text large center color={colors.error}>
+          No existen eventos con esos parámetros de búsqueda
+        </Text>
       )}
     </View>
   );
@@ -91,18 +96,44 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: colors.lightBlue,
+    height: '10%',
+  },
+  input: {
+    width: '90%',
+    backgroundColor: colors.white,
+    margin: '2%',
+    padding: '2%',
     textAlign: 'center',
+    borderRadius: 8,
+    borderColor: colors.primary,
+    borderWidth: 2,
+    fontSize: 48 * px,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
+
+  filters: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+
+  buttonFilters: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
+  },
+  updatePressable: {
+    backgroundColor: colors.blue,
+    width: '45%',
   },
 });

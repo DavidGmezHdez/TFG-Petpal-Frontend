@@ -27,9 +27,11 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
     async (values: any) => {
       try {
         const formData = new FormData();
+        const modelType = user.rol === 'Usuario' ? 'User' : 'Protector';
         formData.append('name', user.name);
         formData.append('text', values.text);
         formData.append('author', user._id);
+        formData.append('model_type', modelType);
 
         if (values.imageUri) {
           formData.append('image', {

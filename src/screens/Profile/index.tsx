@@ -52,6 +52,10 @@ export const Profile = ({navigation}: Props) => {
   }
   return (
     <View style={styles.container}>
+      <PostsProfileModal
+        showModal={showPostsModal}
+        setShowModal={setShowPostsModal}
+      />
       <Text xxlarge center>{`¡Hola ${user.name}!`}</Text>
       {user.image && user.image.length ? (
         <FastImage
@@ -66,12 +70,15 @@ export const Profile = ({navigation}: Props) => {
           Editar Perfil
         </Text>
       </Pressable>
+      <Pressable
+        style={generalStyles.mainPressable}
+        onPress={() => setShowPostsModal(true)}>
+        <Text large center style={generalStyles.textStyle}>
+          Ver Posts
+        </Text>
+      </Pressable>
       {rol !== 'Protectora' ? (
         <>
-          <PostsProfileModal
-            showModal={showPostsModal}
-            setShowModal={setShowPostsModal}
-          />
           <EventsProfileModal
             showModal={showEventsModal}
             setShowModal={setShowEventsModal}
@@ -80,13 +87,6 @@ export const Profile = ({navigation}: Props) => {
             showModal={showJoinedEventsModal}
             setShowModal={setShowJoinedEventsModal}
           />
-          <Pressable
-            style={generalStyles.mainPressable}
-            onPress={() => setShowPostsModal(true)}>
-            <Text large center style={generalStyles.textStyle}>
-              Ver Posts
-            </Text>
-          </Pressable>
           <Pressable
             style={generalStyles.mainPressable}
             onPress={() => setShowEventsModal(true)}>

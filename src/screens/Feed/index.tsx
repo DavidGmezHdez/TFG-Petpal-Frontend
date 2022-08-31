@@ -13,12 +13,10 @@ import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import {colors} from '@utils/Colors';
 import {generalStyles} from '@utils/Styles';
 import {Pressable} from '@components/Pressable';
-import {getUser} from '@redux/user/user_reducer';
 
 export const Feed = () => {
   const dispatch = useDispatch<any>();
   const posts = useSelector(getPosts);
-  const user = useSelector(getUser);
   const isLoading = useSelector(getLoadingPosts);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showModalComment, setShowModalComment] = useState<boolean>(false);
@@ -59,15 +57,13 @@ export const Feed = () => {
               Actualizar
             </Text>
           </Pressable>
-          {user.rol === 'Usuario' ? (
-            <Pressable
-              style={styles.updatePressable}
-              onPress={() => setShowModal(true)}>
-              <Text style={generalStyles.textStyle} center xxlarge>
-                Crear post
-              </Text>
-            </Pressable>
-          ) : null}
+          <Pressable
+            style={styles.updatePressable}
+            onPress={() => setShowModal(true)}>
+            <Text style={generalStyles.textStyle} center xxlarge>
+              Crear post
+            </Text>
+          </Pressable>
         </View>
       </View>
       {posts && posts.length ? (

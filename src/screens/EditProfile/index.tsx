@@ -60,10 +60,8 @@ export const EditProfileScreen = ({navigation}: Props) => {
         // @ts-ignore: Type error
         uri: values.imageUri,
         type: values.imageType,
-        name: values.name,
+        name: values.name.length ? values.name : user.name,
       });
-      formData.append('_method', 'PATCH');
-
       await dispatch(updateUserProfile(user._id, formData, user.rol));
     }
 

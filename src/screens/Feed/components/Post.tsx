@@ -80,8 +80,8 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
           <View style={styles.imageWrapper}>
             {post.author.image ? (
               <FastImage
-                source={{uri: post.author.image}}
                 style={styles.profileImage}
+                source={{uri: post.author.image + '?' + new Date()}}
               />
             ) : null}
           </View>

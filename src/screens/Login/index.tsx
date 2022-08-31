@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -24,16 +24,22 @@ export const Login = ({navigation}: Props) => {
   const dispatch = useDispatch<any>();
   const authErrors = useSelector(getUserError);
   const authErrorsMsg = useSelector(getUserErrorMsg);
+  const formRef = useRef<any>(null);
 
   const _handleSubmit = async (values: any) => {
     const {email, password} = values;
-    const userLogged: IUser = await dispatch(login(email, password));
-    if (userLogged.token) {
-      if (userLogged.rol === 'Administrador') {
-        navigation.navigate('tabs_navigator_admin');
-      } else {
-        navigation.navigate('tabs_navigator');
+    try {
+      const userLogged: IUser = await dispatch(login(email, password));
+      if (userLogged.token) {
+        if (userLogged.rol === 'Administrador') {
+          navigation.navigate('tabs_navigator_admin');
+        } else {
+          navigation.navigate('tabs_navigator');
+        }
+        formRef.current.resetForm();
       }
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -47,6 +53,7 @@ export const Login = ({navigation}: Props) => {
       <Formik
         initialValues={{email: 'testu@test.co', password: 'testtest1234'}}
         validationSchema={LoginSchema}
+        innerRef={formRef}
         onSubmit={_handleSubmit}>
         {({
           handleChange,

@@ -121,7 +121,7 @@ export const Profile = ({navigation}: Props) => {
         </>
       ) : null}
 
-      <Pressable style={generalStyles.mainPressable} onPress={_handleLogout}>
+      <Pressable style={generalStyles.cancelPressable} onPress={_handleLogout}>
         <Text large style={generalStyles.textStyle}>
           Cerrar Sesión
         </Text>

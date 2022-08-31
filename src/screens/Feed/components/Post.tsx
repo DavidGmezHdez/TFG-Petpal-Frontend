@@ -85,16 +85,20 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
               />
             ) : null}
           </View>
-          <Text center xxxxlarge>
-            {`${post.author.name} dice:`}
-          </Text>
+          <View style={styles.textWrapper}>
+            <Text center xxxxlarge>
+              {`${post.author.name} dice:`}
+            </Text>
+          </View>
         </View>
         <View>
-          <Text xxlarge center>
-            {post.createdAt
-              ? format(new Date(post.createdAt), 'hh:mm dd-MM-yy')
-              : null}
-          </Text>
+          <View style={styles.textWrapper}>
+            <Text xxlarge center>
+              {post.createdAt
+                ? format(new Date(post.createdAt), 'hh:mm dd-MM-yy')
+                : null}
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -211,7 +215,7 @@ const styles = StyleSheet.create({
   },
   headerPost: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     display: 'flex',
     flexDirection: 'row',
     width: '90%',
@@ -229,6 +233,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     display: 'flex',
     flexDirection: 'column',
+  },
+  textWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '60%',
   },
   profileImage: {
     width: 200 * px,

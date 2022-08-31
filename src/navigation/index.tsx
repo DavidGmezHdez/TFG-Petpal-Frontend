@@ -11,16 +11,20 @@ import {CreateEvent} from '@screens/CreateEvent';
 import {TabsNavigator} from './tabs-navigator';
 import {TabsNavigatorAdmin} from './tabs-navigator-admin';
 import {useSelector} from 'react-redux';
-import {RootState} from '@redux/store';
+import {RootState, store} from '@redux/store';
 
 const Stack = createStackNavigator();
 
 export const Navigation = () => {
+  console.log(store.getState());
   const token = useSelector((state: RootState) => state.user.token);
+  const rol = useSelector((state: RootState) => state.user.rol);
+  const initialTab =
+    rol === 'Administrador' ? 'tabs_navigator_admin' : 'tabs_navigator';
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={token ? 'tabs_navigator' : 'welcome'}
+        initialRouteName={token ? initialTab : 'welcome'}
         screenOptions={{
           animationEnabled: false,
           gestureEnabled: false,

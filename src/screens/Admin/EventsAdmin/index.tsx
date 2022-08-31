@@ -60,6 +60,11 @@ export const EventsAdmin = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={generalStyles.textStyle} center xxxxlarge>
+          Eventos
+        </Text>
+      </View>
       <View style={styles.buttonFilters}>
         <Pressable style={styles.updatePressable} onPress={handleUpdate}>
           <Text large style={generalStyles.textStyle}>
@@ -130,6 +135,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    backgroundColor: colors.lightBlue,
     width: '100%',
   },
   updatePressable: {

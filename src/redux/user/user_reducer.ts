@@ -5,6 +5,7 @@ import {AuthAction, AuthActionTypes} from './user_actions';
 
 const initialState: AuthState = {
   token: '',
+  rol: '',
   user: {
     _id: '',
     token: '',
@@ -64,6 +65,7 @@ const reducer = (state: AuthState = initialState, action: AuthAction) => {
         ...state,
         isLoading: false,
         token: action.payload.token,
+        rol: action.payload.rol,
         user: action.payload.user,
         isAuthenticated: true,
       };

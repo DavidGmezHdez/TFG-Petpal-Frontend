@@ -58,7 +58,6 @@ export const EventAdmin = ({event, removeEvent}: Props) => {
           </Text>
         </View>
       </View>
-
       <View style={styles.bodyEvent}>
         <View style={styles.eventBody}>
           <Text xxlarge>{event.description}</Text>

@@ -28,7 +28,7 @@ interface AuthErrorAction {
 
 interface LoginSuccessAction {
   type: AuthActionTypes.LOGIN_SUCCESS;
-  payload: {user: IUser; token: string};
+  payload: {user: IUser; token: string; rol: string};
 }
 
 interface LogoutSuccessAction {
@@ -92,9 +92,10 @@ export const login =
     try {
       const res = await AuthService.login(email, password);
       const user = res.data.user;
+      console.log(res.data);
       dispatch({
         type: AuthActionTypes.LOGIN_SUCCESS,
-        payload: {user, token: user.token},
+        payload: {user, token: user.token, rol: user.rol},
       });
       dispatch({
         type: AuthActionTypes.CLEAR_ERROR,

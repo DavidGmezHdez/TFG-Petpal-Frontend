@@ -1,6 +1,7 @@
 import {IPost, IUser, IEvent, IPet} from '@utils/Types';
 export interface AuthState {
   token: string;
+  rol: string;
   user: IUser;
   isAuthenticated: boolean;
   isLoading: boolean;

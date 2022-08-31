@@ -27,9 +27,11 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
     async (values: any) => {
       try {
         const formData = new FormData();
+        const modelType = user.rol === 'Usuario' ? 'User' : 'Protector';
         formData.append('name', user.name);
         formData.append('text', values.text);
         formData.append('author', user._id);
+        formData.append('model_type', modelType);
 
         if (values.imageUri) {
           formData.append('image', {
@@ -80,7 +82,7 @@ export const CreatePostModal = ({showModal, setShowModal}: Props) => {
               errors,
               touched,
             }) => (
-              <View style={styles.centeredViewForm}>
+              <View style={generalStyles.centeredViewForm}>
                 <TextInput
                   onChangeText={handleChange('text')}
                   onBlur={handleBlur('text')}
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'space-around',
-    height: '50%',
+    height: '90%',
     width: '100%',
     padding: '2%',
   },

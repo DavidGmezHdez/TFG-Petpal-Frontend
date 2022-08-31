@@ -8,6 +8,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {deletePet} from '@redux/pets/pets_actions';
 import {getUser} from '@redux/user/user_reducer';
 import {updateUser} from '@redux/user/user_actions';
+import {generalStyles} from '@utils/Styles';
+import {colors} from '@utils/Colors';
 type Props = {
   pet: IPet;
 };
@@ -18,33 +20,35 @@ export const Pet = ({pet}: Props) => {
 
   const hanldeAdoption = async () => {
     await dispatch(deletePet(pet._id));
-
     const pets = user.pets.filter((upet: IPet) => upet._id !== pet._id);
-
     await dispatch(updateUser(user._id, {pets}, user.rol));
   };
 
   return (
     <View style={styles.container}>
-      <Text large>Nombre: {pet.name}</Text>
-      <Text large>Tipo: {pet.type}</Text>
-      <Text large>Sexo: {pet.sex}</Text>
-      <Text large>Edad: {pet.age}</Text>
-      <Text large>Tamaño: {pet.size}</Text>
-      <Text large>Raza: {pet.race}</Text>
-      <Text large>Descripcion: {pet.description}</Text>
-      {pet.image ? (
-        <Image source={{uri: pet.image[0]}} style={styles.images} />
-      ) : null}
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={hanldeAdoption}>
-        <Text large style={styles.textStyle}>
-          {`Marcar como ${
-            pet.sex === 'Masculino' ? `adoptado` : `adptadada`
-          } y borrar de la lista`}
-        </Text>
-      </Pressable>
+      <View style={styles.data}>
+        {pet.image && pet.image.length ? (
+          <Image source={{uri: pet.image[0]}} style={styles.images} />
+        ) : null}
+      </View>
+      <View style={styles.dataText}>
+        <Text large>Nombre: {pet.name}</Text>
+        <Text large>Tipo: {pet.type}</Text>
+        <Text large>Sexo: {pet.sex}</Text>
+        <Text large>Edad: {pet.age} años</Text>
+        <Text large>Tamaño: {pet.size}</Text>
+        <Text large>Raza: {pet.race}</Text>
+        <Text large>Descripcion: {pet.description}</Text>
+      </View>
+      <View style={styles.data}>
+        <Pressable style={styles.updatePressable} onPress={hanldeAdoption}>
+          <Text large style={generalStyles.textStyle}>
+            {`Marcar como ${
+              pet.sex === 'Masculino' ? `adoptado` : `adptadada`
+            } y borrar de la lista`}
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -52,30 +56,35 @@ export const Pet = ({pet}: Props) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    borderColor: colors.bluish,
+    borderWidth: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
+  data: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '30%',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  dataText: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    width: '40%',
   },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  updatePressable: {
+    backgroundColor: colors.error,
   },
   images: {
-    width: 200 * px,
-    height: 200 * px,
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
+    height: 250 * px,
+    width: 250 * px,
   },
 });

@@ -2,8 +2,10 @@ import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {Text} from '@components/TextWrapper';
 import {IPet} from '@utils/Types';
-import {px} from '@utils/Constants';
 import {Pressable} from '@components/Pressable';
+import {generalStyles} from '@utils/Styles';
+import {colors} from '@utils/Colors';
+import {px} from '@utils/Constants';
 type Props = {
   pet: IPet;
   handleShowPet: (pet: IPet) => void;
@@ -12,23 +14,29 @@ type Props = {
 export const Pet = ({pet, handleShowPet}: Props) => {
   return (
     <View style={styles.container}>
-      <Text large>Nombre: {pet.name}</Text>
-      <Text large>Tipo: {pet.type}</Text>
-      <Text large>Sexo: {pet.sex}</Text>
-      <Text large>Edad: {pet.age}</Text>
-      <Text large>Tamaño: {pet.size}</Text>
-      <Text large>Raza: {pet.race}</Text>
-      <Text large>Descripcion: {pet.description}</Text>
-      {pet.image && pet.image.length ? (
-        <Image source={{uri: pet.image[0]}} style={styles.images} />
-      ) : null}
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => handleShowPet(pet)}>
-        <Text large style={styles.textStyle}>
-          Mostrar datos contacto
-        </Text>
-      </Pressable>
+      <View style={styles.data}>
+        {pet.image && pet.image.length ? (
+          <Image source={{uri: pet.image[0]}} style={styles.images} />
+        ) : null}
+      </View>
+      <View style={styles.dataText}>
+        <Text large>Nombre: {pet.name}</Text>
+        <Text large>Tipo: {pet.type}</Text>
+        <Text large>Sexo: {pet.sex}</Text>
+        <Text large>Edad: {pet.age} años</Text>
+        <Text large>Tamaño: {pet.size}</Text>
+        <Text large>Raza: {pet.race}</Text>
+        <Text large>Descripcion: {pet.description}</Text>
+      </View>
+      <View style={styles.data}>
+        <Pressable
+          style={styles.updatePressable}
+          onPress={() => handleShowPet(pet)}>
+          <Text large style={generalStyles.textStyle}>
+            Mostrar datos contacto
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -36,30 +44,37 @@ export const Pet = ({pet, handleShowPet}: Props) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    borderColor: colors.green,
+    borderWidth: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
+  data: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '30%',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  dataText: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    width: '40%',
   },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  updatePressable: {
+    backgroundColor: colors.primaryLight,
   },
   images: {
-    width: 200 * px,
-    height: 200 * px,
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
+    height: '100%',
+    width: '90%',
+    maxHeight: 350 * px,
+    maxWidth: 350 * px,
   },
 });

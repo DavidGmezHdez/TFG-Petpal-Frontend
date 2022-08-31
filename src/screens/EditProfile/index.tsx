@@ -16,6 +16,7 @@ import {ProtectorSchemaEdit, UserSchemaEdit, UserTypes} from './lib';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {options, provinces, px} from '@utils/Constants';
 import {RootStackParam} from 'navigation/navigation.types';
+import {generalStyles, pickerSelectStyles} from '@utils/Styles';
 
 type NavigationStackProp = NativeStackScreenProps<
   RootStackParam,
@@ -31,35 +32,36 @@ export const EditProfileScreen = ({navigation}: Props) => {
   const user = useSelector(getUser);
   const userError = useSelector(getUserError);
   const userErrorMsg = useSelector(getUserErrorMsg);
-
   const submit = async (values: UserTypes) => {
     const formData = new FormData();
     const sendUser =
       user.rol === 'Usuario'
         ? {
             ...user,
-            email: values.email,
-            name: values.name,
-            password: values.password,
+            email: values.email.length ? values.email : user.email,
+            name: values.name.length ? values.name : user.name,
+            password: values.password.length ? values.password : user.password,
           }
         : {
             ...user,
-            email: values.email,
-            name: values.name,
-            password: values.password,
-            region: values.region,
-            direction: values.direction,
-            contactPhone: values.contactPhone,
+            email: values.email.length ? values.email : user.email,
+            name: values.name.length ? values.name : user.name,
+            password: values.password.length ? values.password : '',
+            region: values.region.length ? values.region : user.region,
+            direction: values.direction.length
+              ? values.direction
+              : user.direction,
+            contactPhone: values.contactPhone.length
+              ? values.contactPhone
+              : user.contactPhone,
           };
     if (values.imageUri) {
       formData.append('image', {
         // @ts-ignore: Type error
         uri: values.imageUri,
         type: values.imageType,
-        name: values.name,
+        name: values.name.length ? values.name : user.name,
       });
-      formData.append('_method', 'PATCH');
-
       await dispatch(updateUserProfile(user._id, formData, user.rol));
     }
 
@@ -70,21 +72,16 @@ export const EditProfileScreen = ({navigation}: Props) => {
     }
   };
 
-  const cancel = () => {
-    dispatch(clearErrorUser());
-    navigation.navigate('tabs_navigator');
-  };
-
   return (
     <View style={styles.centeredView}>
       <Formik
         initialValues={{
-          name: user.name,
-          email: user.email,
+          name: '',
+          email: '',
           password: '',
-          region: user.region ?? '',
-          direction: user.direction ?? '',
-          contactPhone: user.contactPhone ?? '',
+          region: '',
+          direction: '',
+          contactPhone: '',
           imageUri: '',
           imageType: '',
           imageName: '',
@@ -98,6 +95,7 @@ export const EditProfileScreen = ({navigation}: Props) => {
           handleBlur,
           handleSubmit,
           setFieldValue,
+          resetForm,
           values,
           errors,
           touched,
@@ -107,14 +105,14 @@ export const EditProfileScreen = ({navigation}: Props) => {
               <Image source={{uri: values.imageUri}} style={styles.images} />
             ) : null}
             <Pressable
-              style={[styles.button, styles.buttonOpen]}
+              style={generalStyles.imagePressable}
               onPress={async () => {
                 const {assets} = await launchImageLibrary(options);
                 setFieldValue('imageUri', assets![0].uri);
                 setFieldValue('imageType', assets![0].type);
                 setFieldValue('imageName', assets![0].fileName);
               }}>
-              <Text large style={styles.textStyle}>
+              <Text large style={generalStyles.textStyle}>
                 {user.image ? 'Cambiar foto' : 'Subir foto'}
               </Text>
             </Pressable>
@@ -124,9 +122,12 @@ export const EditProfileScreen = ({navigation}: Props) => {
               onBlur={handleBlur('email')}
               value={values.email}
               placeholder={'Email'}
+              style={generalStyles.textInput}
             />
             {errors.email && touched.email ? (
-              <Text large>{errors.email}</Text>
+              <Text large center style={generalStyles.textError}>
+                {errors.email}
+              </Text>
             ) : null}
 
             <TextInput
@@ -134,9 +135,12 @@ export const EditProfileScreen = ({navigation}: Props) => {
               onBlur={handleBlur('name')}
               value={values.name}
               placeholder={'Nombre'}
+              style={generalStyles.textInput}
             />
             {errors.name && touched.name ? (
-              <Text large>{errors.name}</Text>
+              <Text large center style={generalStyles.textError}>
+                {errors.name}
+              </Text>
             ) : null}
 
             <TextInput
@@ -145,9 +149,12 @@ export const EditProfileScreen = ({navigation}: Props) => {
               value={values.password}
               secureTextEntry
               placeholder={'Contraseña'}
+              style={generalStyles.textInput}
             />
             {errors.password && touched.password ? (
-              <Text large>{errors.password}</Text>
+              <Text large center style={generalStyles.textError}>
+                {errors.password}
+              </Text>
             ) : null}
 
             {user.rol === 'Protectora' ? (
@@ -157,9 +164,12 @@ export const EditProfileScreen = ({navigation}: Props) => {
                   items={provinces}
                   placeholder={{label: 'Cualquier provincia', value: null}}
                   value={values.region}
+                  style={pickerSelectStyles}
                 />
                 {errors.region && touched.region ? (
-                  <Text large>{errors.region}</Text>
+                  <Text large center style={generalStyles.textError}>
+                    {errors.region}
+                  </Text>
                 ) : null}
 
                 <TextInput
@@ -167,9 +177,12 @@ export const EditProfileScreen = ({navigation}: Props) => {
                   onBlur={handleBlur('direction')}
                   value={values.direction}
                   placeholder={'Direccion'}
+                  style={generalStyles.textInput}
                 />
                 {errors.password && touched.password ? (
-                  <Text large>{errors.password}</Text>
+                  <Text large center style={generalStyles.textError}>
+                    {errors.password}
+                  </Text>
                 ) : null}
 
                 <TextInput
@@ -178,9 +191,10 @@ export const EditProfileScreen = ({navigation}: Props) => {
                   keyboardType="numeric"
                   placeholder={'Teléfono de contacto'}
                   maxLength={9}
+                  style={generalStyles.textInput}
                 />
                 {errors.contactPhone && touched.contactPhone ? (
-                  <Text large color={'red'}>
+                  <Text large center style={generalStyles.textError}>
                     {errors.contactPhone}
                   </Text>
                 ) : null}
@@ -191,16 +205,20 @@ export const EditProfileScreen = ({navigation}: Props) => {
               <Text large>{userErrorMsg}</Text>
             ) : null}
             <Pressable
-              style={[styles.button, styles.buttonOpen]}
+              style={generalStyles.mainPressable}
               onPress={handleSubmit}>
-              <Text large style={styles.textStyle}>
+              <Text large style={generalStyles.textStyle}>
                 Actualizar perfil
               </Text>
             </Pressable>
             <Pressable
-              style={[styles.button, styles.buttonOpen]}
-              onPress={cancel}>
-              <Text large style={styles.textStyle}>
+              style={generalStyles.cancelPressable}
+              onPress={() => {
+                dispatch(clearErrorUser());
+                navigation.navigate('tabs_navigator');
+                resetForm();
+              }}>
+              <Text large style={generalStyles.textStyle}>
                 Cancelar
               </Text>
             </Pressable>
@@ -216,23 +234,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
   centeredViewForm: {
     display: 'flex',

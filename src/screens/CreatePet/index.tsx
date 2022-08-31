@@ -28,6 +28,8 @@ import {
 } from 'react-native-image-picker';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParam} from 'navigation/navigation.types';
+import {generalStyles, pickerSelectStyles} from '@utils/Styles';
+import {colors} from '@utils/Colors';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'createPets'>;
 
@@ -89,39 +91,34 @@ export const CreatePetScreen = ({navigation}: Props) => {
 
   return (
     <View style={styles.centeredView}>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={_handleSubmit}
-        validationSchema={PetSchema}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          setFieldValue,
-          values,
-          errors,
-          touched,
-        }) => (
-          <KeyboardAvoidingView>
-            <View style={styles.centeredViewForm}>
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                // eslint-disable-next-line react-native/no-inline-styles
-                contentContainerStyle={{
-                  flexGrow: 1,
-                  justifyContent: 'center',
-                  width: 870 * px,
-                }}>
+      <ScrollView
+        contentContainerStyle={generalStyles.scrollViewStyles}
+        showsVerticalScrollIndicator={false}>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={_handleSubmit}
+          validationSchema={PetSchema}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            setFieldValue,
+            values,
+            errors,
+            touched,
+          }) => (
+            <KeyboardAvoidingView>
+              <View style={generalStyles.centeredViewForm}>
                 <TextInput
                   onChangeText={handleChange('name')}
                   onBlur={handleBlur('name')}
                   value={values.name}
                   placeholder={'Nombre'}
                   maxLength={20}
-                  style={styles.textInput}
+                  style={generalStyles.textInput}
                 />
                 {errors.name && touched.name ? (
-                  <Text large color={'red'}>
+                  <Text large center style={generalStyles.textError}>
                     {errors.name}
                   </Text>
                 ) : null}
@@ -131,10 +128,11 @@ export const CreatePetScreen = ({navigation}: Props) => {
                   items={sexs}
                   placeholder={{label: 'Selecciona sexo', value: null}}
                   value={values.sex}
+                  style={pickerSelectStyles}
                 />
 
                 {errors.sex && touched.sex ? (
-                  <Text large color={'red'}>
+                  <Text large center style={generalStyles.textError}>
                     {errors.sex}
                   </Text>
                 ) : null}
@@ -146,10 +144,10 @@ export const CreatePetScreen = ({navigation}: Props) => {
                   placeholder={'Edad'}
                   maxLength={2}
                   keyboardType="numeric"
-                  style={styles.textInput}
+                  style={generalStyles.textInput}
                 />
                 {errors.age && touched.age ? (
-                  <Text large color={'red'}>
+                  <Text large center style={generalStyles.textError}>
                     {errors.age}
                   </Text>
                 ) : null}
@@ -159,10 +157,11 @@ export const CreatePetScreen = ({navigation}: Props) => {
                   items={types}
                   placeholder={{label: 'Selecciona tipo', value: null}}
                   value={values.type}
+                  style={pickerSelectStyles}
                 />
 
                 {errors.type && touched.type ? (
-                  <Text large color={'red'}>
+                  <Text large center style={generalStyles.textError}>
                     {errors.type}
                   </Text>
                 ) : null}
@@ -177,9 +176,10 @@ export const CreatePetScreen = ({navigation}: Props) => {
                         value: null,
                       }}
                       value={values.race}
+                      style={pickerSelectStyles}
                     />
                     {errors.race && touched.race ? (
-                      <Text large color={'red'}>
+                      <Text large center style={generalStyles.textError}>
                         {errors.race}
                       </Text>
                     ) : null}
@@ -191,10 +191,11 @@ export const CreatePetScreen = ({navigation}: Props) => {
                   items={sizes}
                   placeholder={{label: 'Selecciona tamaño', value: null}}
                   value={values.size}
+                  style={pickerSelectStyles}
                 />
 
                 {errors.size && touched.size ? (
-                  <Text large color={'red'}>
+                  <Text large center style={generalStyles.textError}>
                     {errors.size}
                   </Text>
                 ) : null}
@@ -207,21 +208,21 @@ export const CreatePetScreen = ({navigation}: Props) => {
                   multiline={true}
                   numberOfLines={4}
                   maxLength={300}
-                  style={styles.textInput}
+                  style={styles.textInputDescription}
                 />
                 {errors.description && touched.description ? (
-                  <Text large color={'red'}>
+                  <Text large center style={generalStyles.textError}>
                     {errors.description}
                   </Text>
                 ) : null}
 
                 <Pressable
-                  style={[styles.button, styles.buttonOpen]}
+                  style={generalStyles.imagePressable}
                   onPress={async () => {
                     const {assets} = await launchImageLibrary(options);
                     setFieldValue('images', assets?.reverse());
                   }}>
-                  <Text large style={styles.textStyle}>
+                  <Text large style={generalStyles.textStyle}>
                     Subir Foto
                   </Text>
                 </Pressable>
@@ -231,22 +232,22 @@ export const CreatePetScreen = ({navigation}: Props) => {
                       <Image
                         key={image.id}
                         source={{uri: image.uri}}
-                        style={styles.images}
+                        style={generalStyles.images}
                       />
                     ))
                   : null}
 
                 <Pressable
-                  style={[styles.button, styles.buttonOpen]}
+                  style={generalStyles.mainPressable}
                   onPress={() => handleSubmit()}>
-                  <Text large style={styles.textStyle}>
+                  <Text large style={generalStyles.textStyle}>
                     Crear Mascota
                   </Text>
                 </Pressable>
                 <Pressable
-                  style={[styles.button, styles.buttonOpen]}
+                  style={generalStyles.cancelPressable}
                   onPress={cancel}>
-                  <Text large style={styles.textStyle}>
+                  <Text large style={generalStyles.textStyle}>
                     Cancelar
                   </Text>
                 </Pressable>
@@ -256,61 +257,33 @@ export const CreatePetScreen = ({navigation}: Props) => {
                     {petsMessage}
                   </Text>
                 ) : null}
-              </ScrollView>
-            </View>
-          </KeyboardAvoidingView>
-        )}
-      </Formik>
+              </View>
+            </KeyboardAvoidingView>
+          )}
+        </Formik>
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  centeredViewForm: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'space-around',
-    padding: '2%',
+    height: '100%',
   },
-  textInput: {
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderRadius: 10,
+  textInputDescription: {
+    textAlignVertical: 'top',
+    borderRadius: 8,
+    backgroundColor: colors.white,
+    borderColor: colors.primary,
     borderWidth: 2,
-    textAlign: 'center',
-    width: '100%',
-    padding: 20 * px,
+    fontSize: 48 * px,
+    width: 800 * px,
+    height: 100,
+    padding: 10,
     marginBottom: 10,
-  },
-  images: {
-    width: 200 * px,
-    height: 200 * px,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginHorizontal: 3,
   },
 });

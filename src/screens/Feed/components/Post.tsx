@@ -80,21 +80,25 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
           <View style={styles.imageWrapper}>
             {post.author.image ? (
               <FastImage
-                source={{uri: post.author.image}}
                 style={styles.profileImage}
+                source={{uri: post.author.image + '?' + new Date()}}
               />
             ) : null}
           </View>
-          <Text center xxxxlarge>
-            {`${post.author.name} dice:`}
-          </Text>
+          <View style={styles.textWrapper}>
+            <Text center xxxxlarge>
+              {`${post.author.name} dice:`}
+            </Text>
+          </View>
         </View>
         <View>
-          <Text xxlarge center>
-            {post.createdAt
-              ? format(new Date(post.createdAt), 'hh:mm dd-MM-yy')
-              : null}
-          </Text>
+          <View style={styles.textWrapper}>
+            <Text xxlarge center>
+              {post.createdAt
+                ? format(new Date(post.createdAt), 'hh:mm dd-MM-yy')
+                : null}
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -116,20 +120,14 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
             <Pressable
               style={styles.updatePressable}
               onPress={() => (likedByUser ? likePost(true) : likePost(false))}>
-              {likedByUser ? (
-                <Text large style={styles.textStyle}>
-                  Quitar Like
-                </Text>
-              ) : (
-                <Text large style={styles.textStyle}>
-                  Dar like
-                </Text>
-              )}
+              <Text large style={styles.textStyle}>
+                {likedByUser ? 'Quitar Like' : 'Dar Like'}
+              </Text>
             </Pressable>
           ) : null}
 
           {ownedByUser ? (
-            <Pressable style={styles.updatePressable} onPress={_deletePost}>
+            <Pressable style={styles.deletePressable} onPress={_deletePost}>
               <Text large style={styles.textStyle}>
                 Borrar Post
               </Text>
@@ -171,7 +169,7 @@ export const Post = ({post, setShowModal, setPostId}: Props) => {
                       </View>
                       {commentOwnedByUser ? (
                         <Pressable
-                          style={styles.updatePressable}
+                          style={styles.deletePressable}
                           onPress={() => _deleteComment(comment._id)}>
                           <Text large style={styles.textStyle}>
                             Borrar Comentario
@@ -211,13 +209,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     display: 'flex',
-    borderColor: '#2196F3',
+    borderColor: colors.green,
     borderWidth: 5,
     flexDirection: 'column',
   },
   headerPost: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     display: 'flex',
     flexDirection: 'row',
     width: '90%',
@@ -235,6 +233,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     display: 'flex',
     flexDirection: 'column',
+  },
+  textWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '60%',
   },
   profileImage: {
     width: 200 * px,
@@ -273,6 +278,9 @@ const styles = StyleSheet.create({
   },
   updatePressable: {
     backgroundColor: colors.primaryLight,
+  },
+  deletePressable: {
+    backgroundColor: colors.secondary,
   },
 
   commentSection: {

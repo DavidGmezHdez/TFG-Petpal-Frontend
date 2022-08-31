@@ -8,8 +8,8 @@ import {updateUser} from '@redux/user/user_actions';
 import {EventSchema} from './lib';
 import {Text} from '@components/TextWrapper';
 import {Pressable} from '@components/Pressable';
-import {px} from '@utils/Constants';
 import {getMessageEvents} from '@redux/events/events_reducer';
+import {generalStyles} from '@utils/Styles';
 
 type Props = {
   showModal: boolean;
@@ -56,9 +56,11 @@ export const ConfirmationEventDelete = ({
 
   return (
     <Modal animationType={'fade'} transparent={true} visible={showModal}>
-      <View style={styles.centeredView}>
-        <ScrollView>
-          <View style={styles.modalView}>
+      <View style={generalStyles.modalBackground}>
+        <ScrollView
+          contentContainerStyle={generalStyles.scrollViewStyles}
+          showsVerticalScrollIndicator={false}>
+          <View style={generalStyles.modalView}>
             <Formik
               initialValues={initialValues}
               onSubmit={handleSendDelete}
@@ -71,7 +73,7 @@ export const ConfirmationEventDelete = ({
                 errors,
                 touched,
               }) => (
-                <View style={styles.centeredViewForm}>
+                <View style={generalStyles.centeredViewForm}>
                   <TextInput
                     onChangeText={handleChange('reason')}
                     onBlur={handleBlur('reason')}
@@ -85,28 +87,28 @@ export const ConfirmationEventDelete = ({
                     style={styles.textInput}
                   />
                   {errors.reason && touched.reason ? (
-                    <Text large color={'red'}>
+                    <Text large center style={generalStyles.textError}>
                       {errors.reason}
                     </Text>
                   ) : null}
 
                   <Pressable
-                    style={[styles.button, styles.buttonOpen]}
+                    style={generalStyles.mainPressable}
                     onPress={() => handleSubmit()}>
-                    <Text large style={styles.textStyle}>
+                    <Text large style={generalStyles.textStyle}>
                       Borrar Quedada
                     </Text>
                   </Pressable>
                   <Pressable
-                    style={[styles.button, styles.buttonOpen]}
+                    style={generalStyles.cancelPressable}
                     onPress={cancel}>
-                    <Text large style={styles.textStyle}>
+                    <Text large style={generalStyles.textStyle}>
                       Cancelar
                     </Text>
                   </Pressable>
 
                   {eventsMessage ? (
-                    <Text large color={'red'}>
+                    <Text large center style={generalStyles.textError}>
                       {eventsMessage}
                     </Text>
                   ) : null}
@@ -121,71 +123,15 @@ export const ConfirmationEventDelete = ({
 };
 
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalView: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 10,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    elevation: 5,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: 1000 * px,
-    height: 1500 * px,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  centeredViewForm: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'space-around',
-    height: '50%',
-    width: '100%',
-    padding: '2%',
-  },
   textInput: {
+    textAlignVertical: 'top',
     borderColor: 'black',
     borderStyle: 'solid',
     borderRadius: 10,
     borderWidth: 2,
-    textAlign: 'center',
     width: '100%',
-    padding: 20 * px,
+    height: 100,
+    padding: 10,
     marginBottom: 10,
   },
 });

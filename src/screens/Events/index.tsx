@@ -1,11 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Button,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import {ActivityIndicator, StyleSheet, TextInput, View} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import {useDispatch, useSelector} from 'react-redux';
 import {Text} from '@components/TextWrapper';
@@ -19,8 +13,10 @@ import {CreateEventModal} from '@modals/CreateEvent';
 import {clearErrorUser} from '@redux/user/user_actions';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import {Pressable} from '@components/Pressable';
-import {provinces} from '@utils/Constants';
+import {provinces, px} from '@utils/Constants';
 import {ConfirmationEventDelete} from '@modals/ConfirmationEventDelete';
+import {generalStyles, pickerSelectStyles} from '@utils/Styles';
+import {colors} from '@utils/Colors';
 
 type NavigationStackProp = NativeStackScreenProps<RootStackParam, 'events'>;
 
@@ -38,6 +34,9 @@ export const Events = ({navigation}: Props) => {
   const [eventId, setEventId] = useState<string>('');
   const [title, setTitle] = useState<string | undefined>();
   const [region, setRegion] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState<boolean>(false);
+
+  const showText = showFilters ? 'Ocultar filtros' : 'Mostrar Filtros';
 
   const handleUpdate = useCallback(() => {
     const realTitle = title?.length ? title : undefined;
@@ -51,8 +50,8 @@ export const Events = ({navigation}: Props) => {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size={'large'} />
+      <View style={generalStyles.loadingContainer}>
+        <ActivityIndicator size={'large'} color={colors.springGreen} />
       </View>
     );
   }
@@ -66,29 +65,65 @@ export const Events = ({navigation}: Props) => {
         setShowModal={setShowModalConfirmation}
         eventId={eventId}
       />
-      <Text large>Buscar Evento</Text>
-
-      <TextInput
-        onChangeText={(t: string) => setTitle(t)}
-        value={title}
-        placeholder={'Buscar quedada...'}
-        maxLength={20}
-      />
-      <Text large>Provincia</Text>
-      <RNPickerSelect
-        onValueChange={value => setRegion(value)}
-        items={provinces}
-        placeholder={{label: 'Cualquier provincia', value: null}}
-        value={region}
-      />
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={handleUpdate}>
-        <Text large style={styles.textStyle}>
-          Buscar
+      <View style={styles.header}>
+        <Text style={generalStyles.textStyle} center xxxxlarge>
+          Eventos
         </Text>
-      </Pressable>
+      </View>
+      <View style={styles.filters}>
+        <Pressable
+          style={styles.updatePressable}
+          onPress={() => {
+            dispatch(clearErrorUser());
+            navigation.navigate('createEvents');
+          }}>
+          <Text large style={generalStyles.textStyle}>
+            Crear Evento
+          </Text>
+        </Pressable>
+      </View>
 
+      <View style={styles.filters}>
+        {showFilters ? (
+          <>
+            <Text xlarge center>
+              Buscar por título
+            </Text>
+            <TextInput
+              onChangeText={(t: string) => setTitle(t)}
+              value={title}
+              placeholder={'Buscar quedada...'}
+              maxLength={20}
+              style={styles.input}
+            />
+            <Text xlarge center>
+              Buscar por provincia
+            </Text>
+            <RNPickerSelect
+              onValueChange={value => setRegion(value)}
+              items={provinces}
+              placeholder={{label: 'Cualquier provincia', value: null}}
+              value={region}
+              style={pickerSelectStyles}
+            />
+          </>
+        ) : null}
+
+        <View style={styles.buttonFilters}>
+          <Pressable style={styles.updatePressable} onPress={handleUpdate}>
+            <Text large style={generalStyles.textStyle}>
+              Buscar
+            </Text>
+          </Pressable>
+          <Pressable
+            style={styles.updatePressable}
+            onPress={() => setShowFilters(!showFilters)}>
+            <Text large style={generalStyles.textStyle}>
+              {showText}
+            </Text>
+          </Pressable>
+        </View>
+      </View>
       {events.length ? (
         <FlashList
           renderItem={(event: ListRenderItemInfo<IEvent>) => (
@@ -101,18 +136,13 @@ export const Events = ({navigation}: Props) => {
           )}
           estimatedItemSize={200}
           data={events}
+          showsVerticalScrollIndicator={false}
         />
       ) : (
-        <Text large>No existen eventos con esos parámetros de búsqueda</Text>
+        <Text large center color={colors.error}>
+          No existen eventos con esos parámetros de búsqueda
+        </Text>
       )}
-
-      <Button
-        title="Crear evento"
-        onPress={() => {
-          dispatch(clearErrorUser());
-          navigation.navigate('createEvents');
-        }}
-      />
     </View>
   );
 };
@@ -124,18 +154,44 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: colors.lightBlue,
+    height: '10%',
+  },
+  input: {
+    width: '90%',
+    backgroundColor: colors.white,
+    margin: '2%',
+    padding: '2%',
     textAlign: 'center',
+    borderRadius: 8,
+    borderColor: colors.primary,
+    borderWidth: 2,
+    fontSize: 48 * px,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
+
+  filters: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+
+  buttonFilters: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
+  },
+  updatePressable: {
+    backgroundColor: colors.blue,
+    width: '45%',
   },
 });

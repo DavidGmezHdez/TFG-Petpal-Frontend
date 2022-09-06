@@ -26,7 +26,6 @@ export const Pet = ({pet, handleShowPet}: Props) => {
         <Text large>Edad: {pet.age} años</Text>
         <Text large>Tamaño: {pet.size}</Text>
         <Text large>Raza: {pet.race}</Text>
-        <Text large>Descripcion: {pet.description}</Text>
       </View>
       <View style={styles.data}>
         <Pressable

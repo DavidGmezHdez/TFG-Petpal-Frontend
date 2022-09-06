@@ -28,7 +28,10 @@ export const PetDataModal = ({showModal, setShowModal, pet}: Props) => {
             </Text>
             <Text xlarge>Direccion: {pet?.protector.direction}</Text>
             <Text xlarge>Provincia: {pet?.protector.region}</Text>
-            <Text xlarge>Imagenes:</Text>
+            <Text xlarge>Descripcion: {pet?.description}</Text>
+            <Text xlarge center>
+              Imagenes:
+            </Text>
             <CarouselImages
               images={pet?.image ?? []}
               width={200}

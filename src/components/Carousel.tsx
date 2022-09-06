@@ -27,7 +27,7 @@ export const CarouselImages = ({images, height, width}: Props) => {
   };
 
   return (
-    <>
+    <View style={styles.imageWrapper}>
       <Carousel
         layout={'default'}
         data={images}
@@ -45,7 +45,7 @@ export const CarouselImages = ({images, height, width}: Props) => {
         dotStyle={styles.dotStyle}
         inactiveDotStyle={styles.inactiveDotStyle}
       />
-    </>
+    </View>
   );
 };
 

@@ -32,7 +32,7 @@ export const Pet = ({pet, handleShowPet}: Props) => {
           style={styles.updatePressable}
           onPress={() => handleShowPet(pet)}>
           <Text large style={generalStyles.textStyle}>
-            Mostrar datos contacto
+            Mostrar más datos
           </Text>
         </Pressable>
       </View>
